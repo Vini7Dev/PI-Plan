@@ -21,7 +21,8 @@
     "pg": "^8.6.0",
     "reflect-metadata": "^0.1.13",
     "ts-node-dev": "^1.1.6",
-    "typeorm": "^0.2.32"
+    "typeorm": "^0.2.32",
+    "uuidv4": "^6.2.8"
   },
   "scripts": {
     "server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/shared/infra/http/server.ts",

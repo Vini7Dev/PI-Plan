@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { uuidv4 } from 'uuidv4';
 
 @Entity('admin')
 class Admin{
@@ -22,6 +23,12 @@ class Admin{
 
     @Column()
     cellphone: string;
-    
+
+    constructor() {
+      if (!this.id) {
+          this.id = uuidv4();
+      }
+    }
 }
+
 export default Admin;

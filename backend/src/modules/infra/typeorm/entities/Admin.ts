@@ -1,4 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid'
 
 @Entity('admin')
 class Admin{
@@ -22,6 +23,11 @@ class Admin{
 
     @Column()
     permission_create_admin: boolean;
-    
+
+    constructor() {
+      if (!this.id) {
+          this.id = uuidv4();
+      }
+    }
 }
 export default Admin;
