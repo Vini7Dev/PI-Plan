@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class Admin1620505760112 implements MigrationInterface {
 
@@ -27,18 +27,18 @@ export class Admin1620505760112 implements MigrationInterface {
                 type: 'varchar',
             },
             {
+                name: 'permission_create_admin',
+                type: 'boolean',
+            },
+            {
                 name: 'created_at',
-                type: 'date',
+                type: 'timestamp',
                 default: 'now()',
             },
             {
-                name: 'update_at',
-                type: 'date',
+                name: 'updated_at',
+                type: 'timestamp',
                 default: 'now()'
-            },
-            {
-                name: 'permission_create_admin',
-                type: 'boolean',
             },
         ]
         }));

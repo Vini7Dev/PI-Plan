@@ -27,20 +27,20 @@ export class Assembler1620654823789 implements MigrationInterface {
                     type: 'varchar',
                 },
                 {
-                    name: 'created_at',
-                    type: 'date',
-                    default: 'now()',
-                },
-                {
-                    name: 'update_at',
-                    type: 'date',
-                    default: 'now()'
-                },
-                {
                     name: 'cellphone',
                     type: 'varchar',
                     length: '15',
-                }
+                },
+                {
+                    name: 'created_at',
+                    type: 'timestamp',
+                    default: 'now()',
+                },
+                {
+                    name: 'updated_at',
+                    type: 'timestamp',
+                    default: 'now()'
+                },
             ],
         }));
     };
