@@ -29,6 +29,7 @@ export class Admin1620505760112 implements MigrationInterface {
                     {
                         name: 'permission_create_admin',
                         type: 'boolean',
+                        default: false,
                     },
                     {
                         name: 'created_at',
