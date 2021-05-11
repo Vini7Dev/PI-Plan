@@ -1,9 +1,15 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    PrimaryColumn,
+    UpdateDateColumn,
+} from 'typeorm';
 import { uuid } from 'uuidv4';
 
 @Entity('admin')
-class Admin{
-    @PrimaryGeneratedColumn('uuid')
+class Admin {
+    @PrimaryColumn('uuid')
     id: string;
 
     @Column()
@@ -25,9 +31,9 @@ class Admin{
     permission_create_admin: boolean;
 
     constructor() {
-      if (!this.id) {
-          this.id = uuid();
-      }
+        if (!this.id) {
+            this.id = uuid();
+        }
     }
 }
 export default Admin;
