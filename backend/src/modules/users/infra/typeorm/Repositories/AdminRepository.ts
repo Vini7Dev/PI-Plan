@@ -10,21 +10,19 @@ class AdminRepository implements IAdminRepository{
         this.repository = getRepository(Admin);
     }
 
+    //CREATE USER ADMIN
     public async create({
-        id,
         name,
         username,
         password,
         permission_create_admin,
 
-    }: ICreateAdminDTOS): Promise<Admin>{
+    }: ICreateAdminDTOS): Promise<Admin> {
             const createdAdmin = this.repository.create({
-                id,
                 name,
                 username,
                 password,
                 permission_create_admin,
-        
             });
             await this.repository.save(createdAdmin)
     
