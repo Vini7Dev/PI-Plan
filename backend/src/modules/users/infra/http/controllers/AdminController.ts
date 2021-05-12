@@ -19,23 +19,27 @@ class AdminController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const {
-            name,
-            username,
-            password,
-            permission_create_admin,
-        } = request.body;
+        try {
+            const {
+                name,
+                username,
+                password,
+                permission_create_admin,
+            } = request.body;
 
-        const createAdminService = new CreateAdminService();
+            const createAdminService = new CreateAdminService();
 
-        const admin = await createAdminService.execute({
-            name,
-            username,
-            password,
-            permission_create_admin,
-        });
+            const admin = await createAdminService.execute({
+                name,
+                username,
+                password,
+                permission_create_admin,
+            });
 
-        return response.status(201).json(admin);
+            return response.status(201).json(admin);
+        } catch (error) {
+            return response.status(400).json({ error: error.message });
+        }
     }
 
     // Atualizando um administrador
