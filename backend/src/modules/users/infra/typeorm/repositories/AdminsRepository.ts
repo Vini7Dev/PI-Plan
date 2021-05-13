@@ -36,31 +36,36 @@ class AdminsRepository implements IAdminsRepository {
     }
 
     // Apagando Um Administrador
-    public async delete(id: string): Promise<void>{
+    public async delete(id: string): Promise<string> {
         await this.repository.delete(id);
+
+        return 'Administrador Apagado';
     }
 
-    public async list(): Promise<Admin[]>{
-        await this.repository.find();
+    // Listando os Administradores
+    public async list(): Promise<Admin[]> {
+        const adminsList = await this.repository.find();
+
+        return adminsList;
     }
 
-    // Atualizando 
+    // Atualizando um Admin
     public async update({
         id,
-        name, 
-        username, 
+        name,
+        username,
         password,
         permission_create_admin,
     }: ICreateAdminDTOS): Promise<Admin> {
-        const updatedAdmin = this.repository.update({
+        const updateAdmin = await this.repository.save({
             id,
-            name, 
-            username, 
-            password, 
+            name,
+            username,
+            password,
             permission_create_admin,
-        })
-        await this.repository.save(updatedAdmin);
+        });
 
+        return updateAdmin;
     }
 }
 
