@@ -1,9 +1,9 @@
 import { getRepository, Repository } from 'typeorm';
-import IAdminRepository from '../../../repositories/IAdminsRepository';
+import IAdminsRepository from '../../../repositories/IAdminsRepository';
 import Admin from '../entities/Admin';
 import ICreateAdminDTOS from '../../../dtos/ICreateAdminDTOS';
 
-class AdminRepository implements IAdminRepository {
+class AdminsRepository implements IAdminsRepository {
     private repository: Repository<Admin>;
 
     constructor() {
@@ -34,6 +34,34 @@ class AdminRepository implements IAdminRepository {
 
         return createdAdmin;
     }
+
+    // Apagando Um Administrador
+    public async delete(id: string): Promise<void>{
+        await this.repository.delete(id);
+    }
+
+    public async list(): Promise<Admin[]>{
+        await this.repository.find();
+    }
+
+    // Atualizando 
+    public async update({
+        id,
+        name, 
+        username, 
+        password,
+        permission_create_admin,
+    }: ICreateAdminDTOS): Promise<Admin> {
+        const updatedAdmin = this.repository.update({
+            id,
+            name, 
+            username, 
+            password, 
+            permission_create_admin,
+        })
+        await this.repository.save(updatedAdmin);
+
+    }
 }
 
-export default AdminRepository;
+export default AdminsRepository;
