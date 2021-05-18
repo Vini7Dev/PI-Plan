@@ -2,6 +2,7 @@ import ICreateAdminDTOS from '../dtos/ICreateAdminDTOS';
 import Admin from '../infra/typeorm/entities/Admin';
 
 interface IAdminsRepository {
+    findById(id: string): Promise<Admin | undefined>;
     findByUsername(username: string): Promise<Admin | undefined>;
     create(data: ICreateAdminDTOS): Promise<Admin>;
     delete(id: string): Promise<string>;

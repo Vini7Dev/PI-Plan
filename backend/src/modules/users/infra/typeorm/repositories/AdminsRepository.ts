@@ -10,6 +10,13 @@ class AdminsRepository implements IAdminsRepository {
         this.repository = getRepository(Admin);
     }
 
+    // Buscando um administrador pelo id
+    public async findById(id: string): Promise<Admin | undefined> {
+        const admin = await this.repository.findOne(id);
+
+        return admin;
+    }
+
     // Buscando um administrador pelo seu username
     public async findByUsername(username: string): Promise<Admin | undefined> {
         const admin = await this.repository.findOne({ username });
@@ -37,9 +44,9 @@ class AdminsRepository implements IAdminsRepository {
 
     // Apagando Um Administrador
     public async delete(id: string): Promise<string> {
-        await this.repository.delete(id);
+        await this.repository.softDelete(id);
 
-        return 'Administrador Apagado';
+        return 'Administrador removido';
     }
 
     // Listando os Administradores
@@ -55,14 +62,12 @@ class AdminsRepository implements IAdminsRepository {
         name,
         username,
         password,
-        permission_create_admin,
     }: ICreateAdminDTOS): Promise<Admin> {
         const updateAdmin = await this.repository.save({
             id,
             name,
             username,
             password,
-            permission_create_admin,
         });
 
         return updateAdmin;

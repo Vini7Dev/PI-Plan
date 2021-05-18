@@ -4,7 +4,7 @@ import adminRoutes from '../../../../modules/users/infra/http/routes/admin.route
 // Instanciando o objeto de rotas principal
 const routes = Router();
 
-// Aplicando todas as rotas da aplicação
-routes.use('/admin', adminRoutes);
+// Unindo todas as rotas da aplicação na principal
+routes.use('/admins', adminRoutes);
 
 export default routes;

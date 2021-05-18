@@ -1,12 +1,14 @@
 import {
     Column,
     CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     PrimaryColumn,
     UpdateDateColumn,
 } from 'typeorm';
 import { uuid } from 'uuidv4';
 
+// Representação da entidade do administrador no banco de dados
 @Entity('admin')
 class Admin {
     @PrimaryColumn('uuid')
@@ -29,6 +31,9 @@ class Admin {
 
     @UpdateDateColumn()
     updated_at: Date;
+
+    @DeleteDateColumn()
+    deleted_at: Date;
 
     constructor() {
         // Gerando o ID automáticamente quando o objeto

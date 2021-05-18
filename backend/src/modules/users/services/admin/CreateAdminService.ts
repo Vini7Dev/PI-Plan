@@ -10,12 +10,15 @@ interface IRequest {
 }
 
 class CreateAdminService {
+    // Repositório dos administradores
     private adminsRepository: IAdminsRepository;
 
     constructor() {
+        // Inicializando o repositório dos administradores
         this.adminsRepository = new AdminsRepository();
     }
 
+    // Serviço para a criação de um novo usuário administrador
     public async execute({
         name,
         username,

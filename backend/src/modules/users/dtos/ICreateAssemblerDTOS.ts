@@ -1,3 +1,4 @@
+// Dados para a criação / atualização dos usuários montadores
 interface ICreateAssemblerDTOS {
     id?: string;
     name: string;

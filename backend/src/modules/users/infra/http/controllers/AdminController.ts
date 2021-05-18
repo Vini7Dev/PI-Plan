@@ -7,11 +7,15 @@ import DeleteAdminService from '../../../services/admin/DeleteAdminService';
 class AdminController {
     // Listando todos os administradores
     public async get(request: Request, response: Response): Promise<Response> {
-        const listAdminsService = new ListAdminsService();
+        try {
+            const listAdminsService = new ListAdminsService();
 
-        const adminList = await listAdminsService.execute();
+            const adminList = await listAdminsService.execute();
 
-        return response.json(adminList);
+            return response.json(adminList);
+        } catch (error) {
+            return response.status(400).json({ error: error.message });
+        }
     }
 
     // Criando um novo administrador
@@ -20,6 +24,7 @@ class AdminController {
         response: Response,
     ): Promise<Response> {
         try {
+            // Recebendo os dados para a criação do administrador
             const {
                 name,
                 username,
@@ -27,6 +32,7 @@ class AdminController {
                 permission_create_admin,
             } = request.body;
 
+            // Serviço para a criação do administrador
             const createAdminService = new CreateAdminService();
 
             const admin = await createAdminService.execute({
@@ -47,20 +53,31 @@ class AdminController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { id } = request.params;
-        const { name, username, current_password, new_password } = request.body;
+        try {
+            // Recebendo os dados para atualizar os dados de um administrador
+            const { id } = request.params;
+            const {
+                name,
+                username,
+                current_password,
+                new_password,
+            } = request.body;
 
-        const updateAdminService = new UpdateAdminService();
+            // Serviço para a atualização dos dados do montador
+            const updateAdminService = new UpdateAdminService();
 
-        const userUpdated = await updateAdminService.execute({
-            id,
-            name,
-            username,
-            current_password,
-            new_password,
-        });
+            const userUpdated = await updateAdminService.execute({
+                id,
+                name,
+                username,
+                current_password,
+                new_password,
+            });
 
-        return response.status(201).json(userUpdated);
+            return response.status(201).json(userUpdated);
+        } catch (error) {
+            return response.status(400).json({ error: error.message });
+        }
     }
 
     // Apagando um administrador
@@ -68,13 +85,19 @@ class AdminController {
         request: Request,
         response: Response,
     ): Promise<Response> {
-        const { id } = request.params;
+        try {
+            // Recebendo a referência do administrador que vai ser removido
+            const { id } = request.params;
 
-        const deleteAdminService = new DeleteAdminService();
+            // Serviço para a remoção do administrador
+            const deleteAdminService = new DeleteAdminService();
 
-        await deleteAdminService.execute(id);
+            await deleteAdminService.execute(id);
 
-        return response.status(204).send();
+            return response.status(204).send();
+        } catch (error) {
+            return response.status(400).json({ error: error.message });
+        }
     }
 }
 
