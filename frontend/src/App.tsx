@@ -1,11 +1,15 @@
 import React from 'react';
+import GlobalStyles from './styles/global';
 
-function App() {
+import OrderData from './pages/OrderData';
+
+const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <OrderData />
+      <GlobalStyles />
     </div>
   );
-}
+};
 
 export default App;
