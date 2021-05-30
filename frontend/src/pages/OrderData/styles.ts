@@ -25,7 +25,6 @@ export const Container = styled.div`
       max-width: 720px;
 
       .space-division {
-        margin-top: -40px;
         display: flex;
 
         .x1 {
