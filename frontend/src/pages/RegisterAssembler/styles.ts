@@ -1,27 +1,27 @@
-import styled from 'styled-components';
+import  styled  from 'styled-components';
 
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
-  h1 {
+  h1{
     margin-bottom: -12px;
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     color: #60626C;
   }
 
-  #navigation-area {
+  #navigation-area{
     flex: 0.5;
   }
 
-  #form-area {
+  #form-area{
     flex: 2;
 
     padding: 20px 8%;
 
-    form {
+    form{
       width: 100%;
       max-width: 720px;
 
@@ -30,39 +30,23 @@ export const Container = styled.div`
         flex-wrap: wrap;
         justify-content: space-between;
         margin: 20px 0;
-
-        .x1 {
-          flex: 0.25;
-        }
-
-        .x2 {
-          flex: 0.75;
-        }
       }
     }
   }
-
-  @media (max-width: 768px) {
+  @media (max-width: 768px){
     flex-direction: column;
 
-    #form-area {
+
+    #form-area{
       padding: 10px;
       flex: 2;
 
-      form {
+      form{
         width: 100%;
         max-width: 720px;
 
-        .space-division {
+        .space-division{
           flex-direction: column;
-
-          .x1 {
-            flex: 0.6;
-          }
-
-          .x2 {
-            flex: 0.95;
-          }
         }
       }
     }

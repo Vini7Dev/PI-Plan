@@ -11,8 +11,4 @@ export default createGlobalStyle`
   body {
     -webkit-font-smoothing: antialiased;
   }
-
-  body, input, button, textarea {
-    font-style: 16px;
-  }
 `;

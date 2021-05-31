@@ -6,6 +6,7 @@ import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
+import SmallButton from '../../components/SmallButton';
 
 const OrderData: React.FC = () => {
   return (
@@ -27,6 +28,11 @@ const OrderData: React.FC = () => {
               'Pedido Finalizado',
             ]}
           />
+          <div className="space-division">
+            <SmallButton name="❮    Voltar" backgorundcolor="beige"/>
+            <SmallButton name="Avançar   ❯" backgorundcolor="green"/>
+          </div>
+
           <Input label="Título" placeholder="Informe o título do pedido" />
           <Textarea
             label="Descrição"
