@@ -3,6 +3,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
+import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 
@@ -10,7 +11,9 @@ const OrdersList: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar />
+        <NavigationBar>
+          <NavigationButton name="Voltar" />
+        </NavigationBar>
       </div>
 
       <div id="table-area">
@@ -32,7 +35,7 @@ const OrdersList: React.FC = () => {
             <thead>
               <tr>
                 <th className="start-border-r td-x1">Código</th>
-                <th className="text-left t-x3">Título</th>
+                <th className="text-left td-x3">Título</th>
                 <th className="end-border-r td-x2">Processo Atual</th>
               </tr>
             </thead>

@@ -1,6 +1,11 @@
 import styled from 'styled-components';
 
-export const Container = styled.nav`
+interface IContainerProps {
+  showNav: boolean;
+}
+
+export const Container = styled.nav<IContainerProps>`
+  position: relative;
   display: flex;
   flex-direction: column;
 
@@ -20,6 +25,35 @@ export const Container = styled.nav`
     margin: 0 auto;
   }
 
+  #show-nav-button {
+    display: none;
+  }
+
+  #nav-links-list {
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 100%;
+      height: 60px;
+
+      text-decoration: none;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 22px;
+
+      color: #FFFFFF;
+      background-color: #B8976B;
+      border: 4px solid #CEAA7B;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    #nav-link-selected {
+      background-color: #CEAA7B;
+    }
+  }
+
   @media (max-width: 768px) {
     border-radius: 0 0 30px 30px;
     margin-bottom: 50px;
@@ -27,6 +61,33 @@ export const Container = styled.nav`
 
     img {
       max-width: 100px;
+    }
+
+    #show-nav-button {
+      position: absolute;
+      top: 35px;
+      right: 35px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+
+      border: none;
+      box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+      background-color: #CEAA7B;
+      color: #FFFFFF;
+
+      font-size: 25px;
+    }
+
+    #nav-links-list {
+      display: ${
+        props => props.showNav ? 'block' : 'none'
+      };
     }
   }
 `;
