@@ -6,7 +6,7 @@ import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 
-const OrdersList: React.FC = () => {
+const ClientList: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
@@ -15,11 +15,11 @@ const OrdersList: React.FC = () => {
 
       <div id="table-area">
         <form>
-          <h1>Pedidos</h1>
+          <h1>Clientes</h1>
 
           <div className="space-division">
             <div className="x2">
-              <Input label="Buscar" placeholder="Informe algum dado do pedido" />
+              <Input label="Buscar" placeholder="Informe algum dado do cliente" />
             </div>
             <div className="x1">
               <SearchButton />
@@ -31,33 +31,29 @@ const OrdersList: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th className="start-border-r td-x1">Código</th>
-                <th className="text-left td-x3">Título</th>
-                <th className="end-border-r td-x2">Processo Atual</th>
+                <th className="text-left start-border-r td-x2">Título</th>
+                <th className="text-right end-border-r td-x1">Telefonico</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="text-center td-id td-x1">
-                  <span className="ic ic-inprogress">IC</span>
-                  #0002
+                <td className="text-left td-id td-x2">
+                  Fulano de Tal
                 </td>
-                <td className="text-left td-x3">Armário de cozinha</td>
-                <td className="text-center td-x2">
-                  Instalando
+
+                <td className="text-right td-x1">
+                (16) 91234-5678
                   <button className="ic-remove">
                     <FiTrash2 />
                   </button>
                 </td>
               </tr>
               <tr>
-                <td className="text-center td-x1">
-                  <span className="ic ic-completed">IC</span>
-                  #0001
+                <td className="text-left td-x2">
+                  Ciclano de Tal
                 </td>
-                <td className="text-left td-x3">Guarda roupas masculino</td>
-                <td className="text-center td-x2">
-                  Finalizado
+                <td className="text-right td-x2">
+                (16) 98765-4321
                   <button className="ic-remove">
                     <FiTrash2 />
                   </button>
@@ -71,4 +67,4 @@ const OrdersList: React.FC = () => {
   );
 };
 
-export default OrdersList;
+export default ClientList;

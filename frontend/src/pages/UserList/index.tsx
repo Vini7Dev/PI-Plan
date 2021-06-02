@@ -15,7 +15,7 @@ const OrdersList: React.FC = () => {
 
       <div id="table-area">
         <form>
-          <h1>Pedidos</h1>
+          <h1>Usuário</h1>
 
           <div className="space-division">
             <div className="x2">
@@ -31,20 +31,20 @@ const OrdersList: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th className="start-border-r td-x1">Código</th>
-                <th className="text-left td-x3">Título</th>
-                <th className="end-border-r td-x2">Processo Atual</th>
+                <th className="start-border-r td-x1">Nome</th>
+                <th className="text-left t-x3">Usuário</th>
+                <th className="end-border-r td-x2">Tipo de Conta</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td className="text-center td-id td-x1">
-                  <span className="ic ic-inprogress">IC</span>
-                  #0002
+
+                  Usuario1
                 </td>
-                <td className="text-left td-x3">Armário de cozinha</td>
+                <td className="text-left td-x3">Usuario123</td>
                 <td className="text-center td-x2">
-                  Instalando
+                  Administrador
                   <button className="ic-remove">
                     <FiTrash2 />
                   </button>
@@ -52,12 +52,12 @@ const OrdersList: React.FC = () => {
               </tr>
               <tr>
                 <td className="text-center td-x1">
-                  <span className="ic ic-completed">IC</span>
-                  #0001
+
+                  Usuario2
                 </td>
-                <td className="text-left td-x3">Guarda roupas masculino</td>
+                <td className="text-left td-x3">Usuario123</td>
                 <td className="text-center td-x2">
-                  Finalizado
+                  Montador
                   <button className="ic-remove">
                     <FiTrash2 />
                   </button>
