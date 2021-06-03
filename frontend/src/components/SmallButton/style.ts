@@ -14,8 +14,13 @@ export const Container = styled.div<IProps>`
     height: 100%;
     width: 100%;
 
-    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     font-size: 28px;
+    line-height: 20px;
+    border: none;
     border-radius: 30px;
     color: #ffffff;
 

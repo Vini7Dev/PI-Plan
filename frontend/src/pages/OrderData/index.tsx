@@ -14,12 +14,12 @@ const OrderData: React.FC = () => {
     <Container>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Página Inicial" />
-          <NavigationButton text="Usuários" />
-          <NavigationButton text="Clientes" />
-          <NavigationButton text="Pedidos" id="nav-link-selected" />
-          <NavigationButton text="Instalações" />
-          <NavigationButton text="Portfólio" />
+          <NavigationButton text="Página Inicial" toPage="/" />
+          <NavigationButton text="Usuários" toPage="/" />
+          <NavigationButton text="Clientes" toPage="/" />
+          <NavigationButton text="Pedidos" toPage="/" id="nav-link-selected" />
+          <NavigationButton text="Instalações" toPage="/" />
+          <NavigationButton text="Portfólio" toPage="/" />
         </NavigationBar>
       </div>
 
@@ -37,8 +37,8 @@ const OrderData: React.FC = () => {
             ]}
           />
           <div className="space-division">
-            <SmallButton name="❮    Voltar" backgorundcolor="beige"/>
-            <SmallButton name="Avançar   ❯" backgorundcolor="green"/>
+            <SmallButton name="❮ Voltar" backgorundcolor="beige"/>
+            <SmallButton name="Avançar ❯" backgorundcolor="green"/>
           </div>
 
           <Input label="Título" placeholder="Informe o título do pedido" />
