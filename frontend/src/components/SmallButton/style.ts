@@ -8,7 +8,7 @@ export const Container = styled.div<IProps>`
   position: relative;
   width: 200px;
   height: 65px;
-  margin: 10px 0;
+  margin: 10px 0 30px 0;
 
   button {
     height: 100%;

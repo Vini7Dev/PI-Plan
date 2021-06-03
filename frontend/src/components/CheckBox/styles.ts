@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  margin: 45px 0 -20px 0;
-
+  margin: 20px 0;
 
   label{
     font-size: 20px;

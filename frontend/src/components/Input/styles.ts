@@ -3,9 +3,9 @@ import styled from 'styled-components';
 export const Container = styled.div`
   position: relative;
   width: 100%;
-  height: 40px;
+  height: 65px;
 
-  margin: 45px 0 0 0;
+  margin: 20px 0;
 
   label {
     position: absolute;

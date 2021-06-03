@@ -6,7 +6,6 @@ export const Container = styled.div`
   flex-wrap: wrap;
 
   h1 {
-    margin-bottom: -12px;
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     color: #60626C;
@@ -29,7 +28,7 @@ export const Container = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin: 20px 0;
+        margin: -20px 0;
 
         .x1 {
           flex: 0.25;
