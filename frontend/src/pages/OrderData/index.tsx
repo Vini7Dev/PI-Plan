@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container } from './styles';
 
+import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
@@ -12,7 +13,14 @@ const OrderData: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar />
+        <NavigationBar>
+          <NavigationButton text="Página Inicial" />
+          <NavigationButton text="Usuários" />
+          <NavigationButton text="Clientes" />
+          <NavigationButton text="Pedidos" id="nav-link-selected" />
+          <NavigationButton text="Instalações" />
+          <NavigationButton text="Portfólio" />
+        </NavigationBar>
       </div>
 
       <div id="form-area">

@@ -1,12 +1,24 @@
 import styled from 'styled-components';
 
-export const Container = styled.button`
-  width: 100%;
-  height: 50px;
+export const Container = styled.a`
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  line-height: 10px;
+  width: 100%;
+  height: 60px;
+
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 22px;
 
   color: #FFFFFF;
   background-color: #B8976B;
-  border: 2px solid #CEAA7B;
+  border: 4px solid #CEAA7B;
+  border-radius: 20px;
+  margin-bottom: 10px;
+
+  &#nav-link-selected {
+    background-color: #CEAA7B;
+  }
 `;

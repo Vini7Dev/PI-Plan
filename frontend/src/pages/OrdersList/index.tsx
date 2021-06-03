@@ -3,7 +3,6 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
-import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 
@@ -11,9 +10,7 @@ const OrdersList: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar>
-          <NavigationButton name="Voltar" />
-        </NavigationBar>
+        <NavigationBar />
       </div>
 
       <div id="table-area">

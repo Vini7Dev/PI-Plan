@@ -1,14 +1,15 @@
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { AnchorHTMLAttributes } from 'react';
 import { Container } from './styles';
 
-interface INavigationButtonsProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  name: string;
+interface INavigationButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  text: string;
+  toPage?: string;
 }
 
-const NavigationButton: React.FC<INavigationButtonsProps> = ({ name }) => {
+const NavigationButton: React.FC<INavigationButtonProps> = ({ text, toPage = '/', ...rest }) => {
   return (
-    <Container>
-      {name}
+    <Container href={toPage} {...rest}>
+      {text}
     </Container>
   );
 }

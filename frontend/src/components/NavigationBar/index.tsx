@@ -4,7 +4,7 @@ import { Container } from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
 
-const NavigationBar: React.FC = () => {
+const NavigationBar: React.FC = ({ children }) => {
   const [showNav, setShowNav] = useState(false);
 
   const handleChangeShowNav = useCallback(() => {
@@ -20,11 +20,7 @@ const NavigationBar: React.FC = () => {
       </button>
 
       <div id="nav-links-list">
-        <a href="/">Usuários</a>
-        <a href="/">Clientes</a>
-        <a href="/" id="nav-link-selected">Pedidos</a>
-        <a href="/">Instalações</a>
-        <a href="/">Portfólio</a>
+        {children}
       </div>
     </Container>
   );

@@ -11,7 +11,7 @@ import ListClient from './pages/ClientList';
 const App: React.FC = () => {
   return (
     <div className="App">
-      <ListClient/>
+      <OrderData/>
       <GlobalStyles />
     </div>
   );
