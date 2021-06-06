@@ -1,6 +1,7 @@
 import React from 'react';
 import GlobalStyles from './styles/global';
 
+import Login from './pages/Login';
 import OrderData from './pages/OrderData';
 import OrdersList from './pages/OrdersList';
 import RegisterAssembler from './pages/RegisterAssembler';
@@ -11,7 +12,7 @@ import ListClient from './pages/ClientList';
 const App: React.FC = () => {
   return (
     <div className="App">
-      <OrderData/>
+      <Login />
       <GlobalStyles />
     </div>
   );
