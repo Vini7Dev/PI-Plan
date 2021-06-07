@@ -5,12 +5,20 @@ import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
+import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 const RegisterClient: React.FC = () =>{
   return(
     <Container>
       <div id="navigation-area">
-        <NavigationBar />
+        <NavigationBar>
+          <NavigationButton text="Página Inicial" toPage="/" />
+          <NavigationButton text="Usuários" toPage="/" />
+          <NavigationButton text="Clientes" toPage="/" id="nav-link-selected" />
+          <NavigationButton text="Pedidos" toPage="/" />
+          <NavigationButton text="Instalações" toPage="/" />
+          <NavigationButton text="Portfólio" toPage="/" />
+        </NavigationBar>
       </div>
 
       <div id="form-area">

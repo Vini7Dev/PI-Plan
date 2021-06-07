@@ -5,13 +5,21 @@ import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import SmallButton from '../../components/SmallButton';
 import Button from '../../components/Button';
+import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 
 const RegisterAssembler: React.FC = () =>{
   return(
     <Container>
       <div id="navigation-area">
-        <NavigationBar />
+        <NavigationBar>
+          <NavigationButton text="Página Inicial" toPage="/" />
+          <NavigationButton text="Usuários" toPage="/" id="nav-link-selected" />
+          <NavigationButton text="Clientes" toPage="/" />
+          <NavigationButton text="Pedidos" toPage="/" />
+          <NavigationButton text="Instalações" toPage="/" />
+          <NavigationButton text="Portfólio" toPage="/" />
+        </NavigationBar>
       </div>
 
       <div id="form-area">

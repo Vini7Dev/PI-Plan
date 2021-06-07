@@ -5,12 +5,20 @@ import { Container } from './styles';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
+import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 const OrdersList: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar />
+        <NavigationBar>
+          <NavigationButton text="Página Inicial" toPage="/" />
+          <NavigationButton text="Usuários" toPage="/" />
+          <NavigationButton text="Clientes" toPage="/" />
+          <NavigationButton text="Pedidos" toPage="/" id="nav-link-selected" />
+          <NavigationButton text="Instalações" toPage="/" />
+          <NavigationButton text="Portfólio" toPage="/" />
+        </NavigationBar>
       </div>
 
       <div id="table-area">
