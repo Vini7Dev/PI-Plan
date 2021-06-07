@@ -11,8 +11,10 @@ const Login: React.FC = () => {
       <div>
         <img src={Logo} alt="PI Plan" />
 
-        <h2>Bem Vindo</h2>
-        <h1>Login</h1>
+        <div id="h">
+          <h2>Bem Vindo</h2>
+          <h1>Login</h1>
+        </div>
 
         <Input label="Usuario" placeholder="Informe o usuário" />
         <Input label="Senha" type="password" placeholder="Informe a senha" />
