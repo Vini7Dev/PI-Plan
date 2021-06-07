@@ -8,9 +8,8 @@ export const Container = styled.div`
     font-family: Arial, Helvetica, sans-serif;
     color: #ceaa7b;
     font-weight: bold;
-    color: #B8976B;
-    padding-right: 20px;
-
+    color: #36373D;
+    margin-right: 20px;
   }
 
   @media (max-width: 768px) {

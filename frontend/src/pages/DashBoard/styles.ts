@@ -16,12 +16,24 @@ export const Container = styled.div`
     flex: 0.5;
   }
 
-  #form-area {
+  #task-area {
     flex: 2;
 
     padding: 20px 8%;
 
-    form {
+    #banner-area {
+      margin: 0 -150px 20px -150px;
+      width: 10000px;
+      max-width: 80vw;
+
+      img {
+        width: 100%;
+        border-radius: 50px;
+        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    div {
       width: 100%;
       max-width: 720px;
 
@@ -29,17 +41,8 @@ export const Container = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin: 0;
+        margin-top: 75px;
 
-        .checkB{
-          font-size: 50px;
-          position: absolute;
-	        left: -90px;
-	        top: -70px;
-          label{
-            color: #36373D;
-          }
-        }
         .v1{
           width: 70%;
         }
@@ -47,6 +50,14 @@ export const Container = styled.div`
           width: 25%;
         }
       }
+
+      .checkB{
+          width: 100%;
+
+          label{
+            color: #36373D;
+          }
+        }
     }
   }
 
@@ -54,16 +65,34 @@ export const Container = styled.div`
     flex-direction: column;
     width: 100%;
 
-    #form-area {
+    #task-area {
       padding: 10px;
       flex: 2;
 
-      form {
-        width: 100%;
+      #banner-area {
+        display: none;
+      }
+
+      div {
         max-width: 720px;
 
         .space-division {
-          flex-direction: column;
+          justify-content: center;
+          margin-left: -10%;
+          width: 105%;
+
+          .v1{
+            width: 100%;
+
+            button {
+              background-color: #B8976B;
+            }
+          }
+          .v2{
+            margin-top: 10px;
+              margin-left: 10%;
+            width: 50%;
+          }
         }
       }
     }

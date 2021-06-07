@@ -13,11 +13,7 @@ import DashBoard from './pages/DashBoard';
 const App: React.FC = () => {
   return (
     <div className="App">
-<<<<<<< HEAD
-      <DashBoard/>
-=======
-      <Login />
->>>>>>> 1a5d64aedc7ef53671b5465e05574abdd2860d0b
+      <DashBoard />
       <GlobalStyles />
     </div>
   );
