@@ -8,11 +8,16 @@ import RegisterAssembler from './pages/RegisterAssembler';
 import RegisterAdm from './pages/RegisterAdm';
 import RegisterClient from './pages/RegisterClient';
 import ListClient from './pages/ClientList';
+import DashBoard from './pages/DashBoard';
 
 const App: React.FC = () => {
   return (
     <div className="App">
+<<<<<<< HEAD
+      <DashBoard/>
+=======
       <Login />
+>>>>>>> 1a5d64aedc7ef53671b5465e05574abdd2860d0b
       <GlobalStyles />
     </div>
   );
