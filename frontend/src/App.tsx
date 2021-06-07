@@ -7,11 +7,12 @@ import RegisterAssembler from './pages/RegisterAssembler';
 import RegisterAdm from './pages/RegisterAdm';
 import RegisterClient from './pages/RegisterClient';
 import ListClient from './pages/ClientList';
+import DashBoard from './pages/DashBoard';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <ListClient/>
+      <DashBoard/>
       <GlobalStyles />
     </div>
   );
