@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 
-const RegisterAssembler: React.FC = () =>{
+const AssemblerData: React.FC = () =>{
   return(
     <Container>
       <div id="navigation-area">
@@ -22,7 +22,7 @@ const RegisterAssembler: React.FC = () =>{
         </NavigationBar>
       </div>
 
-      <div id="form-area">
+      <main id="form-area">
         <form>
           <h1>Cadastro de Montador</h1>
 
@@ -39,9 +39,9 @@ const RegisterAssembler: React.FC = () =>{
 
           <Button name="Cadastrar"/>
         </form>
-      </div>
+      </main>
     </Container>
   );
 };
 
-export default RegisterAssembler;
+export default AssemblerData;

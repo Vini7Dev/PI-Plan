@@ -23,7 +23,7 @@ const OrderData: React.FC = () => {
         </NavigationBar>
       </div>
 
-      <div id="form-area">
+      <main id="form-area">
         <form>
           <h1>Dados do Pedido</h1>
 
@@ -86,7 +86,7 @@ const OrderData: React.FC = () => {
 
           <Button name="Salvar" />
         </form>
-      </div>
+      </main>
     </Container>
   );
 };

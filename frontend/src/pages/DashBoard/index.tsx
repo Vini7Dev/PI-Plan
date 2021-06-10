@@ -22,18 +22,17 @@ const DashBoard: React.FC = () =>{
       </div>
 
       <div id="task-area">
-        <div id="banner-area">
+        <header id="banner-area">
           <img src={Banner} alt="Banner" />
-        </div>
+        </header>
 
-        <div>
-
+        <main>
           <h1>Lembretes do Dia</h1>
           <div className= "space-division">
-            <div className="v1">
+            <div className="size2">
               <DashButton name="Tarefas"/>
             </div>
-            <div className="v2">
+            <div className="size1">
               <DashButton name="Adicionar"/>
             </div>
           </div>
@@ -42,7 +41,7 @@ const DashBoard: React.FC = () =>{
             <CheckBox label="Cofirmar entrega do Móvel de Ciclano de Lat"/>
             <CheckBox label="Entrar em contato com Montador"/>
           </div>
-        </div>
+        </main>
       </div>
     </Container>
   );

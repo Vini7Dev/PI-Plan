@@ -33,7 +33,7 @@ export const Container = styled.div`
       }
     }
 
-    div {
+    main {
       width: 100%;
       max-width: 720px;
 
@@ -43,11 +43,12 @@ export const Container = styled.div`
         justify-content: space-between;
         margin-top: 75px;
 
-        .v1{
-          width: 70%;
-        }
-        .v2{
+        .size1{
           width: 25%;
+        }
+
+        .size2{
+          width: 70%;
         }
       }
 
@@ -73,7 +74,7 @@ export const Container = styled.div`
         display: none;
       }
 
-      div {
+      main {
         max-width: 720px;
 
         .space-division {
@@ -81,17 +82,18 @@ export const Container = styled.div`
           margin-left: -10%;
           width: 105%;
 
-          .v1{
+          .size1 {
+            margin-top: 10px;
+            margin-left: 10%;
+            width: 50%;
+          }
+
+          .size2 {
             width: 100%;
 
             button {
               background-color: #B8976B;
             }
-          }
-          .v2{
-            margin-top: 10px;
-              margin-left: 10%;
-            width: 50%;
           }
         }
       }

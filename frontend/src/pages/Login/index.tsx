@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 const Login: React.FC = () => {
   return (
     <Container>
-      <div>
+      <main>
         <img src={Logo} alt="PI Plan" />
 
         <div id="h">
@@ -20,7 +20,7 @@ const Login: React.FC = () => {
         <Input label="Senha" type="password" placeholder="Informe a senha" />
 
         <Button name="Entrar" />
-      </div>
+      </main>
     </Container>
   );
 };

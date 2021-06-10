@@ -25,13 +25,11 @@ export const Container = styled.div`
       width: 100%;
       max-width: 720px;
 
-
-
       .space-division{
         display: flex;
         flex-wrap: wrap;
-      justify-content: space-between;
-      margin: 20px 0;
+        justify-content: space-between;
+        margin: 20px 0;
       }
     }
   }

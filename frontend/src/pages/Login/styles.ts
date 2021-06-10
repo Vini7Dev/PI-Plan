@@ -7,7 +7,7 @@ export const Container = styled.div`
   background: linear-gradient(135deg, #9E825E 2.88%, #B8976B 48.91%, #FFDFB4 100%);
   -webkit-font-smoothing: antialiased;
 
-  div {
+  main {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,14 +18,15 @@ export const Container = styled.div`
     max-width: 536px;
     width: 70%;
     margin: 5% 20%;
+    padding: 30px;
 
     img {
-      width: 150px;
-      height: 170px;
+      width: 125px;
+      height: 150px;
     }
 
     #h {
-      width: 70%;
+      width: 100%;
 
       h2 {
         color: #2D3748;
@@ -33,22 +34,22 @@ export const Container = styled.div`
       }
 
       h2, h1 {
+        font-family: Arial, Helvetica, sans-serif;
         margin-right: auto;
-        margin-left: 30px;
+        margin-left: 32px;
       }
     }
   }
 
   @media (max-width: 768px) {
-    height: 100vh;
-
-    div {
+    main {
       width: 80%;
       margin: 5%;
 
       #h {
         h2, h1 {
           margin: 0 auto;
+          text-align: center;
         }
       }
     }

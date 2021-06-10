@@ -2,13 +2,14 @@ import React from 'react';
 import GlobalStyles from './styles/global';
 
 import Login from './pages/Login';
+import DashBoard from './pages/DashBoard';
+import AdmData from './pages/AdmData';
+import AssemblerData from './pages/AssemblerData';
+import UserList from './pages/UserList';
+import ClientData from './pages/ClientData';
+import ListClient from './pages/ClientList';
 import OrderData from './pages/OrderData';
 import OrdersList from './pages/OrdersList';
-import RegisterAssembler from './pages/RegisterAssembler';
-import RegisterAdm from './pages/RegisterAdm';
-import RegisterClient from './pages/RegisterClient';
-import ListClient from './pages/ClientList';
-import DashBoard from './pages/DashBoard';
 
 const App: React.FC = () => {
   return (

@@ -21,7 +21,7 @@ const ClientList: React.FC = () => {
         </NavigationBar>
       </div>
 
-      <div id="table-area">
+      <main id="table-area">
         <form>
           <h1>Clientes</h1>
 
@@ -70,7 +70,7 @@ const ClientList: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </main>
     </Container>
   );
 };

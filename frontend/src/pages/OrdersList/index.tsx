@@ -21,7 +21,7 @@ const OrdersList: React.FC = () => {
         </NavigationBar>
       </div>
 
-      <div id="table-area">
+      <main id="table-area">
         <form>
           <h1>Pedidos</h1>
 
@@ -74,7 +74,7 @@ const OrdersList: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      </main>
     </Container>
   );
 };

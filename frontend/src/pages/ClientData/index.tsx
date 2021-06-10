@@ -7,7 +7,7 @@ import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
-const RegisterClient: React.FC = () =>{
+const ClientData: React.FC = () =>{
   return(
     <Container>
       <div id="navigation-area">
@@ -21,7 +21,7 @@ const RegisterClient: React.FC = () =>{
         </NavigationBar>
       </div>
 
-      <div id="form-area">
+      <main id="form-area">
         <form>
           <h1>Cadastro de Cliente</h1>
 
@@ -37,10 +37,10 @@ const RegisterClient: React.FC = () =>{
           <Input label="Próximo Contato" placeholder="Informe a data do Próximo Contato"/>
 
           <Button name="Cadastrar"/>
-          </form>
-      </div>
+        </form>
+      </main>
     </Container>
   );
 };
 
-export default RegisterClient;
+export default ClientData;
