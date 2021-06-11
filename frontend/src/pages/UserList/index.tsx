@@ -47,7 +47,6 @@ const OrdersList: React.FC = () => {
             <tbody>
               <tr>
                 <td className="text-center td-id td-x1">
-
                   Usuario1
                 </td>
                 <td className="text-left td-x3">Usuario123</td>
@@ -60,7 +59,6 @@ const OrdersList: React.FC = () => {
               </tr>
               <tr>
                 <td className="text-center td-x1">
-
                   Usuario2
                 </td>
                 <td className="text-left td-x3">Usuario123</td>

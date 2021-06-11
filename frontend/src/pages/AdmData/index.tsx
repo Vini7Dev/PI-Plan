@@ -8,7 +8,6 @@ import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
-
 const AdmData: React.FC = () =>{
   return(
     <Container>
@@ -39,7 +38,7 @@ const AdmData: React.FC = () =>{
 
           <CheckBox label="Pode criar administrador" />
 
-          <Button name="Cadastrar"/>
+          <Button name="Cadastrar" />
         </form>
       </main>
     </Container>
