@@ -9,16 +9,16 @@ const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = useCallback(function() {
+  const handleLogin = useCallback(() => {
     const request = new XMLHttpRequest();
 
     request.open('GET', `http://localhost:8080/admins/username/${username}`, true);
 
     request.onload = function(): void {
       if(this.response) {
-        const usuario = JSON.parse(this.response);
+        const user = JSON.parse(this.response);
 
-        if(password === usuario.password) {
+        if(password === user.password) {
           alert('Entrou');
         } else {
           alert('Credenciais inválidas.');

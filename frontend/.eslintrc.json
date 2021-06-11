@@ -55,7 +55,8 @@
      "react/button-has-type": "off",
      "react/no-this-in-sfc": "off",
      "func-names": "off",
-     "no-alert": "off"
+     "no-alert": "off",
+     "camelcase": "off"
     },
     "settings": {
       "import/resolver": {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState , useCallback } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -7,7 +7,34 @@ import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
-const OrdersList: React.FC = () => {
+interface IUserProps {
+  id: number;
+  name: string;
+  username: string;
+  password: string;
+  permission_create_adm: boolean;
+}
+
+const UserList: React.FC = () => {
+  const [users, setUsers] = useState<IUserProps[]>([]);
+
+  useEffect(() => {
+    const request = new XMLHttpRequest();
+
+    request.open('GET', `http://localhost:8080/admins`, true);
+
+    request.onload = function() {
+      const usersList = JSON.parse(this.response);
+      setUsers(usersList);
+    }
+
+    request.send();
+  }, [users]);
+
+  const handleDeleteUser = useCallback((id: number) => {
+    alert(id);
+  }, []);
+
   return (
     <Container>
       <div id="navigation-area">
@@ -45,30 +72,30 @@ const OrdersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="text-center td-id td-x1">
-                  Usuario1
-                </td>
-                <td className="text-left td-x3">Usuario123</td>
-                <td className="text-center td-x2">
-                  Administrador
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td className="text-center td-x1">
-                  Usuario2
-                </td>
-                <td className="text-left td-x3">Usuario123</td>
-                <td className="text-center td-x2">
-                  Montador
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
+              {
+                users.map(user => {
+                  return (
+                    <tr key={user.id}>
+                      <td className="text-center td-id td-x1">
+                        {user.name}
+                      </td>
+                      <td className="text-left td-x3">
+                        {user.username}
+                      </td>
+                      <td className="text-center td-x2">
+                        {
+                          typeof user.permission_create_adm === 'boolean'
+                            ? 'Administrador'
+                            : 'Montador'
+                        }
+                        <button className="ic-remove" onClick={() => handleDeleteUser(user.id)}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })
+              }
             </tbody>
           </table>
         </div>
@@ -77,4 +104,4 @@ const OrdersList: React.FC = () => {
   );
 };
 
-export default OrdersList;
+export default UserList;
