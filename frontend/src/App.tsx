@@ -7,14 +7,14 @@ import AdmData from './pages/AdmData';
 import AssemblerData from './pages/AssemblerData';
 import UserList from './pages/UserList';
 import ClientData from './pages/ClientData';
-import ListClient from './pages/ClientList';
+import ClientList from './pages/ClientList';
 import OrderData from './pages/OrderData';
 import OrdersList from './pages/OrdersList';
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <DashBoard />
+      <ClientList />
       <GlobalStyles />
     </div>
   );

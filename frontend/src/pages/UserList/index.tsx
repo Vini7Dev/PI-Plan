@@ -29,7 +29,7 @@ const UserList: React.FC = () => {
     }
 
     request.send();
-  }, [users]);
+  }, []);
 
   const handleDeleteUser = useCallback((id: number) => {
     alert(id);

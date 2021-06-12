@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState , useCallback } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -7,7 +7,42 @@ import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
+
+interface IClientProps {
+  id: number;
+  name: string;
+  cellphone: string;
+  cpf?: string;
+  cnpj?: string;
+}
+
 const ClientList: React.FC = () => {
+  const [legalClients, setLegalClients] = useState<IClientProps[]>([]);
+  const [physicalClients, setPhysicalClients] = useState<IClientProps[]>([]);
+
+  useEffect(() => {
+    const requestLegalClients = new XMLHttpRequest();
+    const requestPhysicalClients = new XMLHttpRequest();
+
+    requestLegalClients.open('GET', `http://localhost:8080/legalclients`, true);
+    requestPhysicalClients.open('GET', `http://localhost:8080/physicalclients`, true);
+
+    requestLegalClients.onload = function() {
+      setLegalClients(JSON.parse(this.response));
+    }
+
+    requestPhysicalClients.onload = function() {
+      setPhysicalClients(JSON.parse(this.response));
+    }
+
+    requestLegalClients.send();
+    requestPhysicalClients.send();
+  }, []);
+
+  const handleDeleteClient = useCallback((id: number) => {
+    return id;
+  }, []);
+
   return (
     <Container>
       <div id="navigation-area">
@@ -40,33 +75,51 @@ const ClientList: React.FC = () => {
             <thead>
               <tr>
                 <th className="text-left start-border-r td-x2">Título</th>
-                <th className="text-right end-border-r td-x1">Telefonico</th>
+                <th className="td-x1">CPF / CNPJ</th>
+                <th className="text-right end-border-r td-x1">Telefone</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="text-left td-id td-x2">
-                  Fulano de Tal
-                </td>
+              {
+                legalClients.map(client => (
+                  <tr key={client.id}>
+                    <td className="text-left td-id td-x2">
+                      {client.name}
+                    </td>
 
-                <td className="text-right td-x1">
-                (16) 91234-5678
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td className="text-left td-x2">
-                  Ciclano de Tal
-                </td>
-                <td className="text-right td-x2">
-                (16) 98765-4321
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
+                    <td className="text-center td-x1">
+                      {client.cnpj}
+                    </td>
+
+                    <td className="text-right td-x1">
+                      {client.cellphone}
+                      <button className="ic-remove" onClick={() => handleDeleteClient(client.id)}>
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
+              {
+                physicalClients.map(client => (
+                  <tr key={client.id}>
+                    <td className="text-left td-id td-x2">
+                      {client.name}
+                    </td>
+
+                    <td className="text-center td-x1">
+                      {client.cpf}
+                    </td>
+
+                    <td className="text-right td-x1">
+                      {client.cellphone}
+                      <button className="ic-remove" onClick={() => handleDeleteClient(client.id)}>
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>

@@ -16,6 +16,7 @@ const DashBoard: React.FC = () =>{
 
   const handleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
+    setTaskId(id || -1);
     console.log(id);
   }, [showPopup]);
 
