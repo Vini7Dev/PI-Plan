@@ -13,19 +13,30 @@ const AdmData: React.FC = () =>{
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
 
   const handleAdmData = useCallback(function(){
     const request = new XMLHttpRequest();
 
-    request.open('GET', `http://localhost:8080/xxxx ${username}`, true);
+    request.open('POST', `http://localhost:8080/admins`, true);
 
+    if(password !== confirmPassword) {
+      alert('Erro ao confirmar a senha.');
+      return;
+    }
 
+    const admin = {
+      name,
+      username,
+      password,
+      permission_create_admin: permissionCreateAdmin,
+    };
 
+    request.setRequestHeader(`Content-Type`, `application/json`);
+    request.send(JSON.stringify(admin));
 
-
-
-
-  },[name, username, password, confirmPassword]);
+    alert('Admin cadastrado.');
+  },[name, username, password, confirmPassword, permissionCreateAdmin]);
 
   return(
     <Container>
