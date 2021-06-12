@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useCallback } from 'react';
 import { Container } from './styles';
 
 import Banner from '../../assets/images/BannerDashBoard.jpg';
@@ -12,6 +12,12 @@ import Button from '../../components/Button';
 
 const DashBoard: React.FC = () =>{
   const [showPopup, setShowPopup] = useState(false);
+  const [taskId, setTaskId] = useState(0);
+
+  const handleShowPopup = useCallback((id?: number) => {
+    setShowPopup(!showPopup);
+    console.log(id);
+  }, [showPopup]);
 
   return(
     <Container>
@@ -38,13 +44,25 @@ const DashBoard: React.FC = () =>{
               <DashButton name="Tarefas"/>
             </div>
             <div className="size1">
-              <DashButton name="Adicionar"/>
+              <DashButton name="Adicionar" onClick={() => handleShowPopup()}/>
             </div>
           </div>
           <div className="checkB">
-            <CheckBox label="Realizar contato com Fulano de Tal"/>
-            <CheckBox label="Cofirmar entrega do Móvel de Ciclano de Lat"/>
-            <CheckBox label="Entrar em contato com Montador"/>
+            <CheckBox
+              label="Realizar contato com Fulano de Tal"
+              id="1"
+              onClickLabel={() => handleShowPopup(1)}
+            />
+            <CheckBox
+              label="Cofirmar entrega do Móvel de Ciclano de Lat"
+              id="2"
+              onClickLabel={() => handleShowPopup(1)}
+            />
+            <CheckBox
+              label="Entrar em contato com Montador"
+              id="3"
+              onClickLabel={() => handleShowPopup(1)}
+            />
           </div>
         </main>
       </div>
@@ -60,6 +78,7 @@ const DashBoard: React.FC = () =>{
               <Input label="Horário" type="time" />
               <Input label="Data" type="date" />
               <Button name="Cadastrar" />
+              <Button name="Fechar" onClick={() => handleShowPopup()} />
             </form>
           </div>
         )
