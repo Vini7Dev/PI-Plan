@@ -17,14 +17,24 @@ const AssemblerData: React.FC = () =>{
   const handleAssemblerData = useCallback(function(){
     const request = new XMLHttpRequest();
 
-    request.open('GET', `http://localhost:8080/xxxx ${username}`, true);
+    request.open('POST', `http://localhost:8080/assembler`, true);
 
+    if(password !== confirmPassword) {
+      alert('Erro ao confirmar a senha.');
+      return;
+    }
 
+    const assembler = {
+      name,
+      username,
+      fone,
+      password,
+    };
 
+    request.setRequestHeader(`Content-Type`, `application/json`);
+    request.send(JSON.stringify(assembler));
 
-
-
-
+    alert('Assembler cadastrado.');
   },[name, username, fone, password, confirmPassword]);
 
   return(

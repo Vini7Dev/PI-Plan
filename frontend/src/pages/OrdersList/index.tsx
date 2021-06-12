@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState , useCallback } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -7,7 +7,50 @@ import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
+
+interface IOrderProps {
+  id: number;
+  actualStatus: number;
+  actualProcess: number;
+  title: string;
+  description: string;
+  startDate: Date;
+  finalDate: Date;
+  previsionFinalDate: Date;
+  cep: string;
+  street: string;
+  number: number;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  uf: string;
+  country: string;
+  installationEnvironments: string;
+  paymentMethod: string;
+  grossValue: number;
+  netValue: number;
+}
+
 const OrdersList: React.FC = () => {
+  const [orders, setOrders] = useState<IOrderProps[]>([]);
+
+  useEffect(() => {
+    const request = new XMLHttpRequest();
+
+    request.open('GET', `http://localhost:8080/orders`, true);
+
+    request.onload = function() {
+      const ordersList = JSON.parse(this.response);
+      setOrders(ordersList);
+    }
+
+    request.send();
+  }, []);
+
+  const handleDeleteOrder = useCallback((id: number) => {
+    return id;
+  }, []);
+
   return (
     <Container>
       <div id="navigation-area">
@@ -45,32 +88,34 @@ const OrdersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="text-center td-id td-x1">
-                  <span className="ic ic-inprogress">IC</span>
-                  #0002
-                </td>
-                <td className="text-left td-x3">Armário de cozinha</td>
-                <td className="text-center td-x2">
-                  Instalando
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
-              <tr>
-                <td className="text-center td-x1">
-                  <span className="ic ic-completed">IC</span>
-                  #0001
-                </td>
-                <td className="text-left td-x3">Guarda roupas masculino</td>
-                <td className="text-center td-x2">
-                  Finalizado
-                  <button className="ic-remove">
-                    <FiTrash2 />
-                  </button>
-                </td>
-              </tr>
+              {
+                orders.map(order => (
+                  <tr>
+                    <td className="text-center td-id td-x1">
+                      <span
+                        className={`ic
+                          ${order.actualStatus === 1 && 'ic-inprogress'}
+                          ${order.actualStatus === 2 && 'ic-completed'}
+                          ${order.actualStatus === 3 && 'ic-canceled'}
+                        `}
+                      >IC</span>
+                      #{order.id}
+                    </td>
+                    <td className="text-left td-x3">{order.title}</td>
+                    <td className="text-center td-x2">
+                      {`
+                        ${order.actualProcess === 1 && 'Iniciando'}
+                        ${order.actualProcess === 2 && 'Pedido na Fábrica'}
+                        ${order.actualProcess === 3 && 'Instalando'}
+                        ${order.actualProcess === 4 && 'Pedido Finalizado'}
+                      `}
+                      <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
+                        <FiTrash2 />
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              }
             </tbody>
           </table>
         </div>

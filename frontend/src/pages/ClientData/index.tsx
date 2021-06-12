@@ -9,24 +9,46 @@ import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 const ClientData: React.FC = () =>{
   const [name, setName] = useState('');
-  const [fone, setFone] = useState('');
-  const [CPFCNPJ, setCPFCNPJ] = useState('');
+  const [cellphone, setFone] = useState('');
+  const [document, setDocument] = useState('');
   const [lastContact, setLastContact] = useState('');
   const [nextContact, setNextContact] = useState('');
-
+  const [warnContact, setWarnContact] = useState(false);
 
   const handleClientData = useCallback(function(){
     const request = new XMLHttpRequest();
 
-    request.open('GET', `http://localhost:8080/xxxx ${CPFCNPJ}`, true);
+    request.open('POST', `http://localhost:8080/client`, true);
 
+    if(document.length > 14){
+      request.open('POST', `http://localhost:8080/legalclients`, true);
+      const client = {
+        name,
+        cellphone,
+        cnpj: document,
+        last_contact: lastContact,
+        next_contact: nextContact,
+        warn_contact: warnContact,
+      };
+      request.setRequestHeader(`Content-Type`, `application/json`);
+      request.send(JSON.stringify(client));
+    }
+    else{
+      request.open('POST', `http://localhost:8080/physicalclients`, true);
+      const client = {
+        name,
+        cellphone,
+        cpf: document,
+        last_contact: lastContact,
+        next_contact: nextContact,
+        warn_contact: warnContact,
+      };
+      request.setRequestHeader(`Content-Type`, `application/json`);
+      request.send(JSON.stringify(client));
+    }
 
-
-
-
-
-
-  },[name, fone, CPFCNPJ, lastContact, nextContact]);
+    alert('Client cadastrado.');
+  },[name, cellphone, document, lastContact, nextContact, warnContact]);
 
   return(
     <Container>
@@ -60,12 +82,15 @@ const ClientData: React.FC = () =>{
           <Input
           label="CPF/CNPJ"
           placeholder="Digíte o CPF / CNPJ"
-          onChange={(e) => setCPFCNPJ(e.target.value)}
+          onChange={(e) => setDocument(e.target.value)}
           />
 
           <h1>Alerta de Contato</h1>
 
-          <ChechBox label="Emitir alerta para este Cliente"/>
+          <ChechBox
+            label="Emitir alerta para este Cliente"
+            onChange={(e) => setWarnContact(e.target.checked)}
+          />
 
           <Input
           label="Ultimo Contato"

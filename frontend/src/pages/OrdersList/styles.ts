@@ -109,16 +109,22 @@ export const Container = styled.div`
             margin: 0 5px;
           }
 
+          td .ic-inprogress {
+            border: 1px solid #C2C600;
+            background-color: #E6EB0B;
+            color: #E6EB0B;
+          }
+
           td .ic-completed {
             border: 1px solid #00C65B;
             background-color: #0BEB14;
             color: #0BEB14;
           }
 
-          td .ic-inprogress {
-            border: 1px solid #C2C600;
-            background-color: #E6EB0B;
-            color: #E6EB0B;
+          td .ic-canceled {
+            border: 1px solid #CB4242;
+            background-color: #FF5555;
+            color: #FF5555;
           }
         }
 
