@@ -84,7 +84,10 @@ const AdmData: React.FC = () =>{
           onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <CheckBox label="Pode criar administrador" />
+          <CheckBox
+            label="Pode criar administrador"
+            onChange={e => setPermissionCreateAdmin(e.target.checked)}
+          />
 
           <Button name="Cadastrar" onClick={handleAdmData} />
         </form>
