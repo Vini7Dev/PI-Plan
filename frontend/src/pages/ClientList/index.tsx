@@ -87,7 +87,7 @@ const ClientList: React.FC = () => {
                       {client.name}
                     </td>
 
-                    <td className="text-center td-x1">
+                    <td className="td-x1">
                       {client.cnpj}
                     </td>
 
@@ -107,7 +107,7 @@ const ClientList: React.FC = () => {
                       {client.name}
                     </td>
 
-                    <td className="text-center td-x1">
+                    <td className="td-x1">
                       {client.cpf}
                     </td>
 

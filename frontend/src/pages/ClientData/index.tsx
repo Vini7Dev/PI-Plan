@@ -20,7 +20,7 @@ const ClientData: React.FC = () =>{
 
     request.open('POST', `http://localhost:8080/client`, true);
 
-    if(document.length > 14){
+    if(document.length > 11){
       request.open('POST', `http://localhost:8080/legalclients`, true);
       const client = {
         name,
@@ -30,6 +30,7 @@ const ClientData: React.FC = () =>{
         next_contact: nextContact,
         warn_contact: warnContact,
       };
+
       request.setRequestHeader(`Content-Type`, `application/json`);
       request.send(JSON.stringify(client));
     }
@@ -43,6 +44,7 @@ const ClientData: React.FC = () =>{
         next_contact: nextContact,
         warn_contact: warnContact,
       };
+
       request.setRequestHeader(`Content-Type`, `application/json`);
       request.send(JSON.stringify(client));
     }
@@ -95,12 +97,14 @@ const ClientData: React.FC = () =>{
           <Input
           label="Ultimo Contato"
           placeholder="Informe a data do Ultimo Contato"
+          type="date"
           onChange={(e) => setLastContact(e.target.value)}
           />
 
           <Input
           label="Próximo Contato"
           placeholder="Informe a data do Próximo Contato"
+          type="date"
           onChange={(e) => setNextContact(e.target.value)}
           />
 
