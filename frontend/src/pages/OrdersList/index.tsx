@@ -10,25 +10,9 @@ import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
 interface IOrderProps {
   id: number;
-  actualStatus: number;
-  actualProcess: number;
+  actual_status: number;
+  actual_process: number;
   title: string;
-  description: string;
-  startDate: Date;
-  finalDate: Date;
-  previsionFinalDate: Date;
-  cep: string;
-  street: string;
-  number: number;
-  complement: string;
-  neighborhood: string;
-  city: string;
-  uf: string;
-  country: string;
-  installationEnvironments: string;
-  paymentMethod: string;
-  grossValue: number;
-  netValue: number;
 }
 
 const OrdersList: React.FC = () => {
@@ -94,21 +78,31 @@ const OrdersList: React.FC = () => {
                     <td className="text-center td-id td-x1">
                       <span
                         className={`ic
-                          ${order.actualStatus === 1 && 'ic-inprogress'}
-                          ${order.actualStatus === 2 && 'ic-completed'}
-                          ${order.actualStatus === 3 && 'ic-canceled'}
+                          ${order.actual_status === 1 && 'ic-inprogress'}
+                          ${order.actual_status === 2 && 'ic-completed'}
+                          ${order.actual_status === 3 && 'ic-canceled'}
                         `}
                       >IC</span>
                       #{order.id}
                     </td>
                     <td className="text-left td-x3">{order.title}</td>
                     <td className="text-center td-x2">
-                      {`
-                        ${order.actualProcess === 1 && 'Iniciando'}
-                        ${order.actualProcess === 2 && 'Pedido na Fábrica'}
-                        ${order.actualProcess === 3 && 'Instalando'}
-                        ${order.actualProcess === 4 && 'Pedido Finalizado'}
-                      `}
+                      {
+                        function () {
+                          switch(order.actual_process) {
+                            case(1):
+                              return 'Iniciando';
+                            case(2):
+                              return 'Pedido na Fábrica'
+                            case(3):
+                              return 'Instalando'
+                            case(4):
+                              return 'Reunião com os Montadores'
+                            default:
+                              return 'Não Encontrado';
+                          }
+                        }()
+                      }
                       <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
                         <FiTrash2 />
                       </button>

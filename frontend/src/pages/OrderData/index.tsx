@@ -36,8 +36,8 @@ const OrderData: React.FC = () => {
     request.open('POST', `http://localhost:8080/orders`, true);
 
     const order = {
-      actualStatus,
-      actualProcess,
+      actual_status: actualStatus,
+      actual_process: actualProcess,
       title,
       description,
       startDate,
@@ -97,7 +97,7 @@ const OrderData: React.FC = () => {
               { value: 1, description: 'Iniciando' },
               { value: 2, description: 'Pedido na Fábrica' },
               { value: 3, description: 'Instalando' },
-              { value: 4, description: 'Pedido Finalizado' },
+              { value: 4, description: 'Reunião com os Montadores' },
             ]}
             onChange={(e) => setActualProcess(Number(e.target.value))}
           />
