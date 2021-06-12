@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from './styles';
 
 import Banner from '../../assets/images/BannerDashBoard.jpg';
@@ -6,8 +6,13 @@ import NavigationBar from '../../components/NavigationBar';
 import DashButton from '../../components/DashButton';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+import Input from '../../components/Input';
+import Button from '../../components/Button';
+
 
 const DashBoard: React.FC = () =>{
+  const [showPopup, setShowPopup] = useState(false);
+
   return(
     <Container>
       <div id="navigation-area">
@@ -43,6 +48,22 @@ const DashBoard: React.FC = () =>{
           </div>
         </main>
       </div>
+
+      {
+        showPopup && (
+          <div id="task-popup">
+            <form>
+              <h3>Cadastrar Tarefa</h3>
+              <CheckBox label="Finalizado" />
+              <Input label="Título" />
+              <Input label="Descrição" />
+              <Input label="Horário" type="time" />
+              <Input label="Data" type="date" />
+              <Button name="Cadastrar" />
+            </form>
+          </div>
+        )
+      }
     </Container>
   );
 };

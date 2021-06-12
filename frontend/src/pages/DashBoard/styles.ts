@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -59,6 +60,35 @@ export const Container = styled.div`
             color: #36373D;
           }
         }
+    }
+  }
+
+  #task-popup {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+
+    background-color: rgba(0, 0, 0, 0.5);
+
+    form {
+      h3 {
+        font-size: 25px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-style: italic;
+        color: #60626C;
+      }
+
+      margin: 25px auto;
+      width: 90%;
+      max-width: 600px;
+      padding: 25px;
+      border-radius: 20px;
+
+      background-color: white;
     }
   }
 

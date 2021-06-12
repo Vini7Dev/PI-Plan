@@ -75,12 +75,14 @@ const AdmData: React.FC = () =>{
           <Input
           label="Senha"
           placeholder="Digíte a Senha"
+          type="password"
           onChange={(e) => setPassword(e.target.value)}
           />
 
           <Input
           label="Confirme a Senha"
           placeholder="Digíte a Senha Novamente"
+          type="password"
           onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
