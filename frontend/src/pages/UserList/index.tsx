@@ -66,9 +66,9 @@ const UserList: React.FC = () => {
           <table>
             <thead>
               <tr>
-                <th className="start-border-r td-x1">Nome</th>
-                <th className="text-left t-x3">Usuário</th>
-                <th className="end-border-r td-x2">Tipo de Conta</th>
+                <th className="start-border-r text-left td-x2">Nome</th>
+                <th className="t-x2">Usuário</th>
+                <th className="end-border-r td-x1">Tipo de Conta</th>
               </tr>
             </thead>
             <tbody>
@@ -76,13 +76,13 @@ const UserList: React.FC = () => {
                 users.map(user => {
                   return (
                     <tr key={user.id}>
-                      <td className="text-center td-id td-x1">
+                      <td className="td-id td-x2">
                         {user.name}
                       </td>
-                      <td className="text-left td-x3">
+                      <td className="text-center td-x2">
                         {user.username}
                       </td>
-                      <td className="text-center td-x2">
+                      <td className="text-center td-x1">
                         {
                           typeof user.permission_create_adm === 'boolean'
                             ? 'Administrador'

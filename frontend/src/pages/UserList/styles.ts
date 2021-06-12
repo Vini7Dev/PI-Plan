@@ -123,15 +123,11 @@ export const Container = styled.div`
         }
 
         .td-x1 {
-          width: 5%;
+          width: 20%;
         }
 
         .td-x2 {
-          width: 15%;
-        }
-
-        .td-x3 {
-          width: 80%;
+          width: 40%;
         }
 
         .text-left {
