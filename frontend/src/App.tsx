@@ -14,7 +14,7 @@ import OrdersList from './pages/OrdersList';
 const App: React.FC = () => {
   return (
     <div className="App">
-      <OrdersList />
+      <DashBoard />
       <GlobalStyles />
     </div>
   );

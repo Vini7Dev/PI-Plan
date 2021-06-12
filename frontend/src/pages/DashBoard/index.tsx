@@ -22,7 +22,6 @@ interface ITaskProps {
 const DashBoard: React.FC = () =>{
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [taskId, setTaskId] = useState(0);
   const [done, setDone] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -44,7 +43,6 @@ const DashBoard: React.FC = () =>{
 
   const handleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
-    setTaskId(id || -1);
     console.log(id);
   }, [showPopup]);
 
@@ -53,16 +51,19 @@ const DashBoard: React.FC = () =>{
 
     request.open('POST', `http://localhost:8080/tasks`, true);
 
+    const task_date = `${taskDate}T${taskTime}:00`;
+
     const task = {
       done,
       title,
       description,
-      taskTime,
-      taskDate,
+      task_date,
     };
 
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(task));
+
+    console.log(task);
 
     handleShowPopup();
   },[done, title, description, taskTime, taskDate, handleShowPopup]);
@@ -99,7 +100,7 @@ const DashBoard: React.FC = () =>{
 
             {
               tasks.map(task => {
-                const label = `${task.title} - ${task.task_date} : ${task.task_time}`;
+                const label = `${task.title} - ${task.task_date}`;
 
                 return (<CheckBox
                   id={`${task.id}`}
