@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Container } from './styles';
 
 import Logo from '../../assets/images/PI_Plan_Ligth.png';
@@ -6,6 +7,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const Login: React.FC = () => {
+  const history = useHistory();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -19,7 +21,7 @@ const Login: React.FC = () => {
         const user = JSON.parse(this.response);
 
         if(password === user.password) {
-          alert('Entrou');
+          history.push('/dashboard');
         } else {
           alert('Credenciais inválidas.');
         }
@@ -29,7 +31,7 @@ const Login: React.FC = () => {
     }
 
     request.send();
-  }, [username, password]);
+  }, [history, username, password]);
 
   return (
     <Container>
