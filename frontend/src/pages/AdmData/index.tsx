@@ -19,7 +19,6 @@ interface IAdminProps {
 
 const AdmData: React.FC = () =>{
   const location = useLocation();
-
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

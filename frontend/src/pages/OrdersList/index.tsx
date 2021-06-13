@@ -79,7 +79,7 @@ const OrdersList: React.FC = () => {
             <tbody>
               {
                 orders.map(order => (
-                  <tr>
+                  <tr key={order.id}>
                     <td className="text-center td-id td-x1">
                     <Link to={`/order-data/${order.id}`}>
                       <span

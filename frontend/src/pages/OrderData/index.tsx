@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
@@ -10,13 +11,14 @@ import Button from '../../components/Button';
 import SmallButton from '../../components/SmallButton';
 
 const OrderData: React.FC = () => {
+  const location = useLocation();
   const [actualStatus, setActualStatus] = useState(1);
   const [actualProcess, setActualProcess] = useState(1);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [finalDate, setFinalDate] = useState('');
-  const [previsionFinalDate, setPrevisionFinalDate] = useState('');
+  const [furnitureDeliveryDate, setFurnitureDeliveryDate] = useState('');
   const [cep, setCep] = useState('');
   const [street, setStreet] = useState('');
   const [number, setNumber] = useState(1);
@@ -27,8 +29,46 @@ const OrderData: React.FC = () => {
   const [country, setCountry] = useState('');
   const [installationEnvironments, setInstallationEnvironments] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [grossValue, setGrossValue] = useState(1);
-  const [netValue, setNetValue] = useState(1);
+  const [grossValue, setGrossValue] = useState(0);
+  const [netValue, setNetValue] = useState(0);
+
+  useEffect(() => {
+    const orderId = location.pathname.split('/order-data/')[1];
+
+    if(orderId) {
+      const request = new XMLHttpRequest();
+
+      request.open('GET', `http://localhost:8080/orders/${orderId}`, true);
+
+      request.onload = function() {
+        if(this.response) {
+          const orderData = JSON.parse(this.response);
+
+          setActualStatus(orderData.actual_status);
+          setActualProcess(orderData.actual_process);
+          setTitle(orderData.title);
+          setDescription(orderData.description);
+          setStartDate(orderData.startDate.split(/t+/i)[0]);
+          setFinalDate(orderData.finalDate.split(/t+/i)[0]);
+          setFurnitureDeliveryDate(orderData.furnitureDeliveryDate.split(/t+/i)[0]);
+          setCep(orderData.cep);
+          setStreet(orderData.street);
+          setNumber(orderData.number);
+          setComplement(orderData.complement);
+          setNeighborhood(orderData.neighborhood);
+          setCity(orderData.city);
+          setUF(orderData.uf);
+          setCountry(orderData.country);
+          setInstallationEnvironments(orderData.installationEnvironments);
+          setPaymentMethod(orderData.paymentMethod);
+          setGrossValue(orderData.grossValue);
+          setNetValue(orderData.netValue);
+        }
+      }
+
+      request.send();
+    }
+  }, [location]);
 
   const handleCreateOrder = useCallback(() => {
     const request = new XMLHttpRequest();
@@ -42,7 +82,7 @@ const OrderData: React.FC = () => {
       description,
       startDate,
       finalDate,
-      previsionFinalDate,
+      furnitureDeliveryDate,
       cep,
       street,
       number,
@@ -57,13 +97,11 @@ const OrderData: React.FC = () => {
       netValue,
     };
 
-    console.log(order);
-
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(order));
 
     alert('Pedido cadastrado.');
-  }, [actualProcess, actualStatus, cep, city, complement, country, description, finalDate, grossValue, installationEnvironments, neighborhood, netValue, number, paymentMethod, previsionFinalDate, startDate, street, title, uf]);
+  }, [actualProcess, actualStatus, cep, city, complement, country, description, finalDate, grossValue, installationEnvironments, neighborhood, netValue, number, paymentMethod, furnitureDeliveryDate, startDate, street, title, uf]);
 
   return (
     <Container>
@@ -89,6 +127,7 @@ const OrderData: React.FC = () => {
               { value: 2, description: 'Finalizado' },
               { value: 3, description: 'Cancelado' },
             ]}
+            value={actualStatus}
             onChange={(e) => setActualStatus(Number(e.target.value))}
           />
           <Select
@@ -99,6 +138,7 @@ const OrderData: React.FC = () => {
               { value: 3, description: 'Instalando' },
               { value: 4, description: 'Reunião com os Montadores' },
             ]}
+            value={actualProcess}
             onChange={(e) => setActualProcess(Number(e.target.value))}
           />
 
@@ -110,36 +150,42 @@ const OrderData: React.FC = () => {
           <Input
             label="Título"
             placeholder="Informe o título do pedido"
+            defaultValue={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Textarea
             label="Descrição"
             placeholder="Informe a descrição do pedido"
+            defaultValue={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <Input
             label="Data de Início"
             placeholder="Informe a data de início"
             type="date"
+            defaultValue={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
           <Input
             label="Data de Finalização"
             placeholder="Informe a data de finalização"
             type="date"
+            defaultValue={finalDate}
             onChange={(e) => setFinalDate(e.target.value)}
           />
           <Input
             label="Data de Entrega do Móvel"
             placeholder="Informe a data de entrega do móvel"
             type="date"
-            onChange={(e) => setPrevisionFinalDate(e.target.value)}
+            defaultValue={furnitureDeliveryDate}
+            onChange={(e) => setFurnitureDeliveryDate(e.target.value)}
           />
 
           <h1>Endereço</h1>
           <Input
             label="CEP"
             placeholder="Informe o CEP"
+            defaultValue={cep}
             onChange={(e) => setCep(e.target.value)}
           />
 
@@ -148,6 +194,7 @@ const OrderData: React.FC = () => {
               <Input
                 label="Rua"
                 placeholder="Informe a rua"
+                defaultValue={street}
                 onChange={(e) => setStreet(e.target.value)}
               />
             </div>
@@ -155,6 +202,7 @@ const OrderData: React.FC = () => {
               <Input
                 label="Número"
                 placeholder="Informe o número"
+                defaultValue={number}
                 onChange={(e) => setNumber(Number(e.target.value))}
               />
             </div>
@@ -163,11 +211,13 @@ const OrderData: React.FC = () => {
           <Input
             label="Complemento"
             placeholder="Informe o complemento"
+            defaultValue={complement}
             onChange={(e) => setComplement(e.target.value)}
           />
           <Input
             label="Bairro"
             placeholder="Informe o bairro"
+            defaultValue={neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
           />
 
@@ -181,6 +231,7 @@ const OrderData: React.FC = () => {
                   { description: 'AM' },
                   { description: 'RS' },
                 ]}
+                value={uf}
                 onChange={(e) => setUF(e.target.value)}
               />
             </div>
@@ -191,6 +242,7 @@ const OrderData: React.FC = () => {
                   { description: 'Franca' },
                   { description: 'São Paulo' },
                 ]}
+                value={city}
                 onChange={(e) => setCity(e.target.value)}
               />
             </div>
@@ -202,12 +254,14 @@ const OrderData: React.FC = () => {
               { description: 'Brasil' },
               { description: 'Estados Unidos' },
             ]}
+            value={country}
             onChange={(e) => setCountry(e.target.value)}
           />
 
           <Textarea
             label="Cômodos / Ambientes"
             placeholder="Descreva os cômodos e ambientes pra instalação"
+            defaultValue={installationEnvironments}
             onChange={(e) => setInstallationEnvironments(e.target.value)}
           />
 
@@ -218,16 +272,19 @@ const OrderData: React.FC = () => {
               { description: 'Dinheiro' },
               { description: 'Cartão de Crédito' },
             ]}
+            value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
           />
           <Input
             label="Valor Bruto"
             placeholder="Informe o valor bruto"
+            value={grossValue}
             onChange={(e) => setGrossValue(Number(e.target.value))}
           />
           <Input
             label="Valor Líquido"
             placeholder="Informe o valor líquido"
+            value={netValue}
             onChange={(e) => setNetValue(Number(e.target.value))}
           />
 

@@ -195,22 +195,14 @@ const DashBoard: React.FC = () =>{
               <Input
               label="Horário"
               type="time"
-<<<<<<< HEAD
-              placeholder="__:__"
-=======
               defaultValue={taskTime}
->>>>>>> a20bc7216f9860ffec5f20effe1f13dff346efee
               onChange={(e) => setTaskTime(e.target.value)}
               />
 
               <Input
               label="Data"
               type="date"
-<<<<<<< HEAD
-              placeholder="__/__/____"
-=======
               defaultValue={taskDate}
->>>>>>> a20bc7216f9860ffec5f20effe1f13dff346efee
               onChange={(e) => setTaskDate(e.target.value)}
               />
 
