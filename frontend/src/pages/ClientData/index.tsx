@@ -1,4 +1,5 @@
-import React, { useState, useCallback} from 'react';
+import React, { useState, useCallback, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -7,21 +8,77 @@ import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
+interface IClientProps{
+  id?: number;
+  warn_contact: boolean;
+  name: string;
+  cellphone: string;
+  last_contact: string;
+  next_contact: string;
+  cpf?: string;
+  cnpj?: string;
+}
+
 const ClientData: React.FC = () =>{
+  const location = useLocation();
+
   const [name, setName] = useState('');
-  const [cellphone, setFone] = useState('');
+  const [cellphone, setCellphone] = useState('');
   const [document, setDocument] = useState('');
   const [lastContact, setLastContact] = useState('');
   const [nextContact, setNextContact] = useState('');
   const [warnContact, setWarnContact] = useState(false);
 
+  useEffect(() => {
+    const clientId = location.pathname.split('/client-data/')[1];
+
+    if(clientId) {
+      const legalRequest = new XMLHttpRequest();
+
+      legalRequest.open('GET', `http://localhost:8080/legalclients/${clientId}`, true);
+
+      legalRequest.onload = function() {
+        if(this.response) {
+          const clientData = JSON.parse(this.response);
+
+          setName(clientData.name);
+          setCellphone(clientData.cellphone);
+          setDocument(clientData.cnpj);
+          setLastContact(clientData.last_contact);
+          setNextContact(clientData.next_contact);
+          setWarnContact(clientData.warn_contact);
+        }
+      }
+      legalRequest.send();
+
+
+      const PhysicalRequest = new XMLHttpRequest();
+
+        PhysicalRequest.open('GET', `http://localhost:8080/physicalclients/${clientId}`, true);
+
+        PhysicalRequest.onload = function() {
+          if(this.response) {
+            const clientData = JSON.parse(this.response);
+
+            setName(clientData.name);
+            setCellphone(clientData.cellphone);
+            setDocument(clientData.cpf);
+            setLastContact(clientData.last_contact);
+            setNextContact(clientData.next_contact);
+            setWarnContact(clientData.warn_contact);
+          }
+        }
+        PhysicalRequest.send();
+    }
+
+  }, [location]);
+
   const handleClientData = useCallback(function(){
+    const clientId = location.pathname.split('/client-data/')[1];
     const request = new XMLHttpRequest();
 
-    request.open('POST', `http://localhost:8080/client`, true);
-
     if(document.length > 11){
-      request.open('POST', `http://localhost:8080/legalclients`, true);
+
       const client = {
         name,
         cellphone,
@@ -29,13 +86,23 @@ const ClientData: React.FC = () =>{
         last_contact: lastContact,
         next_contact: nextContact,
         warn_contact: warnContact,
-      };
+      } as IClientProps;
+
+      let httpVerb = '';
+      if(clientId) {
+        httpVerb = 'PUT';
+        client.id = Number(clientId);
+      } else {
+        httpVerb = 'POST';
+      }
+
+      request.open(httpVerb, `http://localhost:8080/legalclients`, true);
 
       request.setRequestHeader(`Content-Type`, `application/json`);
       request.send(JSON.stringify(client));
     }
     else{
-      request.open('POST', `http://localhost:8080/physicalclients`, true);
+
       const client = {
         name,
         cellphone,
@@ -43,14 +110,24 @@ const ClientData: React.FC = () =>{
         last_contact: lastContact,
         next_contact: nextContact,
         warn_contact: warnContact,
-      };
+      }as IClientProps;
+
+      let httpVerb = '';
+      if(clientId) {
+        httpVerb = 'PUT';
+        client.id = Number(clientId);
+      } else {
+        httpVerb = 'POST';
+      }
+
+      request.open(httpVerb, `http://localhost:8080/physicalclients`, true);
 
       request.setRequestHeader(`Content-Type`, `application/json`);
       request.send(JSON.stringify(client));
     }
 
     alert('Client cadastrado.');
-  },[name, cellphone, document, lastContact, nextContact, warnContact]);
+  },[name, cellphone, document, lastContact, nextContact, warnContact, location]);
 
   return(
     <Container>
@@ -78,7 +155,7 @@ const ClientData: React.FC = () =>{
           <Input
           label="Telefone"
           placeholder="Digíte o Telefone"
-          onChange={(e) => setFone(e.target.value)}
+          onChange={(e) => setCellphone(e.target.value)}
           />
 
           <Input

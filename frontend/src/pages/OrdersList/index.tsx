@@ -1,4 +1,5 @@
 import React, { useEffect, useState , useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -80,6 +81,7 @@ const OrdersList: React.FC = () => {
                 orders.map(order => (
                   <tr>
                     <td className="text-center td-id td-x1">
+                    <Link to={`/order-data/${order.id}`}>
                       <span
                         className={`ic
                           ${order.actual_status === 1 && 'ic-inprogress'}
@@ -87,10 +89,18 @@ const OrdersList: React.FC = () => {
                           ${order.actual_status === 3 && 'ic-canceled'}
                         `}
                       >IC</span>
-                      #{order.id}
+                      </Link>
+                      <Link to={`/order-data/${order.id}`}>
+                        #{order.id}
+                      </Link>
                     </td>
-                    <td className="text-left td-x3">{order.title}</td>
+                    <td className="text-left td-x3">
+                      <Link to={`/order-data/${order.id}`}>
+                        {order.title}
+                      </Link>
+                      </td>
                     <td className="text-center td-x2">
+                    <Link to={`/order-data/${order.id}`}>
                       {
                         function () {
                           switch(order.actual_process) {
@@ -107,6 +117,7 @@ const OrdersList: React.FC = () => {
                           }
                         }()
                       }
+                      </Link>
                       <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
                         <FiTrash2 />
                       </button>
