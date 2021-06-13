@@ -133,12 +133,10 @@ const ClientData: React.FC = () =>{
     <Container>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Página Inicial" toPage="/" />
-          <NavigationButton text="Usuários" toPage="/" />
-          <NavigationButton text="Clientes" toPage="/" id="nav-link-selected" />
-          <NavigationButton text="Pedidos" toPage="/" />
-          <NavigationButton text="Instalações" toPage="/" />
-          <NavigationButton text="Portfólio" toPage="/" />
+          <NavigationButton text="Página Inicial" toPage="/dashboard" />
+          <NavigationButton text="Usuários" toPage="/users-list"/>
+          <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />
+          <NavigationButton text="Pedidos" toPage="/orders-list" />
         </NavigationBar>
       </div>
 

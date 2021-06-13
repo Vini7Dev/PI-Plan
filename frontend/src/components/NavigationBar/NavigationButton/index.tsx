@@ -8,7 +8,7 @@ interface INavigationButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement>
 
 const NavigationButton: React.FC<INavigationButtonProps> = ({ text, toPage = '/', ...rest }) => {
   return (
-    <Container href={toPage} {...rest}>
+    <Container href={toPage} {...rest} to={toPage}>
       {text}
     </Container>
   );

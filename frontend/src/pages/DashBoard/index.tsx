@@ -117,12 +117,10 @@ const DashBoard: React.FC = () =>{
     <Container>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Página Inicial" toPage="/" id="nav-link-selected" />
-          <NavigationButton text="Usuários" toPage="/" />
-          <NavigationButton text="Clientes" toPage="/" />
-          <NavigationButton text="Pedidos" toPage="/"/>
-          <NavigationButton text="Instalações" toPage="/" />
-          <NavigationButton text="Portfólio" toPage="/" />
+          <NavigationButton text="Página Inicial" toPage="/dashboard" id="nav-link-selected" />
+          <NavigationButton text="Usuários" toPage="/users-list"/>
+          <NavigationButton text="Clientes" toPage="/clients-list" />
+          <NavigationButton text="Pedidos" toPage="/orders-list" />
         </NavigationBar>
       </div>
 
