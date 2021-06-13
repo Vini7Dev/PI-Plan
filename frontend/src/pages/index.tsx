@@ -18,11 +18,11 @@ const Routes: React.FC = () => {
       <Route path="/dashboard" component={DashBoard} exact />
       <Route path="/adm-data" component={AdmData} />
       <Route path="/assembler-data" component={AssemblerData} />
-      <Route path="/user-list" component={UserList} exact />
+      <Route path="/users-list" component={UserList} exact />
       <Route path="/client-data" component={ClientData} />
-      <Route path="/client-list" component={ClientList} exact />
+      <Route path="/clients-list" component={ClientList} exact />
       <Route path="/order-data" component={OrderData} />
-      <Route path="/order-list" component={OrdersList} exact />
+      <Route path="/orders-list" component={OrdersList} exact />
     </Switch>
   );
 }

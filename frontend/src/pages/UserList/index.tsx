@@ -32,7 +32,11 @@ const UserList: React.FC = () => {
   }, []);
 
   const handleDeleteUser = useCallback((id: number) => {
-    alert(id);
+    const request = new XMLHttpRequest();
+
+    request.open('DELETE', `http://localhost:8080/admins/${id}`, true);
+
+    request.send();
   }, []);
 
   return (
