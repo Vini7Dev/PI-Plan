@@ -1,4 +1,5 @@
 import React, { useEffect, useState , useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -6,6 +7,7 @@ import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+
 
 
 interface IClientProps {
@@ -96,15 +98,21 @@ const ClientList: React.FC = () => {
                 legalClients.map(client => (
                   <tr key={client.id}>
                     <td className="text-left td-id td-x2">
-                      {client.name}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.name}
+                      </Link>
                     </td>
 
                     <td className="td-x1">
-                      {client.cnpj}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.cnpj}
+                      </Link>
                     </td>
 
                     <td className="text-right td-x1">
-                      {client.cellphone}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.cellphone}
+                      </Link>
                       <button className="ic-remove" onClick={() => handleDeleteLegalClient(client.id)}>
                         <FiTrash2 />
                       </button>
@@ -116,15 +124,21 @@ const ClientList: React.FC = () => {
                 physicalClients.map(client => (
                   <tr key={client.id}>
                     <td className="text-left td-id td-x2">
-                      {client.name}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.name}
+                      </Link>
                     </td>
 
                     <td className="td-x1">
-                      {client.cpf}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.cpf}
+                      </Link>
                     </td>
 
                     <td className="text-right td-x1">
-                      {client.cellphone}
+                      <Link to={`/client-data/${client.id}`}>
+                        {client.cellphone}
+                      </Link>
                       <button className="ic-remove" onClick={() => handleDeletePhysicalClient(client.id)}>
                         <FiTrash2 />
                       </button>
