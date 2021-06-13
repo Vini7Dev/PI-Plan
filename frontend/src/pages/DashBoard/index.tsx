@@ -103,10 +103,12 @@ const DashBoard: React.FC = () =>{
                 const label = `${task.title} - ${task.task_date}`;
 
                 return (<CheckBox
+                  key={task.id}
                   id={`${task.id}`}
                   label={label}
                   onClickLabel={() => handleShowPopup(task.id)}
                   checked={task.done}
+                  readOnly
                 />);
               })
             }
