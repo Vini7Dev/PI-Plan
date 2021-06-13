@@ -1,4 +1,5 @@
 import React, { useEffect, useState , useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -80,22 +81,28 @@ const UserList: React.FC = () => {
                 users.map(user => {
                   return (
                     <tr key={user.id}>
-                      <td className="td-id td-x2">
-                        {user.name}
-                      </td>
-                      <td className="text-center td-x2">
-                        {user.username}
-                      </td>
-                      <td className="text-center td-x1">
-                        {
-                          typeof user.permission_create_adm === 'boolean'
-                            ? 'Administrador'
-                            : 'Montador'
-                        }
-                        <button className="ic-remove" onClick={() => handleDeleteUser(user.id)}>
-                          <FiTrash2 />
-                        </button>
-                      </td>
+                        <td className="td-id td-x2">
+                          <Link to={`/adm-data/${user.id}`}>
+                            {user.name}
+                          </Link>
+                        </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/adm-data/${user.id}`}>
+                            {user.username}
+                          </Link>
+                        </td>
+                        <td className="text-center td-x1">
+                          <Link to={`/adm-data/${user.id}`}>
+                            {
+                              typeof user.permission_create_adm === 'boolean'
+                                ? 'Administrador'
+                                : 'Montador'
+                            }
+                          </Link>
+                          <button className="ic-remove" onClick={() => handleDeleteUser(user.id)}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
                     </tr>
                   );
                 })
