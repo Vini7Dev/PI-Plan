@@ -1,4 +1,5 @@
 import React, { useState , useCallback , useEffect } from 'react';
+import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import Banner from '../../assets/images/BannerDashBoard.jpg';
@@ -68,6 +69,10 @@ const DashBoard: React.FC = () =>{
     handleShowPopup();
   },[done, title, description, taskTime, taskDate, handleShowPopup]);
 
+  const handleDeleteTask = useCallback((id: number) => {
+    alert(id);
+  }, []);
+
   return(
     <Container>
       <div id="navigation-area">
@@ -102,14 +107,21 @@ const DashBoard: React.FC = () =>{
               tasks.map(task => {
                 const label = `${task.title} - ${task.task_date}`;
 
-                return (<CheckBox
-                  key={task.id}
-                  id={`${task.id}`}
-                  label={label}
-                  onClickLabel={() => handleShowPopup(task.id)}
-                  checked={task.done}
-                  readOnly
-                />);
+                return (
+                  <div className="task-item">
+                    <CheckBox
+                      key={task.id}
+                      id={`${task.id}`}
+                      label={label}
+                      onClickLabel={() => handleShowPopup(task.id)}
+                      checked={task.done}
+                      readOnly
+                    />
+                    <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
+                      <FiTrash2 />
+                    </button>
+                  </div>
+                );
               })
             }
           </div>

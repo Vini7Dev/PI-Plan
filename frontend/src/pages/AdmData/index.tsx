@@ -1,4 +1,5 @@
-import React, { useState, useCallback} from 'react';
+import React, { useState, useCallback, useEffect} from 'react';
+import { useLocation } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -8,35 +9,78 @@ import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
+interface IAdminProps {
+  id: number;
+  name: string;
+  username: string;
+  password: string;
+  permission_create_adm: boolean;
+}
+
 const AdmData: React.FC = () =>{
+  const location = useLocation();
+
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
 
+  useEffect(() => {
+    const userId = location.pathname.split('/adm-data/')[1];
+
+    if(userId) {
+      const request = new XMLHttpRequest();
+
+      request.open('GET', `http://localhost:8080/admins/${userId}`, true);
+
+      request.onload = function() {
+        if(this.response) {
+          const userData = JSON.parse(this.response);
+
+          setName(userData.name);
+          setUsername(userData.username);
+          setPassword(userData.password);
+          setPermissionCreateAdmin(userData.permission_create_adm);
+        }
+      }
+
+      request.send();
+    }
+  }, [location]);
+
   const handleAdmData = useCallback(function(){
+    const userId = location.pathname.split('/adm-data/')[1];
+
+    const admin = {
+      name,
+      username,
+      password,
+      permission_create_adm: permissionCreateAdmin,
+    } as IAdminProps;
+
+    let httpVerb = '';
+    if(userId) {
+      httpVerb = 'PUT';
+      admin.id = Number(userId);
+    } else {
+      httpVerb = 'POST';
+    }
+
     const request = new XMLHttpRequest();
 
-    request.open('POST', `http://localhost:8080/admins`, true);
+    request.open(httpVerb, `http://localhost:8080/admins`, true);
 
     if(password !== confirmPassword) {
       alert('Erro ao confirmar a senha.');
       return;
     }
 
-    const admin = {
-      name,
-      username,
-      password,
-      permission_create_admin: permissionCreateAdmin,
-    };
-
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(admin));
 
     alert('Admin cadastrado.');
-  },[name, username, password, confirmPassword, permissionCreateAdmin]);
+  },[name, username, password, confirmPassword, permissionCreateAdmin, location]);
 
   return(
     <Container>
@@ -63,12 +107,14 @@ const AdmData: React.FC = () =>{
           <Input
           label="Nome"
           placeholder="Digíte o Nome"
+          defaultValue={name}
           onChange={(e) => setName(e.target.value)}
           />
 
           <Input
           label="Usuário"
           placeholder="Digíte o Usuário"
+          defaultValue={username}
           onChange={(e) => setUsername(e.target.value)}
           />
 
@@ -76,6 +122,7 @@ const AdmData: React.FC = () =>{
           label="Senha"
           placeholder="Digíte a Senha"
           type="password"
+          defaultValue={password}
           onChange={(e) => setPassword(e.target.value)}
           />
 
@@ -89,6 +136,7 @@ const AdmData: React.FC = () =>{
           <CheckBox
             label="Pode criar administrador"
             onChange={e => setPermissionCreateAdmin(e.target.checked)}
+            defaultChecked={permissionCreateAdmin}
           />
 
           <Button name="Cadastrar" onClick={handleAdmData} />

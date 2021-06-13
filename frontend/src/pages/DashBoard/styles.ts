@@ -54,12 +54,32 @@ export const Container = styled.div`
       }
 
       .checkB{
-          width: 100%;
+        width: 100%;
 
-          label{
-            color: #36373D;
-          }
+        label{
+          color: #36373D;
         }
+
+        .task-item {
+          display: flex;
+          align-items: center;
+          justify-content: left;
+
+          .ic-remove {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+
+              margin-left: 10px;
+              padding: 3px;
+              border-radius: 100%;
+              border: 2px solid #CB4242;
+              background-color: #FF5555;
+              color: #FFFFFF;
+              font-size: 18px;
+            }
+        }
+      }
     }
   }
 
