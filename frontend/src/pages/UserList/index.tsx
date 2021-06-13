@@ -12,7 +12,6 @@ interface IUserProps {
   id: number;
   name: string;
   username: string;
-  password: string;
   permission_create_adm: boolean;
 }
 

@@ -16,13 +16,13 @@ interface ITaskProps {
   done: boolean;
   title: string;
   description: string;
-  task_time: string;
   task_date: string;
 }
 
 const DashBoard: React.FC = () =>{
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [taskId, setTaskId] = useState(-1);
   const [done, setDone] = useState(false);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -44,13 +44,39 @@ const DashBoard: React.FC = () =>{
 
   const handleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
-    console.log(id);
+
+    if(id) {
+      setTaskId(id);
+      const request = new XMLHttpRequest();
+
+      request.open('GET', `http://localhost:8080/tasks/${id}`, true);
+
+      request.onload = function() {
+        const taskData = JSON.parse(this.response);
+
+        const taskDateTime = taskData.task_date.split(/t+/i);
+
+        setDone(taskData.done);
+        setTitle(taskData.title);
+        setDescription(taskData.description);
+        setTaskTime(taskDateTime[1].slice(0, 5));
+        setTaskDate(taskDateTime[0]);
+      }
+
+      request.send();
+    } else {
+      setTaskId(-1);
+      setDone(false);
+      setTitle('');
+      setDescription('');
+      setTaskTime('');
+      setTaskDate('');
+    }
+
   }, [showPopup]);
 
   const handleTaskData = useCallback(function(){
     const request = new XMLHttpRequest();
-
-    request.open('POST', `http://localhost:8080/tasks`, true);
 
     const task_date = `${taskDate}T${taskTime}:00`;
 
@@ -59,7 +85,17 @@ const DashBoard: React.FC = () =>{
       title,
       description,
       task_date,
-    };
+    } as ITaskProps;
+
+    let httpVerb = '';
+    if(taskId !== -1) {
+      httpVerb = 'PUT';
+      task.id = Number(taskId);
+    } else {
+      httpVerb = 'POST';
+    }
+
+    request.open(httpVerb, `http://localhost:8080/tasks`, true);
 
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(task));
@@ -67,10 +103,14 @@ const DashBoard: React.FC = () =>{
     console.log(task);
 
     handleShowPopup();
-  },[done, title, description, taskTime, taskDate, handleShowPopup]);
+  },[done, title, description, taskTime, taskDate, taskId, handleShowPopup]);
 
   const handleDeleteTask = useCallback((id: number) => {
-    alert(id);
+    const request = new XMLHttpRequest();
+
+    request.open('DELETE', `http://localhost:8080/tasks/${id}`, true);
+
+    request.send();
   }, []);
 
   return(
@@ -108,9 +148,8 @@ const DashBoard: React.FC = () =>{
                 const label = `${task.title} - ${task.task_date}`;
 
                 return (
-                  <div className="task-item">
+                  <div className="task-item" key={task.id}>
                     <CheckBox
-                      key={task.id}
                       id={`${task.id}`}
                       label={label}
                       onClickLabel={() => handleShowPopup(task.id)}
@@ -136,29 +175,34 @@ const DashBoard: React.FC = () =>{
               <CheckBox
                 label="Finalizado"
                 onChange={(e) => setDone(e.target.checked)}
+                defaultChecked={done}
               />
 
               <Input
               label="Título"
               placeholder="Digíte o Título"
+              defaultValue={title}
               onChange={(e) => setTitle(e.target.value)}
               />
 
               <Input
               label="Descrição"
               placeholder="Digíte a Descrição"
+              defaultValue={description}
               onChange={(e) => setDescription(e.target.value)}
               />
 
               <Input
               label="Horário"
               type="time"
+              defaultValue={taskTime}
               onChange={(e) => setTaskTime(e.target.value)}
               />
 
               <Input
               label="Data"
               type="date"
+              defaultValue={taskDate}
               onChange={(e) => setTaskDate(e.target.value)}
               />
 
