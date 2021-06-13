@@ -39,8 +39,20 @@ const ClientList: React.FC = () => {
     requestPhysicalClients.send();
   }, []);
 
-  const handleDeleteClient = useCallback((id: number) => {
-    return id;
+  const handleDeleteLegalClient = useCallback((id: number) => {
+    const request = new XMLHttpRequest();
+
+    request.open('DELETE', `http://localhost:8080/legalclient/${id}`, true);
+
+    request.send();
+  }, []);
+
+  const handleDeletePhysicalClient = useCallback((id: number) => {
+    const request = new XMLHttpRequest();
+
+    request.open('DELETE', `http://localhost:8080/physicalclient/${id}`, true);
+
+    request.send();
   }, []);
 
   return (
@@ -93,7 +105,7 @@ const ClientList: React.FC = () => {
 
                     <td className="text-right td-x1">
                       {client.cellphone}
-                      <button className="ic-remove" onClick={() => handleDeleteClient(client.id)}>
+                      <button className="ic-remove" onClick={() => handleDeleteLegalClient(client.id)}>
                         <FiTrash2 />
                       </button>
                     </td>
@@ -113,7 +125,7 @@ const ClientList: React.FC = () => {
 
                     <td className="text-right td-x1">
                       {client.cellphone}
-                      <button className="ic-remove" onClick={() => handleDeleteClient(client.id)}>
+                      <button className="ic-remove" onClick={() => handleDeletePhysicalClient(client.id)}>
                         <FiTrash2 />
                       </button>
                     </td>

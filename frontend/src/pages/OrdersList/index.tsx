@@ -32,7 +32,11 @@ const OrdersList: React.FC = () => {
   }, []);
 
   const handleDeleteOrder = useCallback((id: number) => {
-    return id;
+    const request = new XMLHttpRequest();
+
+    request.open('DELETE', `http://localhost:8080/orders/${id}`, true);
+
+    request.send();
   }, []);
 
   return (
