@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -21,6 +21,7 @@ interface IClientProps{
 
 const ClientData: React.FC = () =>{
   const location = useLocation();
+  const history = useHistory();
 
   const [name, setName] = useState('');
   const [cellphone, setCellphone] = useState('');
@@ -29,56 +30,73 @@ const ClientData: React.FC = () =>{
   const [nextContact, setNextContact] = useState('');
   const [warnContact, setWarnContact] = useState(false);
 
-  useEffect(() => {
-    const clientId = location.pathname.split('/client-data/')[1];
+  const loadLegalClientData = useCallback((clientId: string) => {
+    const legalRequest = new XMLHttpRequest();
 
-    if(clientId) {
-      const legalRequest = new XMLHttpRequest();
+    legalRequest.open('GET', `http://localhost:8080/legalclients/${clientId}`, true);
 
-      legalRequest.open('GET', `http://localhost:8080/legalclients/${clientId}`, true);
+    legalRequest.onload = function() {
+      if(this.response) {
+        const clientData = JSON.parse(this.response);
 
-      legalRequest.onload = function() {
-        if(this.response) {
-          const clientData = JSON.parse(this.response);
+        if(clientData && clientData.cnpj) {
+          const lastContactDate = clientData.last_contact.split(/t+/i)[0];
+          const nextContactDate = clientData.next_contact.split(/t+/i)[0];
+
 
           setName(clientData.name);
           setCellphone(clientData.cellphone);
           setDocument(clientData.cnpj);
-          setLastContact(clientData.last_contact);
-          setNextContact(clientData.next_contact);
+          setLastContact(lastContactDate);
+          setNextContact(nextContactDate);
           setWarnContact(clientData.warn_contact);
         }
       }
-      legalRequest.send();
+    }
+    legalRequest.send();
+  }, []);
 
+  const loadPhysicalClientData = useCallback((clientId: string) => {
 
-      const PhysicalRequest = new XMLHttpRequest();
+    const physicalRequest = new XMLHttpRequest();
 
-        PhysicalRequest.open('GET', `http://localhost:8080/physicalclients/${clientId}`, true);
+    physicalRequest.open('GET', `http://localhost:8080/physicalclients/${clientId}`, true);
 
-        PhysicalRequest.onload = function() {
-          if(this.response) {
-            const clientData = JSON.parse(this.response);
+    physicalRequest.onload = function() {
+      if(this.response) {
+        const clientData = JSON.parse(this.response);
 
-            setName(clientData.name);
-            setCellphone(clientData.cellphone);
-            setDocument(clientData.cpf);
-            setLastContact(clientData.last_contact);
-            setNextContact(clientData.next_contact);
-            setWarnContact(clientData.warn_contact);
-          }
+        if(clientData && clientData.cpf) {
+          const lastContactDate = clientData.last_contact.split(/t+/i)[0];
+          const nextContactDate = clientData.next_contact.split(/t+/i)[0];
+
+          setName(clientData.name);
+          setCellphone(clientData.cellphone);
+          setDocument(clientData.cpf);
+          setLastContact(lastContactDate);
+          setNextContact(nextContactDate);
+          setWarnContact(clientData.warn_contact);
         }
-        PhysicalRequest.send();
+      }
+    }
+    physicalRequest.send();
+  }, []);
+
+  useEffect(() => {
+    const clientId = location.pathname.split('/client-data/')[1];
+
+    if(clientId) {
+      loadLegalClientData(clientId);
+      loadPhysicalClientData(clientId);
     }
 
-  }, [location]);
+  }, [location, loadLegalClientData, loadPhysicalClientData]);
 
   const handleClientData = useCallback(function(){
     const clientId = location.pathname.split('/client-data/')[1];
     const request = new XMLHttpRequest();
 
     if(document.length > 11){
-
       const client = {
         name,
         cellphone,
@@ -102,7 +120,6 @@ const ClientData: React.FC = () =>{
       request.send(JSON.stringify(client));
     }
     else{
-
       const client = {
         name,
         cellphone,
@@ -126,8 +143,9 @@ const ClientData: React.FC = () =>{
       request.send(JSON.stringify(client));
     }
 
-    alert('Client cadastrado.');
-  },[name, cellphone, document, lastContact, nextContact, warnContact, location]);
+    alert('Sucesso!');
+    history.push('/clients-list');
+  },[name, cellphone, document, lastContact, nextContact, warnContact, location, history]);
 
   return(
     <Container>
@@ -148,18 +166,21 @@ const ClientData: React.FC = () =>{
           label="Nome"
           placeholder="Digíte o Nome"
           onChange={(e) => setName(e.target.value)}
+          defaultValue={name}
           />
 
           <Input
           label="Telefone"
           placeholder="Digíte o Telefone"
           onChange={(e) => setCellphone(e.target.value)}
+          defaultValue={cellphone}
           />
 
           <Input
           label="CPF/CNPJ"
           placeholder="Digíte o CPF / CNPJ"
           onChange={(e) => setDocument(e.target.value)}
+          defaultValue={document}
           />
 
           <h1>Alerta de Contato</h1>
@@ -167,6 +188,7 @@ const ClientData: React.FC = () =>{
           <ChechBox
             label="Emitir alerta para este Cliente"
             onChange={(e) => setWarnContact(e.target.checked)}
+            defaultChecked={warnContact}
           />
 
           <Input
@@ -174,6 +196,7 @@ const ClientData: React.FC = () =>{
           placeholder="Informe a data do Ultimo Contato"
           type="date"
           onChange={(e) => setLastContact(e.target.value)}
+          defaultValue={lastContact}
           />
 
           <Input
@@ -181,6 +204,7 @@ const ClientData: React.FC = () =>{
           placeholder="Informe a data do Próximo Contato"
           type="date"
           onChange={(e) => setNextContact(e.target.value)}
+          defaultValue={nextContact}
           />
 
           <Button name="Cadastrar" onClick={handleClientData} />

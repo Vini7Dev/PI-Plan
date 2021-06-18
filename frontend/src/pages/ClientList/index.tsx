@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useCallback } from 'react';
+import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
@@ -22,7 +22,7 @@ const ClientList: React.FC = () => {
   const [legalClients, setLegalClients] = useState<IClientProps[]>([]);
   const [physicalClients, setPhysicalClients] = useState<IClientProps[]>([]);
 
-  useEffect(() => {
+  const handleLoadClients = useCallback(() => {
     const requestLegalClients = new XMLHttpRequest();
     const requestPhysicalClients = new XMLHttpRequest();
 
@@ -44,21 +44,28 @@ const ClientList: React.FC = () => {
   const handleDeleteLegalClient = useCallback((id: number) => {
     const request = new XMLHttpRequest();
 
-    request.open('DELETE', `http://localhost:8080/legalclient/${id}`, true);
+    request.open('DELETE', `http://localhost:8080/legalclients/${id}`, true);
+
+    request.onload = function() {
+      handleLoadClients();
+    }
 
     request.send();
-  }, []);
+  }, [handleLoadClients]);
 
   const handleDeletePhysicalClient = useCallback((id: number) => {
     const request = new XMLHttpRequest();
 
-    request.open('DELETE', `http://localhost:8080/physicalclient/${id}`, true);
+    request.open('DELETE', `http://localhost:8080/physicalclients/${id}`, true);
+    request.onload = function() {
+      handleLoadClients();
+    }
 
     request.send();
-  }, []);
+  }, [handleLoadClients]);
 
   return (
-    <Container>
+    <Container onLoad={handleLoadClients}>
       <div id="navigation-area">
         <NavigationBar>
           <NavigationButton text="Página Inicial" toPage="/dashboard" />

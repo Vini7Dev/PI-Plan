@@ -13,6 +13,7 @@ const NavigationBar: React.FC = ({ children }) => {
 
   return (
     <Container showNav={showNav}>
+      { /* OBS: O componente "NavigationBar" é um "nav" definido no arquivo de estilização */ }
       <img src={Logo} alt="pi-plan" />
 
       <button id="show-nav-button" onClick={handleChangeShowNav}>

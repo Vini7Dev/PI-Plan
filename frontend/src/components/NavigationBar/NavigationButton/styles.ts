@@ -10,6 +10,7 @@ export const Container = styled(Link)`
   height: 60px;
 
   text-decoration: none;
+  text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 22px;
 

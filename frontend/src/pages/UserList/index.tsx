@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useCallback } from 'react';
+import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
@@ -18,7 +18,7 @@ interface IUserProps {
 const UserList: React.FC = () => {
   const [users, setUsers] = useState<IUserProps[]>([]);
 
-  useEffect(() => {
+  const handleLoadUsers = useCallback(() => {
     const request = new XMLHttpRequest();
 
     request.open('GET', `http://localhost:8080/admins`, true);
@@ -35,12 +35,15 @@ const UserList: React.FC = () => {
     const request = new XMLHttpRequest();
 
     request.open('DELETE', `http://localhost:8080/admins/${id}`, true);
+    request.onload = function() {
+      handleLoadUsers();
+    }
 
     request.send();
-  }, []);
+  }, [handleLoadUsers]);
 
   return (
-    <Container>
+    <Container onLoad={handleLoadUsers}>
       <div id="navigation-area">
         <NavigationBar>
           <NavigationButton text="Página Inicial" toPage="/dashboard"/>

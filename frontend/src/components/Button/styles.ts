@@ -4,7 +4,6 @@ export const Container = styled.div`
   position: relative;
   width: 100%;
   height: 80px;
-  margin: 40px 0 40px 0;
 
   button {
     height: 100%;

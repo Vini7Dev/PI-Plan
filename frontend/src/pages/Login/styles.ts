@@ -6,6 +6,7 @@ export const Container = styled.div`
   align-items: center;
   background: linear-gradient(135deg, #9E825E 2.88%, #B8976B 48.91%, #FFDFB4 100%);
   -webkit-font-smoothing: antialiased;
+  height: 100%;
 
   main {
     display: flex;
@@ -25,7 +26,7 @@ export const Container = styled.div`
       height: 150px;
     }
 
-    #h {
+    #title {
       width: 100%;
 
       h2 {
@@ -42,11 +43,13 @@ export const Container = styled.div`
   }
 
   @media (max-width: 768px) {
+    height: 100vh;
+
     main {
       width: 80%;
       margin: 5%;
 
-      #h {
+      #title {
         h2, h1 {
           margin: 0 auto;
           text-align: center;

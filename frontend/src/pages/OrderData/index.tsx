@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
@@ -10,8 +10,32 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import SmallButton from '../../components/SmallButton';
 
+interface IOrderProps {
+  id?: number;
+  actual_status: number;
+  actual_process: number;
+  title: string;
+  description: string;
+  startDate: string;
+  finalDate: string;
+  furnitureDeliveryDate: string;
+  cep: string;
+  street: string;
+  number: number;
+  complement: string;
+  neighborhood: string;
+  city: string;
+  uf: string;
+  country: string;
+  installationEnvironments: string;
+  paymentMethod: string;
+  grossValue: number;
+  netValue: number;
+}
+
 const OrderData: React.FC = () => {
   const location = useLocation();
+  const history = useHistory();
   const [actualStatus, setActualStatus] = useState(1);
   const [actualProcess, setActualProcess] = useState(1);
   const [title, setTitle] = useState('');
@@ -71,9 +95,9 @@ const OrderData: React.FC = () => {
   }, [location]);
 
   const handleCreateOrder = useCallback(() => {
-    const request = new XMLHttpRequest();
+    const orderId = location.pathname.split('/order-data/')[1];
 
-    request.open('POST', `http://localhost:8080/orders`, true);
+    const request = new XMLHttpRequest();
 
     const order = {
       actual_status: actualStatus,
@@ -95,13 +119,24 @@ const OrderData: React.FC = () => {
       paymentMethod,
       grossValue,
       netValue,
-    };
+    } as IOrderProps;
+
+    let httpVerb = '';
+    if(orderId) {
+      httpVerb = 'PUT';
+      order.id = Number(orderId);
+    } else {
+      httpVerb = 'POST';
+    }
+
+    request.open(httpVerb, `http://localhost:8080/orders`, true);
 
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(order));
 
-    alert('Pedido cadastrado.');
-  }, [actualProcess, actualStatus, cep, city, complement, country, description, finalDate, grossValue, installationEnvironments, neighborhood, netValue, number, paymentMethod, furnitureDeliveryDate, startDate, street, title, uf]);
+    alert('Sucesso!');
+    history.push('/orders-list');
+  }, [actualProcess, actualStatus, cep, city, complement, country, description, finalDate, grossValue, installationEnvironments, neighborhood, netValue, number, paymentMethod, furnitureDeliveryDate, startDate, street, title, uf, location, history]);
 
   return (
     <Container>
@@ -119,6 +154,7 @@ const OrderData: React.FC = () => {
           <h1>Dados do Pedido</h1>
 
           <Select
+            autoFocus
             label="Status do Pedido"
             options={[
               { value: 1, description: 'Em andamento' },
@@ -200,7 +236,7 @@ const OrderData: React.FC = () => {
               <Input
                 label="Número"
                 placeholder="Informe o número"
-                defaultValue={number}
+                value={number}
                 onChange={(e) => setNumber(Number(e.target.value))}
               />
             </div>

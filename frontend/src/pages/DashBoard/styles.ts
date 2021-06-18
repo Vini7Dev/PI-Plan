@@ -13,6 +13,10 @@ export const Container = styled.div`
     color: #60626C;
   }
 
+  .margin-top-10 {
+    margin-top: 10px;
+  }
+
   #navigation-area {
     flex: 0.5;
   }
@@ -25,7 +29,7 @@ export const Container = styled.div`
     #banner-area {
       margin: 0 -150px 20px -150px;
       width: 10000px;
-      max-width: 80vw;
+      max-width: 75vw;
 
       img {
         width: 100%;
@@ -95,13 +99,6 @@ export const Container = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
 
     form {
-      h3 {
-        font-size: 25px;
-        font-family: Arial, Helvetica, sans-serif;
-        font-style: italic;
-        color: #60626C;
-      }
-
       margin: 25px auto;
       width: 90%;
       max-width: 600px;
@@ -109,6 +106,17 @@ export const Container = styled.div`
       border-radius: 20px;
 
       background-color: white;
+
+      h3 {
+        font-size: 25px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-style: italic;
+        color: #60626C;
+      }
+
+      button {
+        margin-bottom: 10px;
+      }
     }
   }
 

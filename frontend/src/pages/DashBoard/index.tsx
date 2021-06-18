@@ -1,4 +1,4 @@
-import React, { useState , useCallback , useEffect } from 'react';
+import React, { useState , useCallback } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
@@ -9,7 +9,6 @@ import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-
 
 interface ITaskProps {
   id: number;
@@ -28,19 +27,6 @@ const DashBoard: React.FC = () =>{
   const [description, setDescription] = useState('');
   const [taskTime, setTaskTime] = useState('');
   const [taskDate, setTaskDate] = useState('');
-
-  useEffect(() => {
-    const request = new XMLHttpRequest();
-
-    request.open('GET', `http://localhost:8080/tasks`, true);
-
-    request.onload = function() {
-      const tasksList = JSON.parse(this.response);
-      setTasks(tasksList);
-    }
-
-    request.send();
-  }, []);
 
   const handleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
@@ -75,7 +61,20 @@ const DashBoard: React.FC = () =>{
 
   }, [showPopup]);
 
-  const handleTaskData = useCallback(function(){
+  const handleLoadTasks = useCallback(() => {
+      const request = new XMLHttpRequest();
+
+      request.open('GET', `http://localhost:8080/tasks`, true);
+
+      request.onload = function() {
+        const tasksList = JSON.parse(this.response);
+        setTasks(tasksList);
+      }
+
+      request.send();
+  }, []);
+
+  const handleSubmitTaskData = useCallback(function(){
     const request = new XMLHttpRequest();
 
     const task_date = `${taskDate}T${taskTime}:00`;
@@ -97,24 +96,30 @@ const DashBoard: React.FC = () =>{
 
     request.open(httpVerb, `http://localhost:8080/tasks`, true);
 
+    request.onload = function() {
+      handleLoadTasks();
+    }
+
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(task));
 
-    console.log(task);
-
     handleShowPopup();
-  },[done, title, description, taskTime, taskDate, taskId, handleShowPopup]);
+  },[done, title, description, taskTime, taskDate, taskId, handleShowPopup, handleLoadTasks]);
 
   const handleDeleteTask = useCallback((id: number) => {
     const request = new XMLHttpRequest();
 
     request.open('DELETE', `http://localhost:8080/tasks/${id}`, true);
 
+    request.onload = function() {
+      handleLoadTasks();
+    }
+
     request.send();
-  }, []);
+  }, [handleLoadTasks]);
 
   return(
-    <Container>
+    <Container onLoad={handleLoadTasks}>
       <div id="navigation-area">
         <NavigationBar>
           <NavigationButton text="Página Inicial" toPage="/dashboard" id="nav-link-selected" />
@@ -140,7 +145,6 @@ const DashBoard: React.FC = () =>{
             </div>
           </div>
           <div className="checkB">
-
             {
               tasks.map(task => {
                 const label = `${task.title} - ${task.task_date}`;
@@ -153,7 +157,11 @@ const DashBoard: React.FC = () =>{
                       onClickLabel={() => handleShowPopup(task.id)}
                       checked={task.done}
                       readOnly
-                    />
+                    >
+                      <p>
+                        {task.description}
+                      </p>
+                    </CheckBox>
                     <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
                       <FiTrash2 />
                     </button>
@@ -164,7 +172,6 @@ const DashBoard: React.FC = () =>{
           </div>
         </main>
       </div>
-
       {
         showPopup && (
           <div id="task-popup">
@@ -204,8 +211,16 @@ const DashBoard: React.FC = () =>{
               onChange={(e) => setTaskDate(e.target.value)}
               />
 
-              <Button name="Cadastrar" onClick={handleTaskData} />
-              <Button name="Fechar" onClick={() => handleShowPopup()} />
+              <Button
+                name="Cadastrar"
+                onClick={handleSubmitTaskData}
+              />
+
+              <Button
+                className="margin-top-10"
+                name="Fechar"
+                onClick={() => handleShowPopup()}
+              />
             </form>
           </div>
         )

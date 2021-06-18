@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect} from 'react';
-import { useLocation } from 'react-router-dom';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -19,6 +19,7 @@ interface IAdminProps {
 
 const AdmData: React.FC = () =>{
   const location = useLocation();
+  const history = useHistory();
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -48,7 +49,7 @@ const AdmData: React.FC = () =>{
     }
   }, [location]);
 
-  const handleAdmData = useCallback(function(){
+  const handleSubmitAdmData = useCallback(function(){
     const userId = location.pathname.split('/adm-data/')[1];
 
     const admin = {
@@ -66,20 +67,21 @@ const AdmData: React.FC = () =>{
       httpVerb = 'POST';
     }
 
-    const request = new XMLHttpRequest();
-
-    request.open(httpVerb, `http://localhost:8080/admins`, true);
-
     if(password !== confirmPassword) {
       alert('Erro ao confirmar a senha.');
       return;
     }
 
+    const request = new XMLHttpRequest();
+
+    request.open(httpVerb, `http://localhost:8080/admins`, true);
+
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(admin));
 
-    alert('Admin cadastrado.');
-  },[name, username, password, confirmPassword, permissionCreateAdmin, location]);
+    alert('Sucesso!');
+    history.push('/users-list')
+  },[name, username, password, confirmPassword, permissionCreateAdmin, location, history]);
 
   return(
     <Container>
@@ -102,6 +104,7 @@ const AdmData: React.FC = () =>{
           </div>
 
           <Input
+          autoFocus
           label="Nome"
           placeholder="Digíte o Nome"
           defaultValue={name}
@@ -136,7 +139,7 @@ const AdmData: React.FC = () =>{
             defaultChecked={permissionCreateAdmin}
           />
 
-          <Button name="Cadastrar" onClick={handleAdmData} />
+          <Button name="Cadastrar" onClick={handleSubmitAdmData} />
         </form>
       </main>
     </Container>

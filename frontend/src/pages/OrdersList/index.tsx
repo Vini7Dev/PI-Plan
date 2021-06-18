@@ -1,4 +1,4 @@
-import React, { useEffect, useState , useCallback } from 'react';
+import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
@@ -19,7 +19,7 @@ interface IOrderProps {
 const OrdersList: React.FC = () => {
   const [orders, setOrders] = useState<IOrderProps[]>([]);
 
-  useEffect(() => {
+  const handleLoadOrders = useCallback(() => {
     const request = new XMLHttpRequest();
 
     request.open('GET', `http://localhost:8080/orders`, true);
@@ -36,12 +36,15 @@ const OrdersList: React.FC = () => {
     const request = new XMLHttpRequest();
 
     request.open('DELETE', `http://localhost:8080/orders/${id}`, true);
+    request.onload = function() {
+      handleLoadOrders();
+    }
 
     request.send();
-  }, []);
+  }, [handleLoadOrders]);
 
   return (
-    <Container>
+    <Container onLoad={handleLoadOrders}>
       <div id="navigation-area">
         <NavigationBar>
           <NavigationButton text="Página Inicial" toPage="/dashboard"/>

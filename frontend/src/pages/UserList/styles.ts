@@ -168,10 +168,8 @@ export const Container = styled.div`
 
     #table-area {
       padding: 10px;
-      flex: 2;
 
       form {
-        width: 100%;
         max-width: 720px;
       }
 

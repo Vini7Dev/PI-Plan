@@ -12,6 +12,10 @@ export const Container = styled.div`
     margin-right: 20px;
   }
 
+  div p {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
   @media (max-width: 768px) {
     width: 100%;
   }

@@ -38,7 +38,7 @@ const Login: React.FC = () => {
       <main>
         <img src={Logo} alt="PI Plan" />
 
-        <div id="h">
+        <div id="title">
           <h2>Bem Vindo</h2>
           <h1>Login</h1>
         </div>
@@ -47,6 +47,7 @@ const Login: React.FC = () => {
           label="Usuario"
           placeholder="Informe o usuário"
           onChange={(e) => setUsername(e.target.value)}
+          autoFocus
         />
 
         <Input
