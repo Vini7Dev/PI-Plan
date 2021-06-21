@@ -4,10 +4,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
-import Input from '../../components/Input';
-import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
-
 
 interface IOrderProps {
   id: number;
@@ -51,22 +48,18 @@ const OrdersList: React.FC = () => {
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" id="nav-link-selected" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
       <main id="table-area">
-        <form>
-          <h1>Pedidos</h1>
+        <h1 id="title">Pedidos</h1>
 
-          <div className="space-division">
-            <div className="x2">
-              <Input label="Buscar" placeholder="Informe algum dado do pedido" />
-            </div>
-            <div className="x1">
-              <SearchButton />
-            </div>
-          </div>
-        </form>
+        <div id="register-page-link">
+          <Link to="order-data">
+            Cadastrar
+          </Link>
+        </div>
 
         <div id="table-border">
           <table>

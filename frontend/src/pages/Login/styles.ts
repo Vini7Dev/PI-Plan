@@ -6,6 +6,7 @@ export const Container = styled.div`
   align-items: center;
   background: linear-gradient(135deg, #9E825E 2.88%, #B8976B 48.91%, #FFDFB4 100%);
   -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
   height: 100%;
 
   main {
@@ -18,7 +19,7 @@ export const Container = styled.div`
     border-radius: 30px;
     max-width: 536px;
     width: 70%;
-    margin: 5% 20%;
+    margin: 1% 0;
     padding: 30px;
 
     img {
@@ -43,8 +44,6 @@ export const Container = styled.div`
   }
 
   @media (max-width: 768px) {
-    height: 100vh;
-
     main {
       width: 80%;
       margin: 5%;

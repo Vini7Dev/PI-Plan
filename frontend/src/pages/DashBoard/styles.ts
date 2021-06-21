@@ -5,6 +5,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  min-height: 100vh;
+  height: 100%;
 
   h1 {
     margin-bottom: -50px;
@@ -57,17 +59,38 @@ export const Container = styled.div`
         }
       }
 
-      .checkB{
+      #tasks-list{
         width: 100%;
 
         label{
           color: #36373D;
         }
 
+        #empty-list {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 25px;
+
+          h4 {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 35px;
+            font-weight: 400;
+          }
+        }
+
         .task-item {
           display: flex;
           align-items: center;
           justify-content: left;
+          background-color: rgba(0, 0, 0, 0.05);
+          padding: 10px;
+          margin: 5px 0;
+          border-radius: 10px;
+
+          div {
+            margin: 0 !important;
+          }
 
           .ic-remove {
               display: flex;
@@ -99,12 +122,11 @@ export const Container = styled.div`
     background-color: rgba(0, 0, 0, 0.5);
 
     form {
-      margin: 25px auto;
+      margin: 15px auto;
       width: 90%;
       max-width: 600px;
       padding: 25px;
       border-radius: 20px;
-
       background-color: white;
 
       h3 {

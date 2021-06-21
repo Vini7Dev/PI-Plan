@@ -25,11 +25,8 @@ export const Container = styled.div`
       width: 100%;
       max-width: 720px;
 
-      .space-division{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        margin: 20px 0;
+      h1 {
+        margin-bottom: 20px;
       }
     }
   }
@@ -43,10 +40,6 @@ export const Container = styled.div`
       form{
         width: 100%;
         max-width: 720px;
-
-        .space-division{
-          flex-direction: column;
-        }
       }
     }
   }

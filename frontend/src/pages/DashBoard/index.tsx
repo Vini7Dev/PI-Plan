@@ -126,6 +126,7 @@ const DashBoard: React.FC = () =>{
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
@@ -135,7 +136,7 @@ const DashBoard: React.FC = () =>{
         </header>
 
         <main>
-          <h1>Lembretes do Dia</h1>
+          <h1>Lembretes</h1>
           <div className= "space-division">
             <div className="size2">
               <DashButton name="Tarefas"/>
@@ -144,11 +145,14 @@ const DashBoard: React.FC = () =>{
               <DashButton name="Adicionar" onClick={() => handleShowPopup()}/>
             </div>
           </div>
-          <div className="checkB">
+          <div id="tasks-list">
             {
-              tasks.map(task => {
-                const label = `${task.title} - ${task.task_date}`;
+              tasks.length ?  tasks.map(task => {
+                const dateAndTime = task.task_date.split(/t+/i);
+                const date = dateAndTime[0].replaceAll('-', '/');
+                const time = dateAndTime[1].slice(0, 5);
 
+                const label = `${task.title} | ${date} - ${time}`;
                 return (
                   <div className="task-item" key={task.id}>
                     <CheckBox
@@ -167,7 +171,11 @@ const DashBoard: React.FC = () =>{
                     </button>
                   </div>
                 );
-              })
+              }) : (
+                <div id="empty-list">
+                  <h4>Lista vazia...</h4>
+                </div>
+              )
             }
           </div>
         </main>
@@ -180,7 +188,7 @@ const DashBoard: React.FC = () =>{
               <CheckBox
                 label="Finalizado"
                 onChange={(e) => setDone(e.target.checked)}
-                defaultChecked={done}
+                checked={done}
               />
 
               <Input

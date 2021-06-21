@@ -4,11 +4,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
-import Input from '../../components/Input';
-import SearchButton from '../../components/SearchButton';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
-
-
 
 interface IClientProps {
   id: number;
@@ -72,22 +68,18 @@ const ClientList: React.FC = () => {
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
       <main id="table-area">
-        <form>
-          <h1>Clientes</h1>
+        <h1 id="title">Clientes</h1>
 
-          <div className="space-division">
-            <div className="x2">
-              <Input label="Buscar" placeholder="Informe algum dado do cliente" />
-            </div>
-            <div className="x1">
-              <SearchButton />
-            </div>
-          </div>
-        </form>
+        <div id="register-page-link">
+          <Link to="client-data">
+            Cadastrar
+          </Link>
+        </div>
 
         <div id="table-border">
           <table>

@@ -4,7 +4,6 @@ import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
-import SmallButton from '../../components/SmallButton';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
@@ -91,17 +90,13 @@ const AdmData: React.FC = () =>{
           <NavigationButton text="Usuários" toPage="/users-list" id="nav-link-selected" />
           <NavigationButton text="Clientes" toPage="/clients-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
       <main id="form-area">
         <form>
           <h1>Cadastro de Administrador</h1>
-
-          <div className="space-division">
-              <SmallButton name="Administrador" backgorundcolor="beige"/>
-              <SmallButton name="Montador" backgorundcolor="green"/>
-          </div>
 
           <Input
           autoFocus
@@ -136,7 +131,7 @@ const AdmData: React.FC = () =>{
           <CheckBox
             label="Pode criar administrador"
             onChange={e => setPermissionCreateAdmin(e.target.checked)}
-            defaultChecked={permissionCreateAdmin}
+            checked={permissionCreateAdmin}
           />
 
           <Button name="Cadastrar" onClick={handleSubmitAdmData} />

@@ -4,7 +4,6 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import DashBoard from './DashBoard';
 import AdmData from './AdmData';
-import AssemblerData from './AssemblerData';
 import UserList from './UserList';
 import ClientData from './ClientData';
 import ClientList from './ClientList';
@@ -17,7 +16,6 @@ const Routes: React.FC = () => {
       <Route path="/" component={Login} exact />
       <Route path="/dashboard" component={DashBoard} exact />
       <Route path="/adm-data" component={AdmData} />
-      <Route path="/assembler-data" component={AssemblerData} />
       <Route path="/users-list" component={UserList} exact />
       <Route path="/client-data" component={ClientData} />
       <Route path="/clients-list" component={ClientList} exact />

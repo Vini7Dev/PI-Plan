@@ -21,28 +21,31 @@ export const Container = styled.div`
 
     padding: 20px 8%;
 
-    form {
+    #title {
+      margin-bottom: 20px;
+    }
+
+    #register-page-link {
       width: 100%;
-      max-width: 720px;
+      height: 45px;
+      margin-bottom: 20px;
 
-      .space-division{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin: 25px 0;
+      a {
+        display: block;
+        height: 100%;
+        width: 100%;
 
-        div {
-          margin: 0;
-        }
+        border: none;
+        border-radius: 30px;
 
-        .x1 {
-          flex: 0.1;
-        }
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 43px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 28px;
 
-        .x2 {
-          flex: 0.9;
-        }
+        background-color: #91d2a1;
+        color: #ffffff;
       }
     }
 
@@ -83,6 +86,10 @@ export const Container = styled.div`
             font-size: 16px;
             font-weight: bold;
             font-family: Arial, Helvetica, sans-serif;
+
+            a {
+              text-decoration: none;
+            }
           }
 
           .ic-remove {

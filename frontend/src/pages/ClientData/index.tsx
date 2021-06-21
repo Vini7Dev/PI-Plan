@@ -155,6 +155,7 @@ const ClientData: React.FC = () =>{
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
@@ -186,9 +187,9 @@ const ClientData: React.FC = () =>{
           <h1>Alerta de Contato</h1>
 
           <ChechBox
-            label="Emitir alerta para este Cliente"
+            label="Emitir o alerta de contato para este Cliente"
             onChange={(e) => setWarnContact(e.target.checked)}
-            defaultChecked={warnContact}
+            checked={warnContact}
           />
 
           <Input

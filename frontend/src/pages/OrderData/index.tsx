@@ -8,7 +8,6 @@ import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
-import SmallButton from '../../components/SmallButton';
 
 interface IOrderProps {
   id?: number;
@@ -146,6 +145,7 @@ const OrderData: React.FC = () => {
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" id="nav-link-selected" />
+          <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
 
@@ -168,18 +168,16 @@ const OrderData: React.FC = () => {
             label="Processo Atual"
             options={[
               { value: 1, description: 'Iniciando' },
-              { value: 2, description: 'Pedido na Fábrica' },
-              { value: 3, description: 'Instalando' },
-              { value: 4, description: 'Reunião com os Montadores' },
+              { value: 2, description: 'Visita Inicial' },
+              { value: 3, description: 'Modelagem do Móvel' },
+              { value: 4, description: 'Reunião com o Cliente' },
+              { value: 5, description: 'Pedido na Fábrica' },
+              { value: 6, description: 'Instalando' },
+              { value: 7, description: 'Reunião com os Montadores' },
             ]}
             value={actualProcess}
             onChange={(e) => setActualProcess(Number(e.target.value))}
           />
-
-          <div className="space-division">
-            <SmallButton name="❮ Voltar" backgorundcolor="beige"/>
-            <SmallButton name="Avançar ❯" backgorundcolor="green"/>
-          </div>
 
           <Input
             label="Título"
@@ -223,7 +221,7 @@ const OrderData: React.FC = () => {
             onChange={(e) => setCep(e.target.value)}
           />
 
-          <div className="space-division">
+          <div className="-division">
             <div className="x2">
               <Input
                 label="Rua"
@@ -255,15 +253,16 @@ const OrderData: React.FC = () => {
             onChange={(e) => setNeighborhood(e.target.value)}
           />
 
-          <div className="space-division">
+          <div className="-division">
             <div className="x1">
               <Select
                 label="UF"
                 options={[
-                  { description: 'SP' },
-                  { description: 'MG' },
-                  { description: 'AM' },
-                  { description: 'RS' },
+                  { description: 'Integrar com os Correios' },
+                  { description: 'AA' },
+                  { description: 'BB' },
+                  { description: 'CC' },
+                  { description: 'DD' },
                 ]}
                 value={uf}
                 onChange={(e) => setUF(e.target.value)}
@@ -273,8 +272,11 @@ const OrderData: React.FC = () => {
               <Select
                 label="Cidade"
                 options={[
-                  { description: 'Franca' },
-                  { description: 'São Paulo' },
+                  { description: 'Integrar com os Correios' },
+                  { description: 'Cidade 1' },
+                  { description: 'Cidade 2' },
+                  { description: 'Cidade 3' },
+                  { description: 'Cidade 4' },
                 ]}
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
@@ -285,8 +287,11 @@ const OrderData: React.FC = () => {
           <Select
             label="País"
             options={[
-              { description: 'Brasil' },
-              { description: 'Estados Unidos' },
+              { description: 'Integrar com os Correios' },
+              { description: 'País 1' },
+              { description: 'País 2' },
+              { description: 'País 3' },
+              { description: 'País 4' },
             ]}
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -303,8 +308,11 @@ const OrderData: React.FC = () => {
           <Select
             label="Forma de Pagamento"
             options={[
-              { description: 'Dinheiro' },
-              { description: 'Cartão de Crédito' },
+              { description: 'A definir os Campos' },
+              { description: 'Método 1' },
+              { description: 'Método 2' },
+              { description: 'Método 3' },
+              { description: 'Método 4' },
             ]}
             value={paymentMethod}
             onChange={(e) => setPaymentMethod(e.target.value)}
