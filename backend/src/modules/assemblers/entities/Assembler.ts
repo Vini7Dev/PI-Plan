@@ -1,15 +1,15 @@
 import {
-    Column,
-    CreateDateColumn,
-    DeleteDateColumn,
-    Entity,
-    PrimaryColumn,
-    UpdateDateColumn,
+  Column,
+  CreateDateColumn,
+  DeleteDateColumn,
+  Entity,
+  PrimaryColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { uuid } from 'uuidv4';
 
-// Representação da entidade do administrador no banco de dados
-@Entity('admin')
+// Representação da entidade do montador no banco de dados
+@Entity('assembler')
 class Admin {
     @PrimaryColumn('uuid')
     id: string;
@@ -24,7 +24,7 @@ class Admin {
     password: string;
 
     @Column()
-    permission_create_admin: boolean;
+    cellphone: string;
 
     @CreateDateColumn()
     created_at: Date;
@@ -36,11 +36,12 @@ class Admin {
     deleted_at: Date;
 
     constructor() {
-        // Gerando o ID automáticamente quando o objeto
-        // instanciando ainda não estiver salvo no banco
-        if (!this.id) {
-            this.id = uuid();
-        }
+      // Gerando o ID automáticamente quando o objeto
+      // instanciando ainda não estiver salvo no banco
+      if (!this.id) {
+        this.id = uuid();
+      }
     }
 }
+
 export default Admin;

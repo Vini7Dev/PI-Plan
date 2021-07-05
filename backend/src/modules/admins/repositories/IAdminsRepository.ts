@@ -1,5 +1,5 @@
 import ICreateAdminDTOS from '../dtos/ICreateAdminDTOS';
-import Admin from '../infra/typeorm/entities/Admin';
+import Admin from '../entities/Admin';
 
 interface IAdminsRepository {
     findById(id: string): Promise<Admin | undefined>;
