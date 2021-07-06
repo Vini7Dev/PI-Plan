@@ -22,7 +22,7 @@
     "uuidv4": "^6.2.8"
   },
   "scripts": {
-    "server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/shared/infra/http/server.ts",
+    "server": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/shared/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js"
   }
 }

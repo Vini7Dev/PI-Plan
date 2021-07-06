@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import adminRoutes from '../../../../modules/users/infra/http/routes/admin.routes';
+import adminRoutes from '../../../modules/admins/routes/admin.routes';
 
 // Instanciando o objeto de rotas principal
 const routes = Router();
