@@ -1,8 +1,9 @@
+import IAdminsRepository from '../repositories/IAdminsRepository';
 import AdminsRepository from '../repositories/implementations/AdminsRepository';
 
 class DeleteAdminService {
     // Repositório dos administradores
-    private adminsRepository: AdminsRepository;
+    private adminsRepository: IAdminsRepository;
 
     constructor() {
       // Inicializando o repositório dos administradores

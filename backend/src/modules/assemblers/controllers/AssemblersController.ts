@@ -1,10 +1,19 @@
 import { Request, Response } from 'express';
 import CreateAssemblerService from '../services/CreateAssemblerService';
+import ListAssemblersService from '../services/ListAssemblersService';
 
 class AssemblersController {
   // Listando todos os montadores
   public async get(request: Request, response: Response): Promise<Response> {
-    return response.send();
+    try {
+      const listAssemblersService = new ListAssemblersService();
+
+      const assemblersList = await listAssemblersService.execute();
+
+      return response.json(assemblersList);
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   }
 
   // Cadastrando um novo montador

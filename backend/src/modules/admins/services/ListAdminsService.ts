@@ -1,9 +1,10 @@
 import AdminsRepository from '../repositories/implementations/AdminsRepository';
 import Admin from '../entities/Admin';
+import IAdminsRepository from '../repositories/IAdminsRepository';
 
 class ListAdminsService {
     // Repositório dos administradores
-    private adminsRepository: AdminsRepository;
+    private adminsRepository: IAdminsRepository;
 
     constructor() {
       // Inicializando o repositório dos administradores
