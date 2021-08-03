@@ -1,6 +1,8 @@
 import IAdminsRepository from '../repositories/IAdminsRepository';
 import AdminsRepository from '../repositories/implementations/AdminsRepository';
 import Admin from '../entities/Admin';
+import IAssemblersRepository from '../../assemblers/repositories/IAssemblersRepository';
+import AssemblersRepository from '../../assemblers/repositories/implementations/AssemblersRepository';
 
 interface IRequest {
     name: string;
@@ -10,12 +12,15 @@ interface IRequest {
 }
 
 class CreateAdminService {
-    // Repositório dos administradores
+    // Repositório dos administradores e dos montadores
     private adminsRepository: IAdminsRepository;
 
+    private assemblersRepository: IAssemblersRepository;
+
     constructor() {
-      // Inicializando o repositório dos administradores
+      // Inicializando o repositório dos administradores e dos montadores
       this.adminsRepository = new AdminsRepository();
+      this.assemblersRepository = new AssemblersRepository();
     }
 
     // Serviço para a criação de um novo usuário administrador
@@ -25,16 +30,20 @@ class CreateAdminService {
       password,
       permission_create_admin,
     }: IRequest): Promise<Admin> {
-      // Verificando se já existe um administrador cadastrado com esse username
+      // Verificando se já existe um montador cadastrado com esse username
       const adminWithSameUsername = await this.adminsRepository.findByUsername(
         username,
       );
 
-      if (adminWithSameUsername) {
+      const assemblerWithSameUsername = await this.assemblersRepository.findByUsername(
+        username,
+      );
+
+      if (adminWithSameUsername || assemblerWithSameUsername) {
         throw new Error('This username already exits.');
       }
 
-      // Salvando o administrador no banco de dados
+      // Salvando o montador no banco de dados
       const savedAdmin = await this.adminsRepository.create({
         name,
         username,

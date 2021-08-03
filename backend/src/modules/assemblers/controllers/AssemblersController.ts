@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import CreateAssemblerService from '../services/CreateAssemblerService';
 
 class AssemblersController {
   // Listando todos os montadores
@@ -8,7 +9,29 @@ class AssemblersController {
 
   // Cadastrando um novo montador
   public async create(request: Request, response: Response): Promise<Response> {
-    return response.send();
+    try {
+      // Recebendo os dados para a criação do montador
+      const {
+        name,
+        cellphone,
+        username,
+        password,
+      } = request.body;
+
+      // Serviço para o cadastro do montador
+      const createAssemblerService = new CreateAssemblerService();
+
+      const createdAssembler = await createAssemblerService.execute({
+        name,
+        cellphone,
+        username,
+        password,
+      });
+
+      return response.status(201).json(createdAssembler);
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   }
 
   // Atualizando os dados do montador
