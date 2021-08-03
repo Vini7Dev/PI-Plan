@@ -24,6 +24,13 @@ class AdminsRepository implements IAdminsRepository {
       return admin;
     }
 
+    // Listando os Administradores
+    public async list(): Promise<Admin[]> {
+      const adminsList = await this.repository.find();
+
+      return adminsList;
+    }
+
     // Salvando a conta administradora no banco de dados
     public async create({
       name,
@@ -42,20 +49,6 @@ class AdminsRepository implements IAdminsRepository {
       return createdAdmin;
     }
 
-    // Apagando Um Administrador
-    public async delete(id: string): Promise<string> {
-      await this.repository.softDelete(id);
-
-      return 'Administrador removido';
-    }
-
-    // Listando os Administradores
-    public async list(): Promise<Admin[]> {
-      const adminsList = await this.repository.find();
-
-      return adminsList;
-    }
-
     // Atualizando um Admin
     public async update({
       id,
@@ -71,6 +64,13 @@ class AdminsRepository implements IAdminsRepository {
       });
 
       return updateAdmin;
+    }
+
+    // Apagando Um Administrador
+    public async delete(id: string): Promise<string> {
+      await this.repository.softDelete(id);
+
+      return 'Administrador removido';
     }
 }
 
