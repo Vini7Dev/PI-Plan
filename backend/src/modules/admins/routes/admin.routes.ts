@@ -1,16 +1,16 @@
 import { Router } from 'express';
-import AdminController from '../controllers/AdminController';
+import AdminsController from '../controllers/AdminsController';
 
 // Instanciando as rotas do modelo administrador
 const adminRoutes = Router();
 
 // Instanciando o controller de administrador
-const adminController = new AdminController();
+const adminsController = new AdminsController();
 
 // Criando as rotas dos administradores
-adminRoutes.get('/', adminController.get);
-adminRoutes.post('/', adminController.create);
-adminRoutes.put('/:id', adminController.update);
-adminRoutes.delete('/:id', adminController.delete);
+adminRoutes.get('/', adminsController.get);
+adminRoutes.post('/', adminsController.create);
+adminRoutes.put('/:id', adminsController.update);
+adminRoutes.delete('/:id', adminsController.delete);
 
 export default adminRoutes;

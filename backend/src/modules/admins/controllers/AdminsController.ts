@@ -4,7 +4,7 @@ import CreateAdminService from '../services/CreateAdminService';
 import UpdateAdminService from '../services/UpdateAdminService';
 import DeleteAdminService from '../services/DeleteAdminService';
 
-class AdminController {
+class AdminsController {
   // Listando todos os administradores
   public async get(request: Request, response: Response): Promise<Response> {
     try {
@@ -101,4 +101,4 @@ class AdminController {
   }
 }
 
-export default AdminController;
+export default AdminsController;
