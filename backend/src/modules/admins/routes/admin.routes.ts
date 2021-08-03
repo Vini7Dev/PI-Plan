@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import AdminController from '../controllers/AdminController';
 
-// Instanciando as rotas do model administrador
+// Instanciando as rotas do modelo administrador
 const adminRoutes = Router();
 
 // Instanciando o controller de administrador

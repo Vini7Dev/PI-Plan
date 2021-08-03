@@ -1,4 +1,4 @@
-import ICreateAssemblerDTOS from '../controllers/ICreateAssemblerDTOS';
+import ICreateAssemblerDTOS from '../dtos/ICreateAssemblerDTOS';
 import Assembler from '../entities/Assembler';
 
 interface IAssemblersRepository {
