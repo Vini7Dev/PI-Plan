@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import CreateAssemblerService from '../services/assembler/CreateAssemblerService';
+import DeleteAssemblerService from '../services/assembler/DeleteAssemblerService';
 import ListAssemblersService from '../services/assembler/ListAssemblersService';
 import UpdateAssemblerService from '../services/assembler/UpdateAssemblerService';
 
@@ -77,7 +78,19 @@ class AssemblersController {
 
   // Apagando um montador
   public async delete(request: Request, response: Response): Promise<Response> {
-    return response.send();
+    try {
+      // Recebendo a referência do montador que vai ser removido
+      const { id } = request.params;
+
+      // Serviço para a remoção do montador
+      const deleteAssemblerService = new DeleteAssemblerService();
+
+      await deleteAssemblerService.execute(id);
+
+      return response.status(204).send();
+    } catch (error) {
+      return response.status(400).json({ error: error.message });
+    }
   }
 }
 
