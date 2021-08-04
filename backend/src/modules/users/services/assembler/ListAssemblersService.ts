@@ -1,6 +1,6 @@
-import AssemblersRepository from '../repositories/implementations/AssemblersRepository';
-import Assembler from '../entities/Assembler';
-import IAssemblersRepository from '../repositories/IAssemblersRepository';
+import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
+import Assembler from '../../entities/Assembler';
+import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 
 class ListAssemblersService {
     // Repositório dos montadores

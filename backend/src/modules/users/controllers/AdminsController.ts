@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import ListAdminsService from '../services/ListAdminsService';
-import CreateAdminService from '../services/CreateAdminService';
-import UpdateAdminService from '../services/UpdateAdminService';
-import DeleteAdminService from '../services/DeleteAdminService';
+import ListAdminsService from '../services/admin/ListAdminsService';
+import CreateAdminService from '../services/admin/CreateAdminService';
+import UpdateAdminService from '../services/admin/UpdateAdminService';
+import DeleteAdminService from '../services/admin/DeleteAdminService';
 
 class AdminsController {
   // Listando todos os administradores

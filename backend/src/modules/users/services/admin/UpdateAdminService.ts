@@ -1,8 +1,8 @@
-import AdminsRepository from '../repositories/implementations/AdminsRepository';
-import Admin from '../entities/Admin';
-import IAdminsRepository from '../repositories/IAdminsRepository';
-import IAssemblersRepository from '../../assemblers/repositories/IAssemblersRepository';
-import AssemblersRepository from '../../assemblers/repositories/implementations/AssemblersRepository';
+import AdminsRepository from '../../repositories/implementations/AdminsRepository';
+import Admin from '../../entities/Admin';
+import IAdminsRepository from '../../repositories/IAdminsRepository';
+import IAssemblersRepository from '../../repositories/IAssemblersRepository';
+import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
 
 interface IRequest {
     id: string;

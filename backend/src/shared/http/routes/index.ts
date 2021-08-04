@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import adminRoutes from '../../../modules/admins/routes/admin.routes';
-import assemblerRoutes from '../../../modules/assemblers/routes/assembler.routes';
+
+import adminRoutes from '../../../modules/users/routes/admin.routes';
+import assemblerRoutes from '../../../modules/users/routes/assembler.routes';
 
 // Instanciando o objeto de rotas principal
 const routes = Router();

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import CreateAssemblerService from '../services/CreateAssemblerService';
-import ListAssemblersService from '../services/ListAssemblersService';
+import CreateAssemblerService from '../services/assembler/CreateAssemblerService';
+import ListAssemblersService from '../services/assembler/ListAssemblersService';
 
 class AssemblersController {
   // Listando todos os montadores

@@ -1,6 +1,6 @@
-import AdminsRepository from '../repositories/implementations/AdminsRepository';
-import Admin from '../entities/Admin';
-import IAdminsRepository from '../repositories/IAdminsRepository';
+import AdminsRepository from '../../repositories/implementations/AdminsRepository';
+import Admin from '../../entities/Admin';
+import IAdminsRepository from '../../repositories/IAdminsRepository';
 
 class ListAdminsService {
     // Repositório dos administradores

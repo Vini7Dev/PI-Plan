@@ -1,5 +1,5 @@
-import IAdminsRepository from '../repositories/IAdminsRepository';
-import AdminsRepository from '../repositories/implementations/AdminsRepository';
+import IAdminsRepository from '../../repositories/IAdminsRepository';
+import AdminsRepository from '../../repositories/implementations/AdminsRepository';
 
 class DeleteAdminService {
     // Repositório dos administradores
