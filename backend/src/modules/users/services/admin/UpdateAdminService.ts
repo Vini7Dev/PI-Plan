@@ -32,7 +32,7 @@ class UpdateAdminService {
     new_password,
     current_password,
   }: IRequest): Promise<Admin> {
-    // Conta do Admin que deve ser atualizada
+    // Conta do administrador que deve ser atualizada
     const adminToUpdate = await this.adminsRepository.findById(id);
 
     // Verificando se o administrador existe
@@ -58,7 +58,7 @@ class UpdateAdminService {
       throw new Error('This username already exits.');
     }
 
-    // Atualizando o administrador no banco de dados
+    // Atualizando os dados do administrador no banco de dados
     adminToUpdate.name = name;
     adminToUpdate.username = username;
     adminToUpdate.password = new_password || adminToUpdate.password;

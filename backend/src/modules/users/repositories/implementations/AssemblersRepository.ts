@@ -1,11 +1,22 @@
-import { getRepository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import ICreateAssemblerDTOS from '../../dtos/ICreateAssemblerDTOS';
 import Assembler from '../../entities/Assembler';
 import IAssemblersRepository from '../IAssemblersRepository';
 
 class AssemblersRepository implements IAssemblersRepository {
-  private repository = getRepository(Assembler);
+  private repository: Repository<Assembler>;
+
+  constructor() {
+    this.repository = getRepository(Assembler);
+  }
+
+  // Buscando um montador pelo id
+  public async findById(id: string): Promise<Assembler | undefined> {
+    const assembler = await this.repository.findOne(id);
+
+    return assembler;
+  }
 
   // Buscando um montador pelo seu username
   public async findByUsername(username: string): Promise<Assembler | undefined> {
