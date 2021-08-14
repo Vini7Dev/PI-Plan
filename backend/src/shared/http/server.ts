@@ -1,6 +1,7 @@
 import express from 'express';
 import 'reflect-metadata';
 import '../database'; // Criando a conexão com o banco
+import '../container'; // Importando os containers registrados
 import routes from './routes';
 
 // Instanciando o servidor
