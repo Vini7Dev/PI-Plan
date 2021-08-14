@@ -8,6 +8,7 @@ interface ITokenPayload {
   sub: string;
 }
 
+// Middleware para garantir que o usuário esteja autenticado para realizar a requisição
 const ensureAuthenticated = async (
   request: Request, response: Response, next: NextFunction,
 ): Promise<void> => {
