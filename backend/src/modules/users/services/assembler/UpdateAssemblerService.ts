@@ -60,7 +60,7 @@ class UpdateAssemblerService {
       throw new Error('The password does not match.');
     }
 
-    // Verificando se já existe um usuário cadastrado com esse username
+    // Verificando se já existe um outro usuário cadastrado com esse username
     const assemblerWithSameUsername = await this.assemblersRepository.findByUsername(
       username,
     );
@@ -69,7 +69,9 @@ class UpdateAssemblerService {
       username,
     );
 
-    if (assemblerWithSameUsername || adminWithSameUsername) {
+    if (adminWithSameUsername) {
+      throw new Error('This username already exits.');
+    } else if (assemblerWithSameUsername && assemblerWithSameUsername.id !== id) {
       throw new Error('This username already exits.');
     }
 

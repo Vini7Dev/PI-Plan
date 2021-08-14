@@ -58,7 +58,7 @@ class UpdateAdminService {
       throw new Error('The password does not match.');
     }
 
-    // Verificando se já existe um usuário cadastrado com esse username
+    // Verificando se já existe um outro usuário cadastrado com esse username
     const adminWithSameUsername = await this.adminsRepository.findByUsername(
       username,
     );
@@ -67,7 +67,9 @@ class UpdateAdminService {
       username,
     );
 
-    if (adminWithSameUsername || assemblerWithSameUsername) {
+    if (assemblerWithSameUsername) {
+      throw new Error('This username already exits.');
+    } else if (adminWithSameUsername && adminWithSameUsername.id !== id) {
       throw new Error('This username already exits.');
     }
 
