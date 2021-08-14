@@ -1,7 +1,7 @@
 import {
   Column, CreateDateColumn, DeleteDateColumn, PrimaryColumn, UpdateDateColumn,
 } from 'typeorm';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 // Classe que contém os dados de todo usuário salvo no banco de dados
 abstract class User {
@@ -30,7 +30,7 @@ abstract class User {
     // Gerando o ID automáticamente quando o objeto
     // instanciando ainda não estiver salvo no banco
     if (!this.id) {
-      this.id = uuid();
+      this.id = uuidv4();
     }
   }
 }

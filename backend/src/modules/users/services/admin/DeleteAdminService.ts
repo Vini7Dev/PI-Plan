@@ -1,19 +1,23 @@
+import { inject, injectable } from 'tsyringe';
+
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import AdminsRepository from '../../repositories/implementations/AdminsRepository';
 
+@injectable()
 class DeleteAdminService {
+  constructor(
     // Repositório dos administradores
-    private adminsRepository: IAdminsRepository;
+    @inject('AdminsRepository')
+    private adminsRepository: IAdminsRepository,
+  ) {
+    // Inicializando o repositório dos administradores
+    this.adminsRepository = new AdminsRepository();
+  }
 
-    constructor() {
-      // Inicializando o repositório dos administradores
-      this.adminsRepository = new AdminsRepository();
-    }
-
-    // Serviço para remover um administrador pelo seu ID
-    public async execute(id: string): Promise<void> {
-      await this.adminsRepository.delete(id);
-    }
+  // Serviço para remover um administrador pelo seu ID
+  public async execute(id: string): Promise<void> {
+    await this.adminsRepository.delete(id);
+  }
 }
 
 export default DeleteAdminService;

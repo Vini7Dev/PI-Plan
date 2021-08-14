@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
+
 import ListAdminsService from '../services/admin/ListAdminsService';
 import CreateAdminService from '../services/admin/CreateAdminService';
 import UpdateAdminService from '../services/admin/UpdateAdminService';
@@ -8,7 +10,7 @@ class AdminsController {
   // Listando todos os administradores
   public async get(request: Request, response: Response): Promise<Response> {
     try {
-      const listAdminsService = new ListAdminsService();
+      const listAdminsService = container.resolve(ListAdminsService);
 
       const adminList = await listAdminsService.execute();
 
@@ -33,7 +35,7 @@ class AdminsController {
       } = request.body;
 
       // Serviço para a criação do administrador
-      const createAdminService = new CreateAdminService();
+      const createAdminService = container.resolve(CreateAdminService);
 
       const admin = await createAdminService.execute({
         name,
@@ -64,7 +66,7 @@ class AdminsController {
       } = request.body;
 
       // Serviço para a atualização dos dados do montador
-      const updateAdminService = new UpdateAdminService();
+      const updateAdminService = container.resolve(UpdateAdminService);
 
       const userUpdated = await updateAdminService.execute({
         id,
@@ -90,7 +92,7 @@ class AdminsController {
       const { id } = request.params;
 
       // Serviço para a remoção do administrador
-      const deleteAdminService = new DeleteAdminService();
+      const deleteAdminService = container.resolve(DeleteAdminService);
 
       await deleteAdminService.execute(id);
 

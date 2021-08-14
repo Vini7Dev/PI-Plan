@@ -1,3 +1,5 @@
+import { inject, injectable } from 'tsyringe';
+
 import AdminsRepository from '../../repositories/implementations/AdminsRepository';
 import Admin from '../../entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
@@ -12,13 +14,16 @@ interface IRequest {
     new_password?: string;
 }
 
+@injectable()
 class UpdateAdminService {
-  // Repositório dos administradores e dos montadores
-  private adminsRepository: IAdminsRepository;
+  constructor(
+    // Repositório dos administradores e dos montadores
+    @inject('AdminsRepository')
+    private adminsRepository: IAdminsRepository,
 
-  private assemblersRepository: IAssemblersRepository;
-
-  constructor() {
+    @inject('AssemblersRepository')
+    private assemblersRepository: IAssemblersRepository,
+  ) {
     // Inicializando o repositório dos administradores e dos montadores
     this.adminsRepository = new AdminsRepository();
     this.assemblersRepository = new AssemblersRepository();
