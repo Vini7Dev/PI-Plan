@@ -5,6 +5,7 @@ import Assembler from '../../entities/Assembler';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
+import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     id: string;
@@ -24,6 +25,9 @@ class UpdateAssemblerService {
 
     @inject('AdminsRepository')
     private adminsRepository: IAdminsRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {
     // Inicializando o repositório dos montadores e dos administradores
     this.assemblersRepository = new AssemblersRepository();
@@ -48,7 +52,11 @@ class UpdateAssemblerService {
     }
 
     // Confirmando se a senha informada é válida
-    if (assemblerToUpdate.password !== current_password) {
+    const passwordMatch = await this.hashProvider.compare(
+      current_password, assemblerToUpdate.password,
+    );
+
+    if (!passwordMatch) {
       throw new Error('The password does not match.');
     }
 
@@ -69,7 +77,9 @@ class UpdateAssemblerService {
     assemblerToUpdate.name = name;
     assemblerToUpdate.username = username;
     assemblerToUpdate.cellphone = cellphone;
-    assemblerToUpdate.password = new_password || assemblerToUpdate.password;
+    if (new_password) {
+      assemblerToUpdate.password = await this.hashProvider.generate(new_password);
+    }
 
     const savedAssembler = await this.assemblersRepository.update(assemblerToUpdate);
 

@@ -50,7 +50,9 @@ class UpdateAdminService {
     }
 
     // Confirmando se a senha informada é válida
-    const passwordMatch = await this.hashProvider.compare(current_password, adminToUpdate.password);
+    const passwordMatch = await this.hashProvider.compare(
+      current_password, adminToUpdate.password,
+    );
 
     if (!passwordMatch) {
       throw new Error('The password does not match.');
