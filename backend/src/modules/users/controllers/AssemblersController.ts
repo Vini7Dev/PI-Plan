@@ -1,4 +1,6 @@
 import { Request, Response } from 'express';
+import { container } from 'tsyringe';
+
 import CreateAssemblerService from '../services/assembler/CreateAssemblerService';
 import DeleteAssemblerService from '../services/assembler/DeleteAssemblerService';
 import ListAssemblersService from '../services/assembler/ListAssemblersService';
@@ -8,7 +10,7 @@ class AssemblersController {
   // Listando todos os montadores
   public async get(request: Request, response: Response): Promise<Response> {
     try {
-      const listAssemblersService = new ListAssemblersService();
+      const listAssemblersService = container.resolve(ListAssemblersService);
 
       const assemblersList = await listAssemblersService.execute();
 
@@ -30,7 +32,7 @@ class AssemblersController {
       } = request.body;
 
       // Serviço para o cadastro do montador
-      const createAssemblerService = new CreateAssemblerService();
+      const createAssemblerService = container.resolve(CreateAssemblerService);
 
       const createdAssembler = await createAssemblerService.execute({
         name,
@@ -59,7 +61,7 @@ class AssemblersController {
       } = request.body;
 
       // Serviço para o cadastro do montador
-      const updateAssemblerService = new UpdateAssemblerService();
+      const updateAssemblerService = container.resolve(UpdateAssemblerService);
 
       const updatedsAssembler = await updateAssemblerService.execute({
         id,
@@ -83,7 +85,7 @@ class AssemblersController {
       const { id } = request.params;
 
       // Serviço para a remoção do montador
-      const deleteAssemblerService = new DeleteAssemblerService();
+      const deleteAssemblerService = container.resolve(DeleteAssemblerService);
 
       await deleteAssemblerService.execute(id);
 
