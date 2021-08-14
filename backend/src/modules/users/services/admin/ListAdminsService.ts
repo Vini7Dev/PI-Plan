@@ -1,6 +1,5 @@
 import { inject, injectable } from 'tsyringe';
 
-import AdminsRepository from '../../repositories/implementations/AdminsRepository';
 import Admin from '../../entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 
@@ -10,10 +9,7 @@ class ListAdminsService {
     // Repositório dos administradores
     @inject('AdminsRepository')
     private adminsRepository: IAdminsRepository,
-  ) {
-    // Inicializando o repositório dos administradores
-    this.adminsRepository = new AdminsRepository();
-  }
+  ) {}
 
   // Serviço para listar os administradores cadastrados
   public async execute(): Promise<Admin[]> {

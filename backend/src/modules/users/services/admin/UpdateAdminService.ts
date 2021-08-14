@@ -1,10 +1,8 @@
 import { inject, injectable } from 'tsyringe';
 
-import AdminsRepository from '../../repositories/implementations/AdminsRepository';
 import Admin from '../../entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
-import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
@@ -27,11 +25,7 @@ class UpdateAdminService {
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
-  ) {
-    // Inicializando o repositório dos administradores e dos montadores
-    this.adminsRepository = new AdminsRepository();
-    this.assemblersRepository = new AssemblersRepository();
-  }
+  ) {}
 
   // Serviço para atualizar os dados de um administrador cadastrado
   public async execute({
@@ -63,13 +57,15 @@ class UpdateAdminService {
       username,
     );
 
+    if (adminWithSameUsername && adminWithSameUsername.id !== id) {
+      throw new Error('This username already exits.');
+    }
+
     const assemblerWithSameUsername = await this.assemblersRepository.findByUsername(
       username,
     );
 
     if (assemblerWithSameUsername) {
-      throw new Error('This username already exits.');
-    } else if (adminWithSameUsername && adminWithSameUsername.id !== id) {
       throw new Error('This username already exits.');
     }
 
