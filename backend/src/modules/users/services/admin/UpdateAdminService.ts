@@ -5,6 +5,7 @@ import Admin from '../../entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
+import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     id: string;
@@ -23,6 +24,9 @@ class UpdateAdminService {
 
     @inject('AssemblersRepository')
     private assemblersRepository: IAssemblersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {
     // Inicializando o repositório dos administradores e dos montadores
     this.adminsRepository = new AdminsRepository();
@@ -46,7 +50,9 @@ class UpdateAdminService {
     }
 
     // Confirmando se a senha informada é válida
-    if (adminToUpdate.password !== current_password) {
+    const passwordMatch = await this.hashProvider.compare(current_password, adminToUpdate.password);
+
+    if (!passwordMatch) {
       throw new Error('The password does not match.');
     }
 
@@ -66,7 +72,9 @@ class UpdateAdminService {
     // Atualizando os dados do administrador no banco de dados
     adminToUpdate.name = name;
     adminToUpdate.username = username;
-    adminToUpdate.password = new_password || adminToUpdate.password;
+    if (new_password) {
+      adminToUpdate.password = await this.hashProvider.generate(new_password);
+    }
 
     const savedAdmin = await this.adminsRepository.update(adminToUpdate);
 

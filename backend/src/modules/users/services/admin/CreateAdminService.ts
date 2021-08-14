@@ -5,6 +5,7 @@ import AdminsRepository from '../../repositories/implementations/AdminsRepositor
 import Admin from '../../entities/Admin';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import AssemblersRepository from '../../repositories/implementations/AssemblersRepository';
+import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
     name: string;
@@ -22,6 +23,9 @@ class CreateAdminService {
 
     @inject('AssemblersRepository')
     private assemblersRepository: IAssemblersRepository,
+
+    @inject('HashProvider')
+    private hashProvider: IHashProvider,
   ) {
     // Inicializando o repositório dos administradores e dos montadores
     this.adminsRepository = new AdminsRepository();
@@ -48,11 +52,14 @@ class CreateAdminService {
       throw new Error('This username already exits.');
     }
 
+    // Criptografando a senha do usuário
+    const cryptedPassword = await this.hashProvider.generate(password);
+
     // Salvando o montador no banco de dados
     const savedAdmin = await this.adminsRepository.create({
       name,
       username,
-      password,
+      password: cryptedPassword,
       permission_create_admin,
     });
 
