@@ -26,12 +26,21 @@ abstract class User {
   @DeleteDateColumn()
   deleted_at: Date;
 
+  // Este atributo é definido pelo construtor das classes filhas, não é salvo no banco
+  // Ele identifica o tipo de usuário que está realizando as requisições
+  protected user_type: 'admin' | 'assembler';
+
   constructor() {
     // Gerando o ID automáticamente quando o objeto
     // instanciando ainda não estiver salvo no banco
     if (!this.id) {
       this.id = uuidv4();
     }
+  }
+
+  // Recuperando o tipo de usuário que está realizando as requisições
+  public getUserType(): 'admin' | 'assembler' {
+    return this.user_type;
   }
 }
 
