@@ -3,6 +3,7 @@ import { Router } from 'express';
 import adminRoutes from '../../../modules/users/routes/admin.routes';
 import assemblerRoutes from '../../../modules/users/routes/assembler.routes';
 import sectionRoutes from '../../../modules/users/routes/section.routes';
+import customerRoutes from '../../../modules/customers/routes/customer.routes';
 
 // Instanciando o objeto de rotas principal
 const routes = Router();
@@ -11,5 +12,6 @@ const routes = Router();
 routes.use('/admins', adminRoutes);
 routes.use('/assemblers', assemblerRoutes);
 routes.use('/sections', sectionRoutes);
+routes.use('/customers', customerRoutes);
 
 export default routes;
