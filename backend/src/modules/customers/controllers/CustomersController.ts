@@ -1,11 +1,18 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+
 import CreateCustomerService from '../services/CreateCustomerService';
+import ListCustomersService from '../services/ListCustomersService';
 
 class CustomersController {
   // Listando todos os clientes cadastrados
   public async get(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'customer get' });
+    // Executando o serviço para criação do cliente
+    const listCustomersService = container.resolve(ListCustomersService);
+
+    const customersList = await listCustomersService.execute();
+
+    return response.json(customersList);
   }
 
   // Cadastrando um novo cliente
