@@ -3,6 +3,7 @@ import Customer from '../entities/Customer';
 
 interface ICustomersRepository {
     findById(id: string): Promise<Customer | undefined>;
+    findByDocument(document: string): Promise<Customer | undefined>;
     create(data: ICreateCustomerDTO): Promise<Customer>;
     delete(id: string): Promise<string>;
     list(): Promise<Customer[]>;

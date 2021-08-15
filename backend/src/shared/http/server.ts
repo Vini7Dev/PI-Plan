@@ -18,12 +18,13 @@ app.use(express.json());
 app.use(routes);
 
 // Tratando os erros que ocorrerem na aplicação
-app.use((error: Error, request: Request, response: Response, next: NextFunction) => {
+app.use((error: Error | AppError, request: Request, response: Response, next: NextFunction) => {
   if (error instanceof AppError) {
     return response.status(error.code).json({ error: error.message });
   }
 
   // Em caso de erros inesperados, retornar a mensagem de erro interno
+  console.log(error.message);
   return response.status(500).json({ error: 'Internal server error.' });
 });
 

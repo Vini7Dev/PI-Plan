@@ -17,6 +17,13 @@ class CustomersRepository implements ICustomersRepository {
       return customer;
     }
 
+    // Buscando um cliente pelo documento
+    public async findByDocument(document: string): Promise<Customer | undefined> {
+      const customer = await this.repository.findOne({ document });
+
+      return customer;
+    }
+
     // Listando os clientees
     public async list(): Promise<Customer[]> {
       const customersList = await this.repository.find();
@@ -41,6 +48,7 @@ class CustomersRepository implements ICustomersRepository {
         last_contact_date,
         next_contact_date,
       });
+
       await this.repository.save(createdCustomer);
 
       return createdCustomer;
