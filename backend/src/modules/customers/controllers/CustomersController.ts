@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateCustomerService from '../services/CreateCustomerService';
+import DeleteCustomerService from '../services/DeleteCustomerService';
 import ListCustomersService from '../services/ListCustomersService';
 
 class CustomersController {
@@ -49,7 +50,15 @@ class CustomersController {
 
   // Apagando um cliente
   public async delete(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'customer delete' });
+    // Recuperando o id do cliente na requisição
+    const { id } = request.params;
+
+    // Executando o serviço para apagar um cliente
+    const deleteCustomerService = container.resolve(DeleteCustomerService);
+
+    const responseMessage = await deleteCustomerService.execute(id);
+
+    return response.json({ message: responseMessage });
   }
 }
 
