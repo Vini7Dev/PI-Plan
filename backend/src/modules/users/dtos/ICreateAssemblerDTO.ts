@@ -1,5 +1,5 @@
 // Dados para a criação / atualização dos usuários montadores
-interface ICreateAssemblerDTOS {
+interface ICreateAssemblerDTO {
     id?: string;
     name: string;
     username: string;
@@ -7,4 +7,4 @@ interface ICreateAssemblerDTOS {
     cellphone: string;
 }
 
-export default ICreateAssemblerDTOS;
+export default ICreateAssemblerDTO;

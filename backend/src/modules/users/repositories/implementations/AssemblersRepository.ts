@@ -1,6 +1,6 @@
 import { getRepository, Repository } from 'typeorm';
 
-import ICreateAssemblerDTOS from '../../dtos/ICreateAssemblerDTOS';
+import ICreateAssemblerDTO from '../../dtos/ICreateAssemblerDTO';
 import Assembler from '../../entities/Assembler';
 import IAssemblersRepository from '../IAssemblersRepository';
 
@@ -39,7 +39,7 @@ class AssemblersRepository implements IAssemblersRepository {
     cellphone,
     username,
     password,
-  }: ICreateAssemblerDTOS): Promise<Assembler> {
+  }: ICreateAssemblerDTO): Promise<Assembler> {
     const createdAssembler = this.repository.create({
       id,
       name,
@@ -60,7 +60,7 @@ class AssemblersRepository implements IAssemblersRepository {
     cellphone,
     username,
     password,
-  }: ICreateAssemblerDTOS): Promise<Assembler> {
+  }: ICreateAssemblerDTO): Promise<Assembler> {
     const updatedAssembler = await this.repository.save({
       id,
       name,

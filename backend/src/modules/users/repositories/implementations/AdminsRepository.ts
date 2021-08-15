@@ -1,7 +1,7 @@
 import { getRepository, Repository } from 'typeorm';
 import IAdminsRepository from '../IAdminsRepository';
 import Admin from '../../entities/Admin';
-import ICreateAdminDTOS from '../../dtos/ICreateAdminDTOS';
+import ICreateAdminDTO from '../../dtos/ICreateAdminDTO';
 
 class AdminsRepository implements IAdminsRepository {
     private repository: Repository<Admin>;
@@ -37,7 +37,7 @@ class AdminsRepository implements IAdminsRepository {
       username,
       password,
       permission_create_admin,
-    }: ICreateAdminDTOS): Promise<Admin> {
+    }: ICreateAdminDTO): Promise<Admin> {
       const createdAdmin = this.repository.create({
         name,
         username,
@@ -55,7 +55,7 @@ class AdminsRepository implements IAdminsRepository {
       name,
       username,
       password,
-    }: ICreateAdminDTOS): Promise<Admin> {
+    }: ICreateAdminDTO): Promise<Admin> {
       const updateAdmin = await this.repository.save({
         id,
         name,
