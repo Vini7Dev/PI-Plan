@@ -1,10 +1,38 @@
 import { Router } from 'express';
 
+import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';
+import ensureAuthenticated from '../../../shared/http/middlewares/ensureAuthenticated';
+import CustomersController from '../controllers/CustomersController';
+
+// Instanciando as rotas do modelo cliente
 const customerRoutes = Router();
 
-customerRoutes.get('/', async (request, response) => response.json({ message: 'customer get.' }));
-customerRoutes.post('/', async (request, response) => response.json({ message: 'customer post.' }));
-customerRoutes.put('/:id', async (request, response) => response.json({ message: 'customer put.' }));
-customerRoutes.delete('/:id', async (request, response) => response.json({ message: 'customer delete.' }));
+// Aplicando os middlewares nas rotas abaixo
+customerRoutes.use(ensureAuthenticated);
+customerRoutes.use(ensureAdmin);
+
+// Instanciando o controller de cliente
+const customerController = new CustomersController();
+
+// Criando as rotas dos clientes
+customerRoutes.get(
+  '/',
+  customerController.get,
+);
+
+customerRoutes.post(
+  '/',
+  customerController.create,
+);
+
+customerRoutes.put(
+  '/:id',
+  customerController.update,
+);
+
+customerRoutes.delete(
+  '/:id',
+  customerController.delete,
+);
 
 export default customerRoutes;

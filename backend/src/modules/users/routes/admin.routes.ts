@@ -7,35 +7,31 @@ import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';
 // Instanciando as rotas do modelo administrador
 const adminRoutes = Router();
 
+// Aplicando os middlewares nas rotas abaixo
+adminRoutes.use(ensureAuthenticated);
+adminRoutes.use(ensureAdmin);
+
 // Instanciando o controller de administrador
 const adminsController = new AdminsController();
 
 // Criando as rotas dos administradores
 adminRoutes.get(
   '/',
-  ensureAuthenticated,
-  ensureAdmin,
   adminsController.get,
 );
 
 adminRoutes.post(
   '/',
-  ensureAuthenticated,
-  ensureAdmin,
   adminsController.create,
 );
 
 adminRoutes.put(
   '/:id',
-  ensureAuthenticated,
-  ensureAdmin,
   adminsController.update,
 );
 
 adminRoutes.delete(
   '/:id',
-  ensureAuthenticated,
-  ensureAdmin,
   adminsController.delete,
 );
 
