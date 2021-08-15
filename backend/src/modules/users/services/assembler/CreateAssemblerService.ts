@@ -4,6 +4,7 @@ import Assembler from '../../entities/Assembler';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
+import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {
   name: string;
@@ -39,7 +40,7 @@ class CreateAssemblerService {
     );
 
     if (assemblerWithSameUsername) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     const adminWithSameUsername = await this.adminsRepository.findByUsername(
@@ -47,7 +48,7 @@ class CreateAssemblerService {
     );
 
     if (adminWithSameUsername) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     // Criptografando a senha do usuário

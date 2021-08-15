@@ -4,6 +4,7 @@ import IAdminsRepository from '../../repositories/IAdminsRepository';
 import Admin from '../../entities/Admin';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
+import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {
     name: string;
@@ -33,13 +34,13 @@ class CreateAdminService {
     password,
     permission_create_admin,
   }: IRequest): Promise<Admin> {
-    // Verificando se já existe um montador cadastrado com esse username
+    // Verificando se já existe um usuario cadastrado com esse username
     const adminWithSameUsername = await this.adminsRepository.findByUsername(
       username,
     );
 
     if (adminWithSameUsername) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     const assemblerWithSameUsername = await this.assemblersRepository.findByUsername(
@@ -47,7 +48,7 @@ class CreateAdminService {
     );
 
     if (assemblerWithSameUsername) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     // Criptografando a senha do usuário

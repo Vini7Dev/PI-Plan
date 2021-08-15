@@ -4,6 +4,7 @@ import Admin from '../../entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
+import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {
     id: string;
@@ -40,7 +41,7 @@ class UpdateAdminService {
 
     // Verificando se o administrador existe
     if (!adminToUpdate) {
-      throw new Error('Admin not found.');
+      throw new AppError('Admin not found.', 404);
     }
 
     // Confirmando se a senha informada é válida
@@ -49,7 +50,7 @@ class UpdateAdminService {
     );
 
     if (!passwordMatch) {
-      throw new Error('The password does not match.');
+      throw new AppError('The password does not match.', 401);
     }
 
     // Verificando se já existe um outro usuário cadastrado com esse username
@@ -58,7 +59,7 @@ class UpdateAdminService {
     );
 
     if (adminWithSameUsername && adminWithSameUsername.id !== id) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     const assemblerWithSameUsername = await this.assemblersRepository.findByUsername(
@@ -66,7 +67,7 @@ class UpdateAdminService {
     );
 
     if (assemblerWithSameUsername) {
-      throw new Error('This username already exits.');
+      throw new AppError('This username already exits.');
     }
 
     // Atualizando os dados do administrador no banco de dados

@@ -11,8 +11,10 @@ class DeleteAssemblerService {
   ) {}
 
   // Serviço para remover um montador pelo seu ID
-  public async execute(id: string): Promise<void> {
-    await this.assemblersRepository.delete(id);
+  public async execute(id: string): Promise<string> {
+    const responseMessage = await this.assemblersRepository.delete(id);
+
+    return responseMessage;
   }
 }
 

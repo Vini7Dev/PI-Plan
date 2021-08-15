@@ -9,15 +9,11 @@ import DeleteAdminService from '../services/admin/DeleteAdminService';
 class AdminsController {
   // Listando todos os administradores
   public async get(request: Request, response: Response): Promise<Response> {
-    try {
-      const listAdminsService = container.resolve(ListAdminsService);
+    const listAdminsService = container.resolve(ListAdminsService);
 
-      const adminList = await listAdminsService.execute();
+    const adminList = await listAdminsService.execute();
 
-      return response.json(adminList);
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
+    return response.json(adminList);
   }
 
   // Criando um novo administrador
@@ -25,29 +21,25 @@ class AdminsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    try {
-      // Recebendo os dados para a criação do administrador
-      const {
-        name,
-        username,
-        password,
-        permission_create_admin,
-      } = request.body;
+    // Recebendo os dados para a criação do administrador
+    const {
+      name,
+      username,
+      password,
+      permission_create_admin,
+    } = request.body;
 
-      // Serviço para a criação do administrador
-      const createAdminService = container.resolve(CreateAdminService);
+    // Serviço para a criação do administrador
+    const createAdminService = container.resolve(CreateAdminService);
 
-      const admin = await createAdminService.execute({
-        name,
-        username,
-        password,
-        permission_create_admin,
-      });
+    const admin = await createAdminService.execute({
+      name,
+      username,
+      password,
+      permission_create_admin,
+    });
 
-      return response.status(201).json(admin);
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
+    return response.status(201).json(admin);
   }
 
   // Atualizando um administrador
@@ -55,31 +47,27 @@ class AdminsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    try {
-      // Recebendo os dados para atualizar os dados de um administrador
-      const { id } = request.params;
-      const {
-        name,
-        username,
-        current_password,
-        new_password,
-      } = request.body;
+    // Recebendo os dados para atualizar os dados de um administrador
+    const { id } = request.params;
+    const {
+      name,
+      username,
+      current_password,
+      new_password,
+    } = request.body;
 
-      // Serviço para a atualização dos dados do montador
-      const updateAdminService = container.resolve(UpdateAdminService);
+    // Serviço para a atualização dos dados do montador
+    const updateAdminService = container.resolve(UpdateAdminService);
 
-      const userUpdated = await updateAdminService.execute({
-        id,
-        name,
-        username,
-        current_password,
-        new_password,
-      });
+    const userUpdated = await updateAdminService.execute({
+      id,
+      name,
+      username,
+      current_password,
+      new_password,
+    });
 
-      return response.status(201).json(userUpdated);
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
+    return response.status(201).json(userUpdated);
   }
 
   // Apagando um administrador
@@ -87,19 +75,15 @@ class AdminsController {
     request: Request,
     response: Response,
   ): Promise<Response> {
-    try {
-      // Recebendo a referência do administrador que vai ser removido
-      const { id } = request.params;
+    // Recebendo a referência do administrador que vai ser removido
+    const { id } = request.params;
 
-      // Serviço para a remoção do administrador
-      const deleteAdminService = container.resolve(DeleteAdminService);
+    // Serviço para a remoção do administrador
+    const deleteAdminService = container.resolve(DeleteAdminService);
 
-      await deleteAdminService.execute(id);
+    const responseMessage = await deleteAdminService.execute(id);
 
-      return response.status(204).send();
-    } catch (error) {
-      return response.status(400).json({ error: error.message });
-    }
+    return response.status(204).json({ message: responseMessage });
   }
 }
 

@@ -11,8 +11,10 @@ class DeleteAdminService {
   ) {}
 
   // Serviço para remover um administrador pelo seu ID
-  public async execute(id: string): Promise<void> {
-    await this.adminsRepository.delete(id);
+  public async execute(id: string): Promise<string> {
+    const responseMessage = await this.adminsRepository.delete(id);
+
+    return responseMessage;
   }
 }
 

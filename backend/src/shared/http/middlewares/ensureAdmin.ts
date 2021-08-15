@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
+import AppError from '../../errors/AppError';
+
 // Middleware pra garantir que o usuário autenticado que realizou a requisição seja um administrador
 const ensureAdmin = async (
   request: Request, response: Response, next: NextFunction,
@@ -9,7 +11,7 @@ const ensureAdmin = async (
   const { user_type } = request.user;
 
   if (user_type !== 'admin') {
-    throw new Error("User isn't admin.");
+    throw new AppError("User isn't admin.", 401);
   }
 
   // Continuar a requisição

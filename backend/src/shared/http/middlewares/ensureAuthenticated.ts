@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
+
 import authConfig from '../../../configs/authConfig';
 import AdminsRepository from '../../../modules/users/repositories/implementations/AdminsRepository';
 import AssemblersRepository from '../../../modules/users/repositories/implementations/AssemblersRepository';
+import AppError from '../../errors/AppError';
 
 interface ITokenPayload {
   sub: string;
@@ -16,7 +18,7 @@ const ensureAuthenticated = async (
   const bearerToken = request.headers.authorization;
 
   if (!bearerToken) {
-    throw new Error('Token not found.');
+    throw new AppError('Token not found.', 404);
   }
 
   const [, token] = bearerToken.split(' ');
@@ -37,7 +39,7 @@ const ensureAuthenticated = async (
     );
 
     if (!user) {
-      throw new Error('User not found.');
+      throw new AppError('User not found.', 404);
     }
 
     // Salvando os dados do usuário na requisição
@@ -49,7 +51,7 @@ const ensureAuthenticated = async (
     // Continuando a requisição
     next();
   } catch (error) {
-    throw new Error(error.message);
+    throw new AppError(error.message);
   }
 };
 
