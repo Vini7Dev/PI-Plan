@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import CreateCustomerService from '../services/CreateCustomerService';
 import DeleteCustomerService from '../services/DeleteCustomerService';
 import ListCustomersService from '../services/ListCustomersService';
+import UpdateCustomerService from '../services/UpdateCustomerService';
 
 class CustomersController {
   // Listando todos os clientes cadastrados
@@ -45,7 +46,31 @@ class CustomersController {
 
   // Atualizando os dados de um cliente
   public async update(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'customer update' });
+    // Recebendo os dados para atualizar um cliente
+    const { id } = request.params;
+    const {
+      send_contact_alert,
+      name,
+      phone,
+      document,
+      last_contact_date,
+      next_contact_date,
+    } = request.body;
+
+    // Serviço para a atualização dos dados do cliente
+    const updateCustomerService = container.resolve(UpdateCustomerService);
+
+    const customerUpdated = await updateCustomerService.execute({
+      id,
+      send_contact_alert,
+      name,
+      phone,
+      document,
+      last_contact_date,
+      next_contact_date,
+    });
+
+    return response.status(201).json(customerUpdated);
   }
 
   // Apagando um cliente
