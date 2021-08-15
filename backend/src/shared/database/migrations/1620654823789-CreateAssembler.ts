@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-// Criando a tabela dos usuários administradores
-export class Admin1620505760112 implements MigrationInterface {
+// Criando a tabela dos usuários montadores
+export class CreateAssembler1620654823789 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'admin',
+        name: 'assembler',
         columns: [
           {
             name: 'id',
@@ -28,9 +28,9 @@ export class Admin1620505760112 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'permission_create_admin',
-            type: 'boolean',
-            default: false,
+            name: 'cellphone',
+            type: 'varchar',
+            length: '15',
           },
           {
             name: 'created_at',
@@ -53,6 +53,6 @@ export class Admin1620505760112 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('admin');
+    await queryRunner.dropTable('assembler');
   }
 }

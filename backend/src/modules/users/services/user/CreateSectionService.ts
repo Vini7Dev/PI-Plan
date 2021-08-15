@@ -6,6 +6,7 @@ import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 import User from '../../entities/User';
+import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {
   username: string;
@@ -43,14 +44,14 @@ class CreateSectionService {
     );
 
     if (!user) {
-      throw new Error('Invalid credentials.');
+      throw new AppError('Invalid credentials.', 401);
     }
 
     // Verificando se a senha está correta
     const passwordMatch = await this.hashProvider.compare(password, user.password);
 
     if (!passwordMatch) {
-      throw new Error('Invalid credentials.');
+      throw new AppError('Invalid credentials.', 401);
     }
 
     // Gerando o token de autenticação

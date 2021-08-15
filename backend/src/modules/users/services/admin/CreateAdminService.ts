@@ -7,6 +7,7 @@ import IHashProvider from '../../../../shared/container/providers/HashProvider/m
 import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {
+    authenticated_user_id: string;
     name: string;
     username: string;
     password: string;
@@ -29,11 +30,19 @@ class CreateAdminService {
 
   // Serviço para a criação de um novo usuário administrador
   public async execute({
+    authenticated_user_id,
     name,
     username,
     password,
     permission_create_admin,
   }: IRequest): Promise<Admin> {
+    // Verificar se o administrador conectado tem permissão para realizar o cadastro
+    const authenticated_user = await this.adminsRepository.findById(authenticated_user_id);
+
+    if (!authenticated_user || !authenticated_user.permission_create_admin) {
+      throw new AppError('User does not have permission to create another administrator.', 403);
+    }
+
     // Verificando se já existe um usuario cadastrado com esse username
     const adminWithSameUsername = await this.adminsRepository.findByUsername(
       username,

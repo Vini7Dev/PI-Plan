@@ -29,6 +29,8 @@ class AdminsController {
       permission_create_admin,
     } = request.body;
 
+    const { id: authenticated_user_id } = request.user;
+
     // Serviço para a criação do administrador
     const createAdminService = container.resolve(CreateAdminService);
 
@@ -37,6 +39,7 @@ class AdminsController {
       username,
       password,
       permission_create_admin,
+      authenticated_user_id,
     });
 
     return response.status(201).json(admin);
