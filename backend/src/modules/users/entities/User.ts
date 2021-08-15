@@ -31,7 +31,7 @@ abstract class User {
   protected user_type: 'admin' | 'assembler';
 
   constructor() {
-    // Gerando o ID automáticamente quando o objeto
+    // Gerando o ID automáticamente se o objeto
     // instanciando ainda não estiver salvo no banco
     if (!this.id) {
       this.id = uuidv4();
