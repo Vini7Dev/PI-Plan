@@ -25,7 +25,6 @@ class CustomersController {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     } = request.body;
 
@@ -37,7 +36,6 @@ class CustomersController {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     });
 
@@ -53,7 +51,6 @@ class CustomersController {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     } = request.body;
 
@@ -66,7 +63,6 @@ class CustomersController {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     });
 

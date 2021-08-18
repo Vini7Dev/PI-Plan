@@ -22,9 +22,6 @@ class Customer {
   document: string;
 
   @Column('date')
-  last_contact_date: string;
-
-  @Column('date')
   next_contact_date: string;
 
   @CreateDateColumn()

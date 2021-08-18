@@ -39,17 +39,17 @@ export default class CreateCustomer1629054565049 implements MigrationInterface {
         },
         {
           name: 'created_at',
-          type: 'timestamp',
+          type: 'timestamp with time zone',
           default: 'now()',
         },
         {
           name: 'updated_at',
-          type: 'timestamp',
+          type: 'timestamp with time zone',
           default: 'now()',
         },
         {
           name: 'deleted_at',
-          type: 'timestamp',
+          type: 'timestamp with time zone',
           isNullable: true,
         },
       ],

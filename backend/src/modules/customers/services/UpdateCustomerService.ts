@@ -10,7 +10,6 @@ interface IRequest {
     name: string;
     phone: string;
     document: string;
-    last_contact_date: string;
     next_contact_date: string;
 }
 
@@ -29,7 +28,6 @@ class UpdateCustomerService {
     name,
     phone,
     document,
-    last_contact_date,
     next_contact_date,
   }: IRequest): Promise<Customer> {
     // Conta do cliente que deve ser atualizada
@@ -55,7 +53,6 @@ class UpdateCustomerService {
     customerToUpdate.name = name;
     customerToUpdate.phone = phone;
     customerToUpdate.document = document;
-    customerToUpdate.last_contact_date = last_contact_date;
     customerToUpdate.next_contact_date = next_contact_date;
 
     const savedCustomer = await this.customersRepository.update(customerToUpdate);

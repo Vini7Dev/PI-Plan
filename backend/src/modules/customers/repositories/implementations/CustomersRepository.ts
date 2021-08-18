@@ -37,7 +37,6 @@ class CustomersRepository implements ICustomersRepository {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     }: ICreateCustomerDTO): Promise<Customer> {
       const createdCustomer = this.repository.create({
@@ -45,7 +44,6 @@ class CustomersRepository implements ICustomersRepository {
         name,
         phone,
         document,
-        last_contact_date,
         next_contact_date,
       });
 
@@ -61,7 +59,6 @@ class CustomersRepository implements ICustomersRepository {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     }: ICreateCustomerDTO): Promise<Customer> {
       const updatedCustomer = await this.repository.save({
@@ -70,7 +67,6 @@ class CustomersRepository implements ICustomersRepository {
         name,
         phone,
         document,
-        last_contact_date,
         next_contact_date,
       });
 

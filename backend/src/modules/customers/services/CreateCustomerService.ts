@@ -8,7 +8,6 @@ interface IRequest {
   name: string;
   phone: string;
   document: string;
-  last_contact_date: string;
   next_contact_date: string;
 }
 
@@ -25,7 +24,6 @@ class CreateCustomerService {
     name,
     phone,
     document,
-    last_contact_date,
     next_contact_date,
   }: IRequest): Promise<Customer> {
     // Verificando se já existe um cliente cadastrado com este documento
@@ -41,7 +39,6 @@ class CreateCustomerService {
       name,
       phone,
       document,
-      last_contact_date,
       next_contact_date,
     });
 
