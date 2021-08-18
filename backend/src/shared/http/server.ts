@@ -2,7 +2,7 @@ import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors'; // Importando a tratativa de erros no express
 import 'reflect-metadata';
 
-import '../database'; // Criando a conexão com o banco
+import '../typeorm'; // Criando a conexão com o banco
 import '../container'; // Importando os containers registrados
 
 import routes from './routes';
