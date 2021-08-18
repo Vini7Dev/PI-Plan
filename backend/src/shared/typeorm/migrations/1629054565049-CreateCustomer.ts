@@ -28,6 +28,7 @@ export default class CreateCustomer1629054565049 implements MigrationInterface {
           name: 'document',
           type: 'varchar',
           length: '18',
+          isNullable: true,
         },
         {
           name: 'last_contact_date',

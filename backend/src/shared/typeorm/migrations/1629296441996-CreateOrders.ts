@@ -33,6 +33,7 @@ export class CreateOrders1629296441996 implements MigrationInterface {
         {
           name: 'description',
           type: 'varchar',
+          isNullable: true,
         },
         {
           name: 'cep',
@@ -47,11 +48,13 @@ export class CreateOrders1629296441996 implements MigrationInterface {
         {
           name: 'number',
           type: 'int',
+          isNullable: true,
         },
         {
           name: 'complement',
           type: 'varchar',
           length: '50',
+          isNullable: true,
         },
         {
           name: 'district',
@@ -80,6 +83,7 @@ export class CreateOrders1629296441996 implements MigrationInterface {
         {
           name: 'mobile_delivery_forecast',
           type: 'date',
+          isNullable: true,
         },
         {
           name: 'payment_method',
@@ -125,7 +129,7 @@ export class CreateOrders1629296441996 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('orders', 'fk_orders_customer_id');
+    await queryRunner.dropForeignKey('order', 'fk_orders_customer_id');
 
     await queryRunner.dropTable('order');
   }
