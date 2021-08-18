@@ -31,6 +31,6 @@
   "scripts": {
     "dev": "ts-node-dev --transpile-only --inspect --ignore-watch node_modules src/shared/http/server.ts",
     "typeorm": "ts-node-dev node_modules/typeorm/cli.js",
-    "seed:admin": "ts-node-dev src/shared/database/seeds/createAdmin.ts"
+    "seed:admin": "ts-node-dev src/shared/typeorm/seeds/createAdmin.ts"
   }
 }
