@@ -25,8 +25,8 @@ adminRoutes.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      name: Joi.string().required(),
-      username: Joi.string().required(),
+      name: Joi.string().max(45).required(),
+      username: Joi.string().max(30).required(),
       password: Joi.string().min(6).alphanum().required(),
       permission_create_admin: Joi.bool().required(),
     },

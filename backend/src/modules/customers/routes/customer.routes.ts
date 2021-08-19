@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';
 import ensureAuthenticated from '../../../shared/http/middlewares/ensureAuthenticated';
@@ -22,11 +23,29 @@ customerRoutes.get(
 
 customerRoutes.post(
   '/',
+  celebrate({
+    [Segments.BODY]: {
+      send_contact_alert: Joi.bool().required(),
+      name: Joi.string().max(30).required(),
+      phone: Joi.string().max(15).required(),
+      document: Joi.string().max(18).required(),
+      next_contact_date: Joi.string().length(10).required(),
+    },
+  }),
   customerController.create,
 );
 
 customerRoutes.put(
   '/:id',
+  celebrate({
+    [Segments.BODY]: {
+      send_contact_alert: Joi.bool().required(),
+      name: Joi.string().max(30).required(),
+      phone: Joi.string().max(15).required(),
+      document: Joi.string().max(18).required(),
+      next_contact_date: Joi.string().length(10).required(),
+    },
+  }),
   customerController.update,
 );
 

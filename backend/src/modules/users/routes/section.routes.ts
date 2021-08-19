@@ -14,7 +14,7 @@ sectionRoutes.post(
   '/',
   celebrate({
     [Segments.BODY]: {
-      username: Joi.string().required(),
+      username: Joi.string().max(30).required(),
       password: Joi.string().min(6).required(),
     },
   }),
