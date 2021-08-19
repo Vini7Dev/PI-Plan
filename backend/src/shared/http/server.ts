@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors'; // Importando a tratativa de erros no express
 import 'reflect-metadata';
+import { errors as celebrateErrors } from 'celebrate';
 
 import '../typeorm'; // Criando a conexão com o banco
 import '../container'; // Importando os containers registrados
@@ -16,6 +17,9 @@ app.use(express.json());
 
 // Aplicando a rota principal com todas as demais no servidor
 app.use(routes);
+
+// Tratação de erros do celebrate
+app.use(celebrateErrors());
 
 // Tratando os erros que ocorrerem na aplicação
 app.use((error: Error | AppError, request: Request, response: Response, next: NextFunction) => {

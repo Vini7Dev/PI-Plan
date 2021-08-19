@@ -61,10 +61,10 @@ class Order {
   @Column()
   payment_method: string;
 
-  @Column('number')
+  @Column('numeric')
   net_value: number;
 
-  @Column('number')
+  @Column('numeric')
   expenses_value: number;
 
   @CreateDateColumn()
