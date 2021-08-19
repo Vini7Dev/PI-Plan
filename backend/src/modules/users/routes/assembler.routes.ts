@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { celebrate, Segments, Joi } from 'celebrate';
 
 import AssemblersController from '../controllers/AssemblersController';
 import ensureAuthenticated from '../../../shared/http/middlewares/ensureAuthenticated';
@@ -14,32 +15,45 @@ assemblerRoutes.use(ensureAdmin);
 // Instanciando o controller de montador
 const assemblersController = new AssemblersController();
 
+// Aplicando os middlewares nas rotas abaixo
+assemblerRoutes.use(ensureAuthenticated);
+assemblerRoutes.use(ensureAdmin);
+
 // Criando as rotas dos montadores
 assemblerRoutes.get(
   '/',
-  ensureAuthenticated,
-  ensureAdmin,
   assemblersController.get,
 );
 
 assemblerRoutes.post(
   '/',
-  ensureAuthenticated,
-  ensureAdmin,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      cellphone: Joi.string().required(),
+      username: Joi.string().required(),
+      password: Joi.string().min(6).required(),
+    },
+  }),
   assemblersController.create,
 );
 
 assemblerRoutes.put(
   '/:id',
-  ensureAuthenticated,
-  ensureAdmin,
+  celebrate({
+    [Segments.BODY]: {
+      name: Joi.string().required(),
+      cellphone: Joi.string().required(),
+      username: Joi.string().required(),
+      current_password: Joi.string().min(6).alphanum().required(),
+      new_password: Joi.string().min(6).alphanum(),
+    },
+  }),
   assemblersController.update,
 );
 
 assemblerRoutes.delete(
   '/:id',
-  ensureAuthenticated,
-  ensureAdmin,
   assemblersController.delete,
 );
 
