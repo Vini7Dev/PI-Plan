@@ -3,9 +3,12 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  ManyToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import Customer from '../../../customers/typeorm/entities/Customer';
 
 // Classe que contém os dados dos pedidos salvos no banco de dados
 @Entity('order')
@@ -15,6 +18,10 @@ class Order {
 
   @Column('uuid')
   customer_id: string;
+
+  @ManyToOne(() => Customer)
+  @JoinColumn({ name: 'customer_id' })
+  customer: Customer;
 
   @Column('int')
   current_status: number;
