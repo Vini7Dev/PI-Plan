@@ -9,14 +9,14 @@ const create = async () => {
 
   // Criando o usuário admin no banco de dados
   const id = uuidv4();
-  const password = await hash('admin', 8);
+  const password = await hash('admin1', 8);
 
   await connection.query(`INSERT INTO admin(
     id, name, username, password, permission_create_admin, created_at, updated_at, deleted_at
   ) VALUES (
     '${id}',
-    'Admin',
-    'admin',
+    'Admin 1',
+    'admin1',
     '${password}',
     true,
     'now()',
@@ -28,4 +28,11 @@ const create = async () => {
   await connection.close();
 };
 
-create().then(() => console.log('===> Admin user created <==='));
+create().then(() => {
+  console.log('===> Admin user created <===');
+  console.log('Username: admin1');
+  console.log('Password: admin1');
+}).catch(() => {
+  console.log('===> Faild to create admin <===');
+  console.log('Make sure the administrator already exists.');
+});
