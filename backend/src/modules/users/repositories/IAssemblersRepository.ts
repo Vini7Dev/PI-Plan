@@ -1,5 +1,5 @@
 import ICreateAssemblerDTO from '../dtos/ICreateAssemblerDTO';
-import Assembler from '../entities/Assembler';
+import Assembler from '../typeorm/entities/Assembler';
 
 interface IAssemblersRepository {
     findById(id: string): Promise<Assembler | undefined>;

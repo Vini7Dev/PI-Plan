@@ -1,5 +1,5 @@
 import ICreateCustomerDTO from '../dtos/ICreateCustomerDTO';
-import Customer from '../entities/Customer';
+import Customer from '../typeorm/entities/Customer';
 
 interface ICustomersRepository {
     findById(id: string): Promise<Customer | undefined>;

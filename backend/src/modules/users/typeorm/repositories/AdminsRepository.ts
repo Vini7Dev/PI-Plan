@@ -1,6 +1,7 @@
 import { getRepository, Repository } from 'typeorm';
-import IAdminsRepository from '../IAdminsRepository';
-import Admin from '../../entities/Admin';
+
+import IAdminsRepository from '../../repositories/IAdminsRepository';
+import Admin from '../entities/Admin';
 import ICreateAdminDTO from '../../dtos/ICreateAdminDTO';
 
 class AdminsRepository implements IAdminsRepository {

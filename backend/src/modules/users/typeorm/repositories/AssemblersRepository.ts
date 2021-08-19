@@ -1,8 +1,8 @@
 import { getRepository, Repository } from 'typeorm';
 
 import ICreateAssemblerDTO from '../../dtos/ICreateAssemblerDTO';
-import Assembler from '../../entities/Assembler';
-import IAssemblersRepository from '../IAssemblersRepository';
+import Assembler from '../entities/Assembler';
+import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 
 class AssemblersRepository implements IAssemblersRepository {
   private repository: Repository<Assembler>;

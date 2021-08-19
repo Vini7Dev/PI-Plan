@@ -1,7 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 
 import IAdminsRepository from '../../repositories/IAdminsRepository';
-import Admin from '../../entities/Admin';
+import Admin from '../../typeorm/entities/Admin';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
 import AppError from '../../../../shared/errors/AppError';

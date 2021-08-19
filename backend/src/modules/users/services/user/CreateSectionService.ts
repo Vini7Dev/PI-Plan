@@ -5,7 +5,7 @@ import authConfig from '../../../../configs/authConfig';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 import IHashProvider from '../../../../shared/container/providers/HashProvider/models/IHashProvider';
-import User from '../../entities/User';
+import User from '../../typeorm/entities/User';
 import AppError from '../../../../shared/errors/AppError';
 
 interface IRequest {

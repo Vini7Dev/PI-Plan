@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import Customer from '../entities/Customer';
+import Customer from '../typeorm/entities/Customer';
 import ICustomersRepository from '../repositories/ICustomersRepository';
 
 @injectable()

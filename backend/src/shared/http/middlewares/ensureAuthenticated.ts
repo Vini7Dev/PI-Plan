@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 
 import authConfig from '../../../configs/authConfig';
-import AdminsRepository from '../../../modules/users/repositories/implementations/AdminsRepository';
-import AssemblersRepository from '../../../modules/users/repositories/implementations/AssemblersRepository';
+import AdminsRepository from '../../../modules/users/typeorm/repositories/AdminsRepository';
+import AssemblersRepository from '../../../modules/users/typeorm/repositories/AssemblersRepository';
 import AppError from '../../errors/AppError';
 
 interface ITokenPayload {

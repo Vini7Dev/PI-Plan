@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import Assembler from '../../entities/Assembler';
+import Assembler from '../../typeorm/entities/Assembler';
 import IAssemblersRepository from '../../repositories/IAssemblersRepository';
 
 @injectable()

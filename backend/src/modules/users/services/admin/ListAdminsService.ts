@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
-import Admin from '../../entities/Admin';
+import Admin from '../../typeorm/entities/Admin';
 import IAdminsRepository from '../../repositories/IAdminsRepository';
 
 @injectable()
