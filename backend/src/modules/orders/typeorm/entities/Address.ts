@@ -1,8 +1,9 @@
 import {
-  Column, CreateDateColumn, DeleteDateColumn, PrimaryColumn, UpdateDateColumn,
+  Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn,
 } from 'typeorm';
 
 // Classe que contém os dados dos endereços salvos no banco de dados
+@Entity('address')
 class Address {
   @PrimaryColumn('uuid')
   id: string;
