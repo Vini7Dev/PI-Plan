@@ -2,6 +2,7 @@ import {
   Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryColumn, UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+
 import Order from '../../../orders/typeorm/entities/Order';
 
 // Classe que contém os dados dos clientes salvos no banco de dados
