@@ -9,6 +9,7 @@ import {
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import Customer from '../../../customers/typeorm/entities/Customer';
 import Address from './Address';
@@ -74,6 +75,14 @@ class Order {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  constructor() {
+    // Gerando o ID automáticamente se o objeto
+    // instanciando ainda não estiver salvo no banco
+    if (!this.id) {
+      this.id = uuidv4();
+    }
+  }
 }
 
 export default Order;
