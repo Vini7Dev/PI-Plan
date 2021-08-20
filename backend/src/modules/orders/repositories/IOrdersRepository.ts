@@ -5,7 +5,7 @@ interface IOrdersRepository {
   list(): Promise<Order[]>;
   create(data: ICreateOrderDTO): Promise<Order>;
   update(data: ICreateOrderDTO): Promise<Order>;
-  delete(): Promise<string>;
+  delete(id: string): Promise<string>;
 }
 
 export default IOrdersRepository;
