@@ -11,7 +11,7 @@ interface IAddress {
 
 interface ICreateOrderDTO {
   id?: string;
-  customer_id: string;
+  customer_id?: string;
   address: IAddress;
   current_status: number;
   current_proccess: number;

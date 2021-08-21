@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateOrderService from '../services/CreateOrderService';
 import ListOrdersService from '../services/ListOrdersService';
+import UpdateOrderService from '../services/UpdateOrderService';
 
 class OrdersController {
   // Listando todos os pedidos
@@ -57,7 +58,43 @@ class OrdersController {
 
   // Atualizando os dados de um pedido
   public async update(request: Request, response: Response): Promise<Response> {
-    throw new Error('not implemented.');
+    // Recuperando os dados do pedido no corpo da requisição e na rota
+    const { id } = request.params;
+    const {
+      address,
+      current_status,
+      current_proccess,
+      title,
+      description,
+      installation_environments,
+      start_date,
+      end_date,
+      mobile_delivery_forecast,
+      payment_method,
+      net_value,
+      expenses_value,
+    } = request.body;
+
+    // Executando o serviço para atualizar os dados do pedido
+    const updateOrderService = container.resolve(UpdateOrderService);
+
+    const updatedOrder = await updateOrderService.execute({
+      id,
+      address,
+      current_status,
+      current_proccess,
+      title,
+      description,
+      installation_environments,
+      start_date,
+      end_date,
+      mobile_delivery_forecast,
+      payment_method,
+      net_value,
+      expenses_value,
+    });
+
+    return response.status(201).json(updatedOrder);
   }
 
   // Apagando um pedido

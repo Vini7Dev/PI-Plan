@@ -40,6 +40,12 @@ orderRoutes.post(
 
 orderRoutes.put(
   '/:id',
+  ordersController.update,
+);
+
+/*
+orderRoutes.put(
+  '/:id',
   celebrate({
     [Segments.BODY]: {
       //
@@ -47,6 +53,7 @@ orderRoutes.put(
   }),
   ordersController.update,
 );
+*/
 
 orderRoutes.delete(
   '/:id',

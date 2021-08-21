@@ -10,6 +10,15 @@ class OrdersRepository implements IOrdersRepository {
     this.repository = getRepository(Order);
   }
 
+  // Buscando um pedido pelo id
+  public async findById(id: string): Promise<Order | undefined> {
+    const findedOrder = await this.repository.findOne(id, {
+      relations: ['address'],
+    });
+
+    return findedOrder;
+  }
+
   // Listando todos os pedidos
   public async list(): Promise<Order[]> {
     const ordersList = await this.repository.find({
@@ -59,7 +68,6 @@ class OrdersRepository implements IOrdersRepository {
   // Atualizando um pedido
   public async update({
     id,
-    customer_id,
     address,
     current_status,
     current_proccess,
@@ -75,7 +83,6 @@ class OrdersRepository implements IOrdersRepository {
   }: ICreateOrderDTO): Promise<Order> {
     const updatedOrder = await this.repository.save({
       id,
-      customer_id,
       address,
       current_status,
       current_proccess,
