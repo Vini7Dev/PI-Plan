@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateOrderService from '../services/CreateOrderService';
+import DeleteOrderService from '../services/DeleteOrderService';
 import ListOrdersService from '../services/ListOrdersService';
 import UpdateOrderService from '../services/UpdateOrderService';
 
@@ -99,7 +100,15 @@ class OrdersController {
 
   // Apagando um pedido
   public async delete(request: Request, response: Response): Promise<Response> {
-    throw new Error('not implemented.');
+    // Recuperando o id do pedido nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para remoção do pedido
+    const deleteOrderService = container.resolve(DeleteOrderService);
+
+    const responseMessage = await deleteOrderService.execute(id);
+
+    return response.json({ message: responseMessage });
   }
 }
 
