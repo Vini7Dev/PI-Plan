@@ -23,6 +23,12 @@ orderRoutes.get(
 
 orderRoutes.post(
   '/',
+  ordersController.create,
+);
+
+/*
+orderRoutes.post(
+  '/',
   celebrate({
     [Segments.BODY]: {
       //
@@ -30,6 +36,7 @@ orderRoutes.post(
   }),
   ordersController.create,
 );
+*/
 
 orderRoutes.put(
   '/:id',
