@@ -72,21 +72,12 @@ class CreateOrderService {
       throw new AppError('Customer document not registered.');
     }
 
-    // Criando o objeto de endereço
-    const address = new Address();
-    address.cep = cep;
-    address.street = street;
-    address.number = number;
-    address.complement = complement;
-    address.district = district;
-    address.city = city;
-    address.uf = uf;
-    address.country = country;
-
     // Cadastrando o pedido no banco
     const orderCreated = await this.ordersRepository.create({
       customer_id,
-      address,
+      address: {
+        cep, street, number, complement, district, city, uf, country,
+      },
       current_status,
       current_proccess,
       title,
