@@ -12,7 +12,9 @@ class OrdersRepository implements IOrdersRepository {
 
   // Listando todos os pedidos
   public async list(): Promise<Order[]> {
-    const ordersList = await this.repository.find();
+    const ordersList = await this.repository.find({
+      relations: ['address'],
+    });
 
     return ordersList;
   }

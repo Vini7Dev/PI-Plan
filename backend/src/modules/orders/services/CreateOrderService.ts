@@ -1,8 +1,8 @@
 import { inject, injectable } from 'tsyringe';
+
 import AppError from '../../../shared/errors/AppError';
 import ICustomersRepository from '../../customers/repositories/ICustomersRepository';
 import IOrdersRepository from '../repositories/IOrdersRepository';
-import Address from '../typeorm/entities/Address';
 import Order from '../typeorm/entities/Order';
 
 interface IAddress {
@@ -43,6 +43,7 @@ class CreateOrderService {
     private customersRepository: ICustomersRepository,
   ) {}
 
+  // Serviço para cadastrar um pedido
   public async execute({
     customer_id,
     address: {

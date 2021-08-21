@@ -1,11 +1,17 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 import CreateOrderService from '../services/CreateOrderService';
+import ListOrdersService from '../services/ListOrdersService';
 
 class OrdersController {
   // Listando todos os pedidos
   public async get(request: Request, response: Response): Promise<Response> {
-    throw new Error('not implemented.');
+    // Executando o serviço de listagem dos pedidos
+    const listOrdersService = container.resolve(ListOrdersService);
+
+    const ordersList = await listOrdersService.execute();
+
+    return response.json(ordersList);
   }
 
   // Cadastrando um novo pedido
