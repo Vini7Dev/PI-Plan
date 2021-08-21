@@ -4,6 +4,7 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
   OneToOne,
   PrimaryColumn,
@@ -30,8 +31,9 @@ class Order {
   @Column('uuid')
   address_id: string;
 
-  @OneToOne(() => Address)
+  @OneToOne(() => Address, (address) => address.order, { cascade: true })
   @JoinColumn({ name: 'address_id' })
+  @JoinTable()
   address: Address;
 
   @Column('int')

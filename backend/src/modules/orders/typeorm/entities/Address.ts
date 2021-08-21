@@ -2,12 +2,15 @@ import {
   Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import Order from './Order';
 
 // Classe que contém os dados dos endereços salvos no banco de dados
 @Entity('address')
 class Address {
   @PrimaryColumn('uuid')
   id: string;
+
+  order: Order;
 
   @Column()
   cep: string;
