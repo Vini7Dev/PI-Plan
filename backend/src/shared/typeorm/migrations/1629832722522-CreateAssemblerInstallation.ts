@@ -21,6 +21,10 @@ export default class CreateAssemblerInstallation1629832722522 implements Migrati
           name: 'commission_percentage',
           type: 'int',
         },
+        {
+          name: 'created_at',
+          type: 'timestamp with time zone',
+        },
       ],
     }));
 
