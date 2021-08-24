@@ -4,11 +4,16 @@ import {
   DeleteDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
   ManyToOne,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
+
 import Customer from '../../../customers/typeorm/entities/Customer';
+import Address from './Address';
 
 // Classe que contém os dados dos pedidos salvos no banco de dados
 @Entity('order')
@@ -23,6 +28,14 @@ class Order {
   @JoinColumn({ name: 'customer_id' })
   customer: Customer;
 
+  @Column('uuid')
+  address_id: string;
+
+  @OneToOne(() => Address, (address) => address.order, { cascade: true })
+  @JoinColumn({ name: 'address_id' })
+  @JoinTable()
+  address: Address;
+
   @Column('int')
   current_status: number;
 
@@ -36,34 +49,16 @@ class Order {
   description: string;
 
   @Column()
-  cep: string;
-
-  @Column()
-  street: string;
-
-  @Column('int')
-  number: number;
-
-  @Column()
-  complement: string;
-
-  @Column()
-  district: string;
-
-  @Column()
-  city: string;
-
-  @Column()
-  uf: string;
-
-  @Column()
-  country: string;
-
-  @Column()
   installation_environments: string;
 
-  @Column()
+  @Column('date')
   mobile_delivery_forecast: string;
+
+  @Column('date')
+  start_date: string;
+
+  @Column('date')
+  end_date: string;
 
   @Column()
   payment_method: string;
@@ -82,6 +77,14 @@ class Order {
 
   @DeleteDateColumn()
   deleted_at: Date;
+
+  constructor() {
+    // Gerando o ID automáticamente se o objeto
+    // instanciando ainda não estiver salvo no banco
+    if (!this.id) {
+      this.id = uuidv4();
+    }
+  }
 }
 
 export default Order;

@@ -2,8 +2,7 @@ import {
   MigrationInterface, QueryRunner, Table, TableForeignKey,
 } from 'typeorm';
 
-// Criando a tabela de pedidos
-export class CreateOrders1629296441996 implements MigrationInterface {
+export default class CreateOrder1629459395197 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(new Table({
       name: 'order',
@@ -15,6 +14,10 @@ export class CreateOrders1629296441996 implements MigrationInterface {
         },
         {
           name: 'customer_id',
+          type: 'uuid',
+        },
+        {
+          name: 'address_id',
           type: 'uuid',
         },
         {
@@ -36,49 +39,17 @@ export class CreateOrders1629296441996 implements MigrationInterface {
           isNullable: true,
         },
         {
-          name: 'cep',
-          type: 'char',
-          length: '9',
-        },
-        {
-          name: 'street',
-          type: 'varchar',
-          length: '100',
-        },
-        {
-          name: 'number',
-          type: 'int',
-          isNullable: true,
-        },
-        {
-          name: 'complement',
-          type: 'varchar',
-          length: '50',
-          isNullable: true,
-        },
-        {
-          name: 'district',
-          type: 'varchar',
-          length: '60',
-        },
-        {
-          name: 'city',
-          type: 'varchar',
-          length: '45',
-        },
-        {
-          name: 'uf',
-          type: 'char',
-          length: '2',
-        },
-        {
-          name: 'country',
-          type: 'varchar',
-          length: '45',
-        },
-        {
           name: 'installation_environments',
           type: 'varchar',
+        },
+        {
+          name: 'start_date',
+          type: 'date',
+        },
+        {
+          name: 'end_date',
+          type: 'date',
+          isNullable: true,
         },
         {
           name: 'mobile_delivery_forecast',
@@ -119,9 +90,18 @@ export class CreateOrders1629296441996 implements MigrationInterface {
     }));
 
     await queryRunner.createForeignKey('order', new TableForeignKey({
-      name: 'fk_orders_customer_id',
+      name: 'fk_order_customer_id',
       columnNames: ['customer_id'],
       referencedTableName: 'customer',
+      referencedColumnNames: ['id'],
+      onDelete: 'CASCADE',
+      onUpdate: 'CASCADE',
+    }));
+
+    await queryRunner.createForeignKey('order', new TableForeignKey({
+      name: 'fk_order_address_id',
+      columnNames: ['address_id'],
+      referencedTableName: 'address',
       referencedColumnNames: ['id'],
       onDelete: 'CASCADE',
       onUpdate: 'CASCADE',
@@ -129,7 +109,9 @@ export class CreateOrders1629296441996 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropForeignKey('order', 'fk_orders_customer_id');
+    await queryRunner.dropForeignKey('order', 'fk_order_address_id');
+
+    await queryRunner.dropForeignKey('order', 'fk_order_customer_id');
 
     await queryRunner.dropTable('order');
   }

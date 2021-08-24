@@ -9,6 +9,9 @@ import AssemblersRepository from '../../modules/users/typeorm/repositories/Assem
 import ICustomersRepository from '../../modules/customers/repositories/ICustomersRepository';
 import CustomersRepository from '../../modules/customers/typeorm/repositories/CustomersRepository';
 
+import IOrdersRepository from '../../modules/orders/repositories/IOrdersRepository';
+import OrdersRepository from '../../modules/orders/typeorm/repositories/OrdersRepository';
+
 // Importando os containers dos provedores
 import './providers';
 
@@ -23,4 +26,8 @@ container.registerSingleton<IAssemblersRepository>(
 
 container.registerSingleton<ICustomersRepository>(
   'CustomersRepository', CustomersRepository,
+);
+
+container.registerSingleton<IOrdersRepository>(
+  'OrdersRepository', OrdersRepository,
 );
