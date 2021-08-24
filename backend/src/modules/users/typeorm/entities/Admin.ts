@@ -1,9 +1,11 @@
+import User from './User';
+
 import {
   Column,
   Entity,
+  JoinColumn,
 } from 'typeorm';
 
-import User from './User';
 
 // Representação da entidade administrador no banco de dados que herda os dados de usuário
 @Entity('admin')
