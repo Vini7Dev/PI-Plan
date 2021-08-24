@@ -13,6 +13,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import Customer from '../../../customers/typeorm/entities/Customer';
+import Installation from '../../../installations/typeorm/entities/Installation';
 import Address from './Address';
 
 // Classe que contém os dados dos pedidos salvos no banco de dados
@@ -35,6 +36,8 @@ class Order {
   @JoinColumn({ name: 'address_id' })
   @JoinTable()
   address: Address;
+
+  installation: Installation;
 
   @Column('int')
   current_status: number;

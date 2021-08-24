@@ -10,14 +10,14 @@ class ToDo {
   @PrimaryColumn('uuid')
   id: string;
 
-  @Column()
+  @Column('uuid')
   admin_id: string;
 
   @ManyToOne(() => Admin)
   @JoinColumn({ name: 'admin_id' })
   admin: Admin;
 
-  @Column()
+  @Column('boolean')
   done: boolean;
 
   @Column()
