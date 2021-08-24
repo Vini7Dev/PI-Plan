@@ -4,6 +4,7 @@ import {
 
 import Admin from '../../../users/typeorm/entities/Admin';
 
+// Representação da entidade tarefa no banco de dados
 @Entity('todo')
 class ToDo {
   @PrimaryColumn('uuid')
