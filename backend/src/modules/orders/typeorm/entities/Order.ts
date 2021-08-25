@@ -55,7 +55,7 @@ class Order {
   installation_environments: string;
 
   @Column('date')
-  mobile_delivery_forecast: string;
+  furniture_delivery_forecast: string;
 
   @Column('date')
   start_date: string;

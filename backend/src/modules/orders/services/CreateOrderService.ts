@@ -26,7 +26,7 @@ interface IRequest {
   installation_environments: string;
   start_date: string;
   end_date?: string;
-  mobile_delivery_forecast?: string;
+  furniture_delivery_forecast?: string;
   payment_method: string;
   net_value: number;
   expenses_value: number;
@@ -56,7 +56,7 @@ class CreateOrderService {
     installation_environments,
     start_date,
     end_date,
-    mobile_delivery_forecast,
+    furniture_delivery_forecast,
     payment_method,
     net_value,
     expenses_value,
@@ -86,7 +86,7 @@ class CreateOrderService {
       installation_environments,
       start_date,
       end_date,
-      mobile_delivery_forecast,
+      furniture_delivery_forecast,
       payment_method,
       net_value,
       expenses_value,

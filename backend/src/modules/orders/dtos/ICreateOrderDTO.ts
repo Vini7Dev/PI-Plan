@@ -20,7 +20,7 @@ interface ICreateOrderDTO {
   installation_environments: string;
   start_date: string;
   end_date?: string;
-  mobile_delivery_forecast?: string;
+  furniture_delivery_forecast?: string;
   payment_method: string;
   net_value: number;
   expenses_value: number;

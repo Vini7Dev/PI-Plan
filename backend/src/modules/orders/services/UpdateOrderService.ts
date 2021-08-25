@@ -25,7 +25,7 @@ interface IRequest {
   installation_environments: string;
   start_date: string;
   end_date?: string;
-  mobile_delivery_forecast?: string;
+  furniture_delivery_forecast?: string;
   payment_method: string;
   net_value: number;
   expenses_value: number;
@@ -52,7 +52,7 @@ class UpdateOrderService {
     installation_environments,
     start_date,
     end_date,
-    mobile_delivery_forecast,
+    furniture_delivery_forecast,
     payment_method,
     net_value,
     expenses_value,
@@ -84,7 +84,7 @@ class UpdateOrderService {
     orderToUpdate.installation_environments = installation_environments;
     orderToUpdate.start_date = start_date;
     orderToUpdate.end_date = end_date || '';
-    orderToUpdate.mobile_delivery_forecast = mobile_delivery_forecast || '';
+    orderToUpdate.furniture_delivery_forecast = furniture_delivery_forecast || '';
     orderToUpdate.payment_method = payment_method;
     orderToUpdate.net_value = net_value;
     orderToUpdate.expenses_value = expenses_value;

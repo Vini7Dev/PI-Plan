@@ -52,7 +52,7 @@ export default class CreateOrder1629459395197 implements MigrationInterface {
           isNullable: true,
         },
         {
-          name: 'mobile_delivery_forecast',
+          name: 'furniture_delivery_forecast',
           type: 'date',
           isNullable: true,
         },
