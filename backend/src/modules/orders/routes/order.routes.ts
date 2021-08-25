@@ -56,7 +56,7 @@ orderRoutes.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      address: {
+      address: Joi.object().required().keys({
         cep: Joi.string().length(9).required(),
         street: Joi.string().required(),
         number: Joi.number(),
@@ -65,7 +65,7 @@ orderRoutes.put(
         city: Joi.string().required(),
         uf: Joi.string().length(2).required(),
         country: Joi.string().required(),
-      },
+      }),
       current_status: Joi.number().required(),
       current_proccess: Joi.number().required(),
       title: Joi.string().required(),
