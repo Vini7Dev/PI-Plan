@@ -23,37 +23,64 @@ orderRoutes.get(
 
 orderRoutes.post(
   '/',
-  ordersController.create,
-);
-
-/*
-orderRoutes.post(
-  '/',
   celebrate({
     [Segments.BODY]: {
-      //
+      customer_id: Joi.string().uuid().required(),
+      address: {
+        cep: Joi.string().length(9).required(),
+        street: Joi.string().required(),
+        number: Joi.number(),
+        complement: Joi.string(),
+        district: Joi.string().required(),
+        city: Joi.string().required(),
+        uf: Joi.string().length(2).required(),
+        country: Joi.string().required(),
+      },
+      current_status: Joi.number().required(),
+      current_proccess: Joi.number().required(),
+      title: Joi.string().required(),
+      description: Joi.string(),
+      installation_environments: Joi.string().required(),
+      start_date: Joi.string().required(),
+      end_date: Joi.string(),
+      furniture_delivery_forecast: Joi.string(),
+      payment_method: Joi.string().required(),
+      net_value: Joi.string().required(),
+      expenses_value: Joi.string().required(),
     },
   }),
   ordersController.create,
 );
-*/
 
-orderRoutes.put(
-  '/:id',
-  ordersController.update,
-);
-
-/*
 orderRoutes.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      //
+      address: {
+        cep: Joi.string().length(9).required(),
+        street: Joi.string().required(),
+        number: Joi.number(),
+        complement: Joi.string(),
+        district: Joi.string().required(),
+        city: Joi.string().required(),
+        uf: Joi.string().length(2).required(),
+        country: Joi.string().required(),
+      },
+      current_status: Joi.number().required(),
+      current_proccess: Joi.number().required(),
+      title: Joi.string().required(),
+      description: Joi.string(),
+      installation_environments: Joi.string().required(),
+      start_date: Joi.string().required(),
+      end_date: Joi.string(),
+      furniture_delivery_forecast: Joi.string(),
+      payment_method: Joi.string().required(),
+      net_value: Joi.string().required(),
+      expenses_value: Joi.string().required(),
     },
   }),
   ordersController.update,
 );
-*/
 
 orderRoutes.delete(
   '/:id',
