@@ -76,7 +76,7 @@ class AssemblersController {
 
     const responseMessage = await deleteAssemblerService.execute(id);
 
-    return response.status(204).json({ message: responseMessage });
+    return response.json({ message: responseMessage });
   }
 }
 

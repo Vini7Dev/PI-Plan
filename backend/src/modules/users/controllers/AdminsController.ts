@@ -86,7 +86,7 @@ class AdminsController {
 
     const responseMessage = await deleteAdminService.execute(id);
 
-    return response.status(204).json({ message: responseMessage });
+    return response.json({ message: responseMessage });
   }
 }
 
