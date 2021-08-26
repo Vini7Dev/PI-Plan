@@ -10,7 +10,7 @@ interface ICreateInstallationDTO {
   done: boolean;
   start_date: string;
   end_date?: string;
-  completation_forecast: string;
+  completion_forecast: string;
   price: number;
   assembler_installation: IAssemblerInstallation[];
 }
