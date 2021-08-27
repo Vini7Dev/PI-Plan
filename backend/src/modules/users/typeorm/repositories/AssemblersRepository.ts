@@ -18,6 +18,13 @@ class AssemblersRepository implements IAssemblersRepository {
     return assembler;
   }
 
+  // Buscando vários montadores pelo id
+  public async findManyById(ids: string[]): Promise<Assembler[]> {
+    const findedAssembler = await this.repository.findByIds(ids);
+
+    return findedAssembler;
+  }
+
   // Buscando um montador pelo seu username
   public async findByUsername(username: string): Promise<Assembler | undefined> {
     const findedAssembers = await this.repository.findOne({ username });

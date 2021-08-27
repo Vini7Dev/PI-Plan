@@ -3,6 +3,7 @@ import Assembler from '../typeorm/entities/Assembler';
 
 interface IAssemblersRepository {
     findById(id: string): Promise<Assembler | undefined>;
+    findManyById(ids: string[]): Promise<Assembler[]>;
     findByUsername(username: string): Promise<Assembler | undefined>;
     create(data: ICreateAssemblerDTO): Promise<Assembler>;
     delete(id: string): Promise<string>;
