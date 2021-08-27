@@ -20,7 +20,7 @@ class InstallationsRepository implements IInstallationsRepository {
   // Listando todas as instalações salvas
   public async list(): Promise<Installation[]> {
     const installationList = await this.repository.find({
-      relations: ['order', 'assemblers_installation'],
+      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
     });
 
     return installationList;
