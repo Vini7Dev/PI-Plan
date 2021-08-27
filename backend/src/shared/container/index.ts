@@ -14,6 +14,8 @@ import OrdersRepository from '../../modules/orders/typeorm/repositories/OrdersRe
 
 // Importando os containers dos provedores
 import './providers';
+import IInstallationsRepository from '../../modules/installations/repositories/IInstallationsRepository';
+import InstallationsRepository from '../../modules/installations/typeorm/repositories/InstallationsRepository';
 
 // Registrando os repositórios nos seus respectivos containers
 container.registerSingleton<IAdminsRepository>(
@@ -30,4 +32,8 @@ container.registerSingleton<ICustomersRepository>(
 
 container.registerSingleton<IOrdersRepository>(
   'OrdersRepository', OrdersRepository,
+);
+
+container.registerSingleton<IInstallationsRepository>(
+  'InstallationsRepository', InstallationsRepository,
 );
