@@ -1,18 +1,24 @@
 import { getRepository, Repository } from 'typeorm';
 import ICreateInstallationDTO from '../../dtos/ICreateInstallationDTO';
 import IInstallationsRepository from '../../repositories/IInstallationsRepository';
+import AssemblerInstallation from '../entities/AssemblerInstallation';
 import Installation from '../entities/Installation';
 
 class InstallationsRepository implements IInstallationsRepository {
   private repository: Repository<Installation>;
 
+  private assembsIntallRepository: Repository<AssemblerInstallation>;
+
   constructor() {
     this.repository = getRepository(Installation);
+    this.assembsIntallRepository = getRepository(AssemblerInstallation);
   }
 
   // Buscando uma instalação pelo id
   public async findById(id: string): Promise<Installation | undefined> {
-    const findedInstallation = await this.repository.findOne(id);
+    const findedInstallation = await this.repository.findOne(id, {
+      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
+    });
 
     return findedInstallation;
   }
@@ -60,6 +66,7 @@ class InstallationsRepository implements IInstallationsRepository {
     end_date,
     completion_forecast,
     price,
+    assemblers_installation,
   }: ICreateInstallationDTO): Promise<Installation> {
     const updatedInstallation = await this.repository.save({
       id,
@@ -69,6 +76,7 @@ class InstallationsRepository implements IInstallationsRepository {
       end_date,
       completion_forecast,
       price,
+      assemblers_installation,
     });
 
     return updatedInstallation;
@@ -79,6 +87,13 @@ class InstallationsRepository implements IInstallationsRepository {
     await this.repository.softDelete(id);
 
     return 'Instalação apagada.';
+  }
+
+  // Removendo os montadores pelo id da instalação
+  public async removeAssemblersByInstallationId(installation_id: string): Promise<void> {
+    await this.assembsIntallRepository.delete({
+      installation_id,
+    });
   }
 }
 

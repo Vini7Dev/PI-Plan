@@ -7,6 +7,7 @@ interface IInstallationsRepository {
   create(data: ICreateInstallationDTO): Promise<Installation>;
   update(data: ICreateInstallationDTO): Promise<Installation>;
   delete(id: string): Promise<string>;
+  removeAssemblersByInstallationId(installation_id: string): Promise<void>;
 }
 
 export default IInstallationsRepository;

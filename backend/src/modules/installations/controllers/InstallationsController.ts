@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import CreateInstallationsService from '../services/CreateInstallationsService';
 import DeleteInstallationService from '../services/DeleteInstallationService';
 import ListInstallationsServices from '../services/ListInstallationsServices';
+import UpdateInstallationService from '../services/UpdateInstallationService';
 
 class InstallationsController {
   public async get(request: Request, response: Response): Promise<Response> {
@@ -44,7 +45,31 @@ class InstallationsController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    throw new Error('method not implemented.');
+    // Recuperando os dados da instalação na requisição
+    const { id } = request.params;
+    const {
+      done,
+      start_date,
+      end_date,
+      completion_forecast,
+      price,
+      assemblers_installation,
+    } = request.body;
+
+    // Executando o serviço para o cadastro de instalação
+    const updateInstallationsService = container.resolve(UpdateInstallationService);
+
+    const updatedInstallation = await updateInstallationsService.execute({
+      id,
+      done,
+      start_date,
+      end_date,
+      completion_forecast,
+      price,
+      assemblers_installation,
+    });
+
+    return response.status(201).json(updatedInstallation);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {

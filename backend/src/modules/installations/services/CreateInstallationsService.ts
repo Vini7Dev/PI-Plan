@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 import AppError from '../../../shared/errors/AppError';
 import IOrdersRepository from '../../orders/repositories/IOrdersRepository';
-import IAssemblersRelations from '../../users/repositories/IAssemblersRepository';
+import IAssemblersRepository from '../../users/repositories/IAssemblersRepository';
 import IInstallationsRepository from '../repositories/IInstallationsRepository';
 import Installation from '../typeorm/entities/Installation';
 
@@ -31,7 +31,7 @@ class CreateInstallationsService {
     private ordersRepository: IOrdersRepository,
 
     @inject('AssemblersRepository')
-    private assemblersRepository: IAssemblersRelations,
+    private assemblersRepository: IAssemblersRepository,
   ) {}
 
   public async execute({
