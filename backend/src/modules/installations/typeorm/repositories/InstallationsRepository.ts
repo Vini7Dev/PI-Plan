@@ -32,14 +32,16 @@ class InstallationsRepository implements IInstallationsRepository {
     end_date,
     completion_forecast,
     price,
+    assemblers_installation,
   }: ICreateInstallationDTO): Promise<Installation> {
-    const createdInstallation = await this.repository.create({
+    const createdInstallation = this.repository.create({
       order_id,
       done,
       start_date,
       end_date,
       completion_forecast,
       price,
+      assemblers_installation,
     });
 
     await this.repository.save(createdInstallation);
