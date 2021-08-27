@@ -1,10 +1,17 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+
 import CreateInstallationsService from '../services/CreateInstallationsService';
+import ListInstallationsServices from '../services/ListInstallationsServices';
 
 class InstallationsController {
   public async get(request: Request, response: Response): Promise<Response> {
-    throw new Error('method not implemented.');
+    // Executando o serviço de listagem das instalações
+    const listInstallationsServices = container.resolve(ListInstallationsServices);
+
+    const installationsList = await listInstallationsServices.execute();
+
+    return response.json(installationsList);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
