@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreateInstallationsService from '../services/CreateInstallationsService';
+import DeleteInstallationService from '../services/DeleteInstallationService';
 import ListInstallationsServices from '../services/ListInstallationsServices';
 
 class InstallationsController {
@@ -47,7 +48,15 @@ class InstallationsController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    throw new Error('method not implemented.');
+    // Recuperando o id da instalação nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para apagar a instalação
+    const deleteInstallationService = container.resolve(DeleteInstallationService);
+
+    const responseMessage = await deleteInstallationService.execute(id);
+
+    return response.json(responseMessage);
   }
 }
 

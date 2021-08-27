@@ -16,6 +16,7 @@ class Admin extends User {
   @OneToMany(
     () => AssemblerInstallation,
     (assembler_installation) => assembler_installation.assembler,
+    { cascade: true },
   )
   assembler_installations: AssemblerInstallation[];
 
