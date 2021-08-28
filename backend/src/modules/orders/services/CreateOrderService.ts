@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import AppError from '../../../shared/errors/AppError';
+import IDateProvider from '../../../shared/container/providers/DateProvider/models/IDateProvider';
 import ICustomersRepository from '../../customers/repositories/ICustomersRepository';
 import IOrdersRepository from '../repositories/IOrdersRepository';
 import Order from '../typeorm/entities/Order';
@@ -41,6 +42,10 @@ class CreateOrderService {
 
     @inject('CustomersRepository')
     private customersRepository: ICustomersRepository,
+
+    // Provetor para trabalhar com datas
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   // Serviço para cadastrar um pedido
@@ -62,7 +67,15 @@ class CreateOrderService {
     expenses_value,
   }: IRequest): Promise<Order> {
     // Verificar se a data de início é menor que a de finalização
-    const startDateIsBefore = false;
+    if (end_date) {
+      const startDateParsed = this.dateProvider.parseStringDate(start_date);
+      const endDateParsed = this.dateProvider.parseStringDate(end_date);
+      const startDateIsBefore = this.dateProvider.isBefore(startDateParsed, endDateParsed);
+
+      if (!startDateIsBefore) {
+        throw new AppError('Start date must be before than end date.');
+      }
+    }
 
     // Verificar se o cliente está cadastrado
     const customer = await this.customersRepository.findById(customer_id);

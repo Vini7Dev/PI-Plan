@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
-import AppError from '../../../shared/errors/AppError';
 
+import AppError from '../../../shared/errors/AppError';
+import IDateProvider from '../../../shared/container/providers/DateProvider/models/IDateProvider';
 import IOrdersRepository from '../repositories/IOrdersRepository';
 import Order from '../typeorm/entities/Order';
 
@@ -37,6 +38,10 @@ class UpdateOrderService {
     // Repositório dos pedidos
     @inject('OrdersRepository')
     private ordersRepository: IOrdersRepository,
+
+    // Provetor para trabalhar com datas
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   // Serviço para atualizar os dados de um pedido
@@ -57,6 +62,17 @@ class UpdateOrderService {
     net_value,
     expenses_value,
   }: IRequest): Promise<Order> {
+    // Verificar se a data de início é menor que a de finalização
+    if (end_date) {
+      const startDateParsed = this.dateProvider.parseStringDate(start_date);
+      const endDateParsed = this.dateProvider.parseStringDate(end_date);
+      const startDateIsBefore = this.dateProvider.isBefore(startDateParsed, endDateParsed);
+
+      if (!startDateIsBefore) {
+        throw new AppError('Start date must be before than end date.');
+      }
+    }
+
     // Verificando se o pedido existe
     const orderToUpdate = await this.ordersRepository.findById(id);
 

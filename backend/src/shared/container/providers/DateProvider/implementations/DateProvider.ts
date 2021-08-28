@@ -19,7 +19,7 @@ class DateProvider implements IDateProvider {
 
   // Verificando se uma data é anterior a outra
   public isBefore(startDate: Date, endDate: Date): boolean {
-    return startDate < endDate;
+    return startDate <= endDate;
   }
 }
 
