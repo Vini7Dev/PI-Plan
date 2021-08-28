@@ -23,11 +23,38 @@ installationRoutes.get(
 
 installationRoutes.post(
   '/',
+  celebrate({
+    [Segments.BODY]: {
+      order_id: Joi.string().uuid().required(),
+      done: Joi.boolean().required(),
+      start_date: Joi.string().length(10).required(),
+      end_date: Joi.string().length(10),
+      completion_forecast: Joi.string().length(10).required(),
+      price: Joi.number().required(),
+      assemblers_installation: Joi.array().min(1).items(Joi.object({
+        assembler_id: Joi.string().uuid().required(),
+        commission_percentage: Joi.number().required().min(0),
+      }).required()).required(),
+    },
+  }),
   installationsController.create,
 );
 
 installationRoutes.put(
   '/:id',
+  celebrate({
+    [Segments.BODY]: {
+      done: Joi.boolean().required(),
+      start_date: Joi.string().length(10).required(),
+      end_date: Joi.string().length(10),
+      completion_forecast: Joi.string().length(10).required(),
+      price: Joi.number().required(),
+      assemblers_installation: Joi.array().min(1).items(Joi.object({
+        assembler_id: Joi.string().uuid().required(),
+        commission_percentage: Joi.number().required().min(0),
+      }).required()).required(),
+    },
+  }),
   installationsController.update,
 );
 
