@@ -1,11 +1,12 @@
 import { inject, injectable } from 'tsyringe';
 
+import AppError from '../../../shared/errors/AppError';
 import IOrdersRepository from '../../orders/repositories/IOrdersRepository';
 import IInstallationsRepository from '../repositories/IInstallationsRepository';
 import Installation from '../typeorm/entities/Installation';
 import IAssemblersRepository from '../../users/repositories/IAssemblersRepository';
-import AppError from '../../../shared/errors/AppError';
 import AssemblerInstallation from '../typeorm/entities/AssemblerInstallation';
+import IDateProvider from '../../../shared/container/providers/DateProvider/models/IDateProvider';
 
 interface IAssemblersRelation {
   assembler_id: string;
@@ -34,6 +35,10 @@ class UpdateInstallationService {
 
     @inject('AssemblersRepository')
     private assemblersRepository: IAssemblersRepository,
+
+    // Provetor para trabalhar com datas
+    @inject('DateProvider')
+    private dateProvider: IDateProvider,
   ) {}
 
   public async execute({
@@ -45,6 +50,26 @@ class UpdateInstallationService {
     price,
     assemblers_installation,
   }: IRequest): Promise<Installation> {
+    // Verificar se a data de início é menor que a de finalização e da previsão para finalização
+    const startDateParsed = this.dateProvider.parseStringDate(start_date);
+    const endDateForecastParsed = this.dateProvider.parseStringDate(completion_forecast);
+    const startDateIsBeforeEndDateForecast = this.dateProvider.isBefore(
+      startDateParsed, endDateForecastParsed,
+    );
+
+    if (!startDateIsBeforeEndDateForecast) {
+      throw new AppError('Start date must be before than end date forecast.');
+    }
+
+    if (end_date) {
+      const endDateParsed = this.dateProvider.parseStringDate(end_date);
+      const startDateIsBeforeEndDate = this.dateProvider.isBefore(startDateParsed, endDateParsed);
+
+      if (!startDateIsBeforeEndDate) {
+        throw new AppError('Start date must be before than end date.');
+      }
+    }
+
     // Verificando se a instalação existe
     const installationToUpdate = await this.installationsRepository.findById(id);
 
