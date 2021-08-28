@@ -61,6 +61,9 @@ class CreateOrderService {
     net_value,
     expenses_value,
   }: IRequest): Promise<Order> {
+    // Verificar se a data de início é menor que a de finalização
+    const startDateIsBefore = false;
+
     // Verificar se o cliente está cadastrado
     const customer = await this.customersRepository.findById(customer_id);
 
