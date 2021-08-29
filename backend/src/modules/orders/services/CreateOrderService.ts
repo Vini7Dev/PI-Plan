@@ -108,6 +108,11 @@ class CreateOrderService {
       expenses_value,
     });
 
+    // Desable customer send contact alert
+    customer.send_contact_alert = false;
+
+    await this.customersRepository.update(customer);
+
     return orderCreated;
   }
 }
