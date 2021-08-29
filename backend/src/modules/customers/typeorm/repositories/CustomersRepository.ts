@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { createQueryBuilder, getRepository, Repository } from 'typeorm';
 
 import ICustomersRepository from '../../repositories/ICustomersRepository';
 import Customer from '../entities/Customer';
@@ -23,6 +23,23 @@ class CustomersRepository implements ICustomersRepository {
       const customer = await this.repository.findOne({ document });
 
       return customer;
+    }
+
+    // Buscando os clientes que precisa emitir o alerta de contato em uma certa data
+    public async findToSendAlertContactByDate(dateComparation: Date): Promise<Customer[]> {
+      const day = dateComparation.getDate();
+      const month = dateComparation.getMonth() + 1;
+      const year = dateComparation.getFullYear();
+
+      const querryBuilderResult = await this.repository
+        .createQueryBuilder()
+        .select('customer')
+        .from(Customer, 'customer')
+        .where('customer.send_contact_alert = :value', { value: true })
+        .andWhere('customer.next_contact_date < :date', { date: `${year}-${month}-${day}` })
+        .getMany();
+
+      return querryBuilderResult;
     }
 
     // Listando os clientees
