@@ -19,6 +19,15 @@ class OrdersRepository implements IOrdersRepository {
     return findedOrder;
   }
 
+  // Listando todos os pedidos em andamento
+  public async listInProgress(): Promise<Order[]> {
+    const inProgressOrders = await this.repository.find({
+      where: { current_status: 0 },
+    });
+
+    return inProgressOrders;
+  }
+
   // Listando todos os pedidos
   public async list(): Promise<Order[]> {
     const ordersList = await this.repository.find({
