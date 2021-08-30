@@ -26,7 +26,15 @@ class ListAdminRemindersByDateService {
   ) {}
 
   public async execute(date: string): Promise<IResponse[]> {
-    throw new Error('Method not implemented.');
+    const [stringDay, stringMonth, stringYear] = date.split('-');
+
+    const contactAlertsClients = await this.customersRepository.findToSendAlertContactByDate({
+      day: Number(stringDay),
+      month: Number(stringMonth),
+      year: Number(stringYear),
+    });
+
+    return contactAlertsClients as unknown as IResponse[];
   }
 }
 
