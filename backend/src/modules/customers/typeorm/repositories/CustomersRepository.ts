@@ -1,8 +1,9 @@
-import { createQueryBuilder, getRepository, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 
 import ICustomersRepository from '../../repositories/ICustomersRepository';
 import Customer from '../entities/Customer';
 import ICreateCustomerDTO from '../../dtos/ICreateCustomerDTO';
+import IDatePropsDTO from '../../dtos/IDatePropsDTO';
 
 class CustomersRepository implements ICustomersRepository {
     private repository: Repository<Customer>;
@@ -26,11 +27,11 @@ class CustomersRepository implements ICustomersRepository {
     }
 
     // Buscando os clientes que precisa emitir o alerta de contato em uma certa data
-    public async findToSendAlertContactByDate(dateComparation: Date): Promise<Customer[]> {
-      const day = dateComparation.getDate();
-      const month = dateComparation.getMonth() + 1;
-      const year = dateComparation.getFullYear();
-
+    public async findToSendAlertContactByDate({
+      day,
+      month,
+      year,
+    }: IDatePropsDTO): Promise<Customer[]> {
       const querryBuilderResult = await this.repository
         .createQueryBuilder()
         .select('customer')
