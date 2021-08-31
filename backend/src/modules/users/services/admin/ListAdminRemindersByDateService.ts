@@ -50,7 +50,7 @@ class ListAdminRemindersByDateService {
 
     odersInProgress.forEach((order) => {
       const indexFinded = installationsInProgress.findIndex(
-        (installation) => installation.order_id === order.id,
+        (installation) => installation.order_id === order.id && !installation.done,
       );
 
       if (indexFinded === -1) {

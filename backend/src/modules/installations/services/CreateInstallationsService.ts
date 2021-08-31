@@ -76,6 +76,13 @@ class CreateInstallationsService {
       throw new AppError('Order not found.', 404);
     }
 
+    // Verificando se já existe uma instalação agendada para este pedido
+    const installationToThisOrder = await this.installationsRepository.findByOrderId(order_id);
+
+    if (installationToThisOrder) {
+      throw new AppError('This order already have an installation registered.');
+    }
+
     // Verificando se os montadores informados existem
     const assemblersIds = assemblers_installation.map((assmb_inst) => assmb_inst.assembler_id);
 

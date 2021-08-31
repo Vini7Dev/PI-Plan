@@ -23,6 +23,17 @@ class InstallationsRepository implements IInstallationsRepository {
     return findedInstallation;
   }
 
+  // Buscando uma instalação pelo id do pedido
+  public async findByOrderId(order_id: string): Promise<Installation | undefined> {
+    const findedInstallation = await this.repository.findOne({
+      order_id,
+    }, {
+      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
+    });
+
+    return findedInstallation;
+  }
+
   // Listando as instalações em andamento
   public async listInProgress(): Promise<Installation[]> {
     const inProgressInstallations = await this.repository.find({
