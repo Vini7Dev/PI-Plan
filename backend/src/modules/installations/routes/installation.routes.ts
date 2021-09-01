@@ -26,7 +26,6 @@ installationRoutes.post(
   celebrate({
     [Segments.BODY]: {
       order_id: Joi.string().uuid().required(),
-      done: Joi.boolean().required(),
       start_date: Joi.string().length(10).required(),
       end_date: Joi.string().length(10),
       completion_forecast: Joi.string().length(10).required(),
@@ -44,7 +43,6 @@ installationRoutes.put(
   '/:id',
   celebrate({
     [Segments.BODY]: {
-      done: Joi.boolean().required(),
       start_date: Joi.string().length(10).required(),
       end_date: Joi.string().length(10),
       completion_forecast: Joi.string().length(10).required(),

@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, IsNull, Repository } from 'typeorm';
 import ICreateInstallationDTO from '../../dtos/ICreateInstallationDTO';
 import IInstallationsRepository from '../../repositories/IInstallationsRepository';
 import AssemblerInstallation from '../entities/AssemblerInstallation';
@@ -37,7 +37,7 @@ class InstallationsRepository implements IInstallationsRepository {
   // Listando as instalações em andamento
   public async listInProgress(): Promise<Installation[]> {
     const inProgressInstallations = await this.repository.find({
-      where: { done: false }, relations: ['order'],
+      where: { end_date: IsNull() }, relations: ['order'],
     });
 
     return inProgressInstallations;
@@ -55,7 +55,6 @@ class InstallationsRepository implements IInstallationsRepository {
   // Cadastrando uma nova instalação
   public async create({
     order_id,
-    done,
     start_date,
     end_date,
     completion_forecast,
@@ -64,7 +63,6 @@ class InstallationsRepository implements IInstallationsRepository {
   }: ICreateInstallationDTO): Promise<Installation> {
     const createdInstallation = this.repository.create({
       order_id,
-      done,
       start_date,
       end_date,
       completion_forecast,
@@ -81,7 +79,6 @@ class InstallationsRepository implements IInstallationsRepository {
   public async update({
     id,
     order_id,
-    done,
     start_date,
     end_date,
     completion_forecast,
@@ -91,7 +88,6 @@ class InstallationsRepository implements IInstallationsRepository {
     const updatedInstallation = await this.repository.save({
       id,
       order_id,
-      done,
       start_date,
       end_date,
       completion_forecast,

@@ -20,7 +20,6 @@ class InstallationsController {
     // Recuperando os dados da instalação na requisição
     const {
       order_id,
-      done,
       start_date,
       end_date,
       completion_forecast,
@@ -33,7 +32,6 @@ class InstallationsController {
 
     const createdInstallation = await createInstallationsService.execute({
       order_id,
-      done,
       start_date,
       end_date,
       completion_forecast,
@@ -48,7 +46,6 @@ class InstallationsController {
     // Recuperando os dados da instalação na requisição
     const { id } = request.params;
     const {
-      done,
       start_date,
       end_date,
       completion_forecast,
@@ -61,7 +58,6 @@ class InstallationsController {
 
     const updatedInstallation = await updateInstallationsService.execute({
       id,
-      done,
       start_date,
       end_date,
       completion_forecast,

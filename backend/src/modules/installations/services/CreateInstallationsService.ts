@@ -14,7 +14,6 @@ interface IAssemblersRelation {
 
 interface IRequest {
   order_id: string;
-  done: boolean;
   start_date: string;
   end_date?: string;
   completion_forecast: string;
@@ -42,7 +41,6 @@ class CreateInstallationsService {
 
   public async execute({
     order_id,
-    done,
     start_date,
     end_date,
     completion_forecast,
@@ -95,7 +93,6 @@ class CreateInstallationsService {
     // Salvando os dados da instalação
     const createdInstallation = await this.installationsRepository.create({
       order_id,
-      done,
       start_date,
       end_date,
       completion_forecast,

@@ -6,7 +6,6 @@ interface IAssemblersRelation {
 interface ICreateInstallationDTO {
   id?: string;
   order_id: string;
-  done: boolean;
   start_date: string;
   end_date?: string;
   completion_forecast: string;

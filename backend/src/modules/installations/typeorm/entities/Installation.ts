@@ -33,9 +33,6 @@ class Installation {
   )
   assemblers_installation: AssemblerInstallation[];
 
-  @Column('boolean')
-  done: boolean;
-
   @Column('date')
   start_date: string;
 

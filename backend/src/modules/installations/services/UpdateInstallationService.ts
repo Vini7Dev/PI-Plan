@@ -15,7 +15,6 @@ interface IAssemblersRelation {
 
 interface IRequest {
   id: string;
-  done: boolean;
   start_date: string;
   end_date?: string;
   completion_forecast: string;
@@ -43,7 +42,6 @@ class UpdateInstallationService {
 
   public async execute({
     id,
-    done,
     start_date,
     end_date,
     completion_forecast,
@@ -98,11 +96,9 @@ class UpdateInstallationService {
       return withInstallationId;
     });
 
-    installationToUpdate.done = done;
+    installationToUpdate.price = price;
     installationToUpdate.start_date = start_date;
     installationToUpdate.completion_forecast = completion_forecast;
-    installationToUpdate.price = price;
-    installationToUpdate.done = done;
     installationToUpdate.end_date = end_date || installationToUpdate.end_date;
     installationToUpdate.assemblers_installation = assemblersWithInstallationId as AssemblerInstallation[];
 
