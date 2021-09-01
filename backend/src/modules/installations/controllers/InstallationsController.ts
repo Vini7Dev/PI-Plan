@@ -8,10 +8,19 @@ import UpdateInstallationService from '../services/UpdateInstallationService';
 
 class InstallationsController {
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando os dados do usuário conectado
+    const {
+      user_type,
+      id: user_id,
+    } = request.user;
+
     // Executando o serviço de listagem das instalações
     const listInstallationsServices = container.resolve(ListInstallationsServices);
 
-    const installationsList = await listInstallationsServices.execute();
+    const installationsList = await listInstallationsServices.execute({
+      user_type,
+      user_id,
+    });
 
     return response.json(installationsList);
   }

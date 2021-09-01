@@ -43,6 +43,17 @@ class InstallationsRepository implements IInstallationsRepository {
     return inProgressInstallations;
   }
 
+  // Listando as instalações de um montador
+  public async findByAssemblerId(assembler_id: string): Promise<Installation[]> {
+    const findedInstallations = await this.repository.createQueryBuilder('installation')
+      .leftJoinAndSelect('installation.order', 'order')
+      .leftJoinAndSelect('installation.assemblers_installation', 'assembler')
+      .where('assembler.assembler_id = :assembler_id', { assembler_id })
+      .getMany();
+
+    return findedInstallations;
+  }
+
   // Listando todas as instalações salvas
   public async list(): Promise<Installation[]> {
     const installationList = await this.repository.find({
