@@ -37,6 +37,9 @@ adminRoutes.post(
 adminRoutes.put(
   '/:id',
   celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
     [Segments.BODY]: {
       name: Joi.string().required(),
       username: Joi.string().required(),
@@ -49,6 +52,11 @@ adminRoutes.put(
 
 adminRoutes.delete(
   '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
   adminsController.delete,
 );
 

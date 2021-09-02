@@ -38,6 +38,9 @@ customerRoutes.post(
 customerRoutes.put(
   '/:id',
   celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
     [Segments.BODY]: {
       send_contact_alert: Joi.bool().required(),
       name: Joi.string().max(30).required(),
@@ -51,6 +54,11 @@ customerRoutes.put(
 
 customerRoutes.delete(
   '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
   customerController.delete,
 );
 

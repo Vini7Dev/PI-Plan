@@ -44,6 +44,9 @@ installationRoutes.post(
 installationRoutes.put(
   '/:id',
   celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
     [Segments.BODY]: {
       start_date: Joi.string().length(10).required(),
       end_date: Joi.string().length(10),
@@ -60,6 +63,11 @@ installationRoutes.put(
 
 installationRoutes.delete(
   '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
   installationsController.delete,
 );
 

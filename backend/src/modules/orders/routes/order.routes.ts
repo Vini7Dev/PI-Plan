@@ -55,6 +55,9 @@ orderRoutes.post(
 orderRoutes.put(
   '/:id',
   celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
     [Segments.BODY]: {
       address: Joi.object().required().keys({
         cep: Joi.string().length(9).required(),
@@ -84,6 +87,11 @@ orderRoutes.put(
 
 orderRoutes.delete(
   '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
   ordersController.delete,
 );
 
