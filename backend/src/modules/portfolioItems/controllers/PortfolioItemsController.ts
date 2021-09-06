@@ -2,10 +2,16 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreatePortfolioItemService from '../services/CreatePortfolioItemService';
+import ListPortfolioItemsService from '../services/ListPortfolioItemsService';
 
 class PortfolioItemsController {
   public async get(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'Method not implemented.' });
+    // Executando o serviço para listagem dos itens do portfólio
+    const listPortfolioItemsService = container.resolve(ListPortfolioItemsService);
+
+    const portfolioItemsList = await listPortfolioItemsService.execute();
+
+    return response.json(portfolioItemsList);
   }
 
   public async create(request: Request, response: Response): Promise<Response> {
