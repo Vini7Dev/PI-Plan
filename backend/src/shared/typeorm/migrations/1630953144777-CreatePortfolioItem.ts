@@ -11,7 +11,7 @@ export default class CreatePortfolioItem1630953144777 implements MigrationInterf
           isPrimary: true,
         },
         {
-          name: 'url_id',
+          name: 'image_reference',
           type: 'varchar',
         },
         {

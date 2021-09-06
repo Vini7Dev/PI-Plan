@@ -1,6 +1,6 @@
 interface ICreatePortfolioItemDTO {
   id?: string;
-  url_id: string;
+  image_reference: string;
   title: string;
   description: string;
 }

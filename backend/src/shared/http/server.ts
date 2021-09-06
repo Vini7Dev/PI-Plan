@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from 'express';
-import 'express-async-errors'; // Importando a tratativa de erros no express
+import 'express-async-errors';
 import 'reflect-metadata';
 import { errors as celebrateErrors } from 'celebrate';
 
@@ -7,6 +7,7 @@ import '../typeorm'; // Criando a conexão com o banco
 import '../container'; // Importando os containers registrados
 
 import routes from './routes';
+import uploadConfig from '../../configs/uploadConfig';
 import AppError from '../errors/AppError';
 
 // Instanciando o servidor
@@ -17,6 +18,9 @@ app.use(express.json());
 
 // Aplicando a rota principal com todas as demais no servidor
 app.use(routes);
+
+// Definindo a rota para acessso para as imagens salvas no servidor
+app.use('/files', express.static(uploadConfig.uploadsFolder));
 
 // Tratação de erros do celebrate
 app.use(celebrateErrors());

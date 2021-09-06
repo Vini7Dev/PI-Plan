@@ -9,7 +9,7 @@ class PortfolioItem {
   id: string;
 
   @Column()
-  url_id: string;
+  image_reference: string;
 
   @Column()
   title: string;

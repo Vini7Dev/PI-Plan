@@ -27,12 +27,12 @@ class PortfolioItemRepository implements IPortfolioItemRepository {
 
   // Cadastrando um novo item no portfólio
   public async create({
-    url_id,
+    image_reference,
     title,
     description,
   }: ICreatePortfolioItemDTO): Promise<PortfolioItem> {
     const createdPortfolioItem = this.repository.create({
-      url_id,
+      image_reference,
       title,
       description,
     });
@@ -45,13 +45,13 @@ class PortfolioItemRepository implements IPortfolioItemRepository {
   // Atualizando um item no portfólio
   public async update({
     id,
-    url_id,
+    image_reference,
     title,
     description,
   }: ICreatePortfolioItemDTO): Promise<PortfolioItem> {
     const updatedPortfolioItem = await this.repository.save({
       id,
-      url_id,
+      image_reference,
       title,
       description,
     });

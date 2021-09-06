@@ -4,5 +4,6 @@ declare namespace Express {
       id: string;
       user_type: 'admin' | 'assembler';
     }
+    file: Express.Multer.File;
   }
 }
