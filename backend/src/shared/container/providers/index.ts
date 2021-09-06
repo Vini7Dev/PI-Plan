@@ -19,5 +19,5 @@ container.registerSingleton<IHashProvider>(
 );
 
 container.registerSingleton<IStorageProvider>(
-  'DiscStorageProvider', DiscStorageProvider,
+  'StorageProvider', DiscStorageProvider,
 );
