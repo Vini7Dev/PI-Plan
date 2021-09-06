@@ -4,6 +4,7 @@ import { container } from 'tsyringe';
 import CreatePortfolioItemService from '../services/CreatePortfolioItemService';
 import DeletePortfolioItemService from '../services/DeletePortfolioItemService';
 import ListPortfolioItemsService from '../services/ListPortfolioItemsService';
+import UpdatePorfolioItemService from '../services/UpdatePorfolioItemService';
 
 class PortfolioItemsController {
   public async get(request: Request, response: Response): Promise<Response> {
@@ -36,7 +37,27 @@ class PortfolioItemsController {
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'Method not implemented.' });
+    // Recuperando os dados o item para atualização
+    const { id } = request.params;
+    const image = request.file;
+    const {
+      title,
+      description,
+    } = request.body;
+
+    const image_name = image ? image.filename : '';
+
+    // Executando o serviço para atualizar os dados do item no portfólio
+    const updatePortfolioItemService = container.resolve(UpdatePorfolioItemService);
+
+    const updatedPortfolioItem = await updatePortfolioItemService.execute({
+      id,
+      title,
+      description,
+      image_name,
+    });
+
+    return response.status(201).json(updatedPortfolioItem);
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
