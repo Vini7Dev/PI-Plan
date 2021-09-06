@@ -12,10 +12,14 @@ import CustomersRepository from '../../modules/customers/typeorm/repositories/Cu
 import IOrdersRepository from '../../modules/orders/repositories/IOrdersRepository';
 import OrdersRepository from '../../modules/orders/typeorm/repositories/OrdersRepository';
 
-// Importando os containers dos provedores
-import './providers';
 import IInstallationsRepository from '../../modules/installations/repositories/IInstallationsRepository';
 import InstallationsRepository from '../../modules/installations/typeorm/repositories/InstallationsRepository';
+
+import IPortfolioItemRepository from '../../modules/portfolioItems/repositories/IPortfolioItemRepository';
+import PortfolioItemRepository from '../../modules/portfolioItems/typeorm/repositories/PortfolioItemRepository';
+
+// Importando os containers dos provedores
+import './providers';
 
 // Registrando os repositórios nos seus respectivos containers
 container.registerSingleton<IAdminsRepository>(
@@ -36,4 +40,8 @@ container.registerSingleton<IOrdersRepository>(
 
 container.registerSingleton<IInstallationsRepository>(
   'InstallationsRepository', InstallationsRepository,
+);
+
+container.registerSingleton<IPortfolioItemRepository>(
+  'PortfolioItemRepository', PortfolioItemRepository,
 );
