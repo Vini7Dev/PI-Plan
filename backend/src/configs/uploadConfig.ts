@@ -10,7 +10,7 @@ export default {
     filename: (req, file, callback) => {
       const currentTime = (new Date()).getTime();
 
-      const fileName = `${file.filename}-${currentTime}`;
+      const fileName = `${currentTime}-${file.originalname}`;
 
       return callback(null, fileName);
     },
