@@ -19,7 +19,7 @@ class DeleteInstallationService {
       throw new AppError('Installation not found.', 404);
     }
 
-    // Executando o serviço para apagar uma instalação
+    // Executando o método para apagar uma instalação
     await this.installationsRepository.delete(id);
 
     return 'Instalação apagada.';

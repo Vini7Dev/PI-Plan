@@ -28,12 +28,12 @@ portfolioItemsRoutes.post(
 );
 
 portfolioItemsRoutes.put(
-  '/',
+  '/:id',
   portfolioItemsController.update,
 );
 
 portfolioItemsRoutes.delete(
-  '/',
+  '/:id',
   portfolioItemsController.delete,
 );
 

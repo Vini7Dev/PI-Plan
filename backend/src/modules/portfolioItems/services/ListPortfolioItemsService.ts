@@ -1,4 +1,4 @@
-import { injectable } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
 
 import IPortfolioItemRepository from '../repositories/IPortfolioItemRepository';
 import PortfolioItem from '../typeorm/entities/PortfolioItem';
@@ -7,6 +7,7 @@ import PortfolioItem from '../typeorm/entities/PortfolioItem';
 class ListPortfolioItemsService {
   constructor(
     // Repositório dos itens do protfólio
+    @inject('PortfolioItemRepository')
     private portfolioItemsRepository: IPortfolioItemRepository,
   ) {}
 

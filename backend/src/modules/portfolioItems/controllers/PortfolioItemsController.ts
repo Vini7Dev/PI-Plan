@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
 import CreatePortfolioItemService from '../services/CreatePortfolioItemService';
+import DeletePortfolioItemService from '../services/DeletePortfolioItemService';
 import ListPortfolioItemsService from '../services/ListPortfolioItemsService';
 
 class PortfolioItemsController {
@@ -39,7 +40,15 @@ class PortfolioItemsController {
   }
 
   public async delete(request: Request, response: Response): Promise<Response> {
-    return response.json({ message: 'Method not implemented.' });
+    // Recuperando o id do item para apagar nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para apagar o item
+    const deletePortfolioItemService = container.resolve(DeletePortfolioItemService);
+
+    const responseMessage = await deletePortfolioItemService.execute(id);
+
+    return response.json(responseMessage);
   }
 }
 
