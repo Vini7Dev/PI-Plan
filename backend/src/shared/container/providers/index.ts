@@ -6,6 +6,9 @@ import DateProvider from './DateProvider/implementations/DateProvider';
 import IHashProvider from './HashProvider/models/IHashProvider';
 import BCryptProvider from './HashProvider/implementations/BCryptProvider';
 
+import IStorageProvider from './StorageProvider/models/IStorageProvider';
+import DiscStorageProvider from './StorageProvider/implementations/DiscStorageProvider';
+
 // Registrando os containers dos provedores
 container.registerSingleton<IDateProvider>(
   'DateProvider', DateProvider,
@@ -13,4 +16,8 @@ container.registerSingleton<IDateProvider>(
 
 container.registerSingleton<IHashProvider>(
   'HashProvider', BCryptProvider,
+);
+
+container.registerSingleton<IStorageProvider>(
+  'DiscStorageProvider', DiscStorageProvider,
 );
