@@ -86,7 +86,7 @@ class InstallationsController {
 
     const responseMessage = await deleteInstallationService.execute(id);
 
-    return response.json(responseMessage);
+    return response.json({ message: responseMessage });
   }
 }
 

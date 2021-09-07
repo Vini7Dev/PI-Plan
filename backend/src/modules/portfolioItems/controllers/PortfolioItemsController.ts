@@ -69,7 +69,7 @@ class PortfolioItemsController {
 
     const responseMessage = await deletePortfolioItemService.execute(id);
 
-    return response.json(responseMessage);
+    return response.json({ message: responseMessage });
   }
 }
 

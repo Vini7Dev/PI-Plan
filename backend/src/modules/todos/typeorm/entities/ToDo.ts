@@ -1,6 +1,7 @@
 import {
   Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryColumn,
 } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 import Admin from '../../../users/typeorm/entities/Admin';
 
@@ -28,6 +29,14 @@ class ToDo {
 
   @CreateDateColumn()
   created_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      // Gerando o ID automáticamente se o objeto
+      // instanciando ainda não estiver salvo no banco
+      this.id = uuidv4();
+    }
+  }
 }
 
 export default ToDo;

@@ -27,6 +27,8 @@ class PortfolioItem {
   deleted_at: Date;
 
   constructor() {
+    // Gerando o ID automáticamente se o objeto
+    // instanciando ainda não estiver salvo no banco
     if (!this.id) {
       this.id = uuidv4();
     }

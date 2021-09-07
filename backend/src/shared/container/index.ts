@@ -15,6 +15,9 @@ import OrdersRepository from '../../modules/orders/typeorm/repositories/OrdersRe
 import IInstallationsRepository from '../../modules/installations/repositories/IInstallationsRepository';
 import InstallationsRepository from '../../modules/installations/typeorm/repositories/InstallationsRepository';
 
+import IToDosRepository from '../../modules/todos/repositories/IToDosRepository';
+import ToDosRepository from '../../modules/todos/typeorm/repositories/ToDosRepository';
+
 import IPortfolioItemRepository from '../../modules/portfolioItems/repositories/IPortfolioItemRepository';
 import PortfolioItemRepository from '../../modules/portfolioItems/typeorm/repositories/PortfolioItemRepository';
 
@@ -40,6 +43,10 @@ container.registerSingleton<IOrdersRepository>(
 
 container.registerSingleton<IInstallationsRepository>(
   'InstallationsRepository', InstallationsRepository,
+);
+
+container.registerSingleton<IToDosRepository>(
+  'ToDosRepository', ToDosRepository,
 );
 
 container.registerSingleton<IPortfolioItemRepository>(
