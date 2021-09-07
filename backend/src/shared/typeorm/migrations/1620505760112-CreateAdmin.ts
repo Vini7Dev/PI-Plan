@@ -1,6 +1,5 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
-// Criando a tabela dos usuários administradores
 export class CreateAdmin1620505760112 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
