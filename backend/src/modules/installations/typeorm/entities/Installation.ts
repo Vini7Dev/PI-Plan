@@ -10,6 +10,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import Assessment from '../../../assessments/typeorm/entities/Assessment';
 
 import Order from '../../../orders/typeorm/entities/Order';
 import AssemblerInstallation from './AssemblerInstallation';
@@ -32,6 +33,13 @@ class Installation {
     { cascade: true },
   )
   assemblers_installation: AssemblerInstallation[];
+
+  @OneToOne(
+    () => Assessment,
+    (assessment) => assessment.installation,
+    { cascade: true },
+  )
+  assessment: Assessment;
 
   @Column('date')
   start_date: string;

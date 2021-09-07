@@ -42,6 +42,11 @@ class CreateAssessmentsServices {
       throw new AppError('Installation not found.', 404);
     }
 
+    // Verificando se já existe uma avaliação para esta instalação
+    if (installationExists.assessment) {
+      throw new AppError('Assessment already registered for this installation.');
+    }
+
     // Cadastrando a avaliação
     const assessment = await this.assessmentsRepository.create({
       installation_id,

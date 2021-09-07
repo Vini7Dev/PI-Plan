@@ -17,7 +17,12 @@ class InstallationsRepository implements IInstallationsRepository {
   // Buscando uma instalação pelo id
   public async findById(id: string): Promise<Installation | undefined> {
     const findedInstallation = await this.repository.findOne(id, {
-      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
+      relations: [
+        'order',
+        'assessment',
+        'assemblers_installation',
+        'assemblers_installation.assembler',
+      ],
     });
 
     return findedInstallation;
@@ -28,7 +33,12 @@ class InstallationsRepository implements IInstallationsRepository {
     const findedInstallation = await this.repository.findOne({
       order_id,
     }, {
-      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
+      relations: [
+        'order',
+        'assessment',
+        'assemblers_installation',
+        'assemblers_installation.assembler',
+      ],
     });
 
     return findedInstallation;
@@ -57,7 +67,12 @@ class InstallationsRepository implements IInstallationsRepository {
   // Listando todas as instalações salvas
   public async list(): Promise<Installation[]> {
     const installationList = await this.repository.find({
-      relations: ['order', 'assemblers_installation', 'assemblers_installation.assembler'],
+      relations: [
+        'order',
+        'assessment',
+        'assemblers_installation',
+        'assemblers_installation.assembler',
+      ],
     });
 
     return installationList;
