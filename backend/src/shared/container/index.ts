@@ -15,6 +15,9 @@ import OrdersRepository from '../../modules/orders/typeorm/repositories/OrdersRe
 import IInstallationsRepository from '../../modules/installations/repositories/IInstallationsRepository';
 import InstallationsRepository from '../../modules/installations/typeorm/repositories/InstallationsRepository';
 
+import IAssessmentsRepository from '../../modules/assessments/repositories/IAssessmentsRepository';
+import AssessmentsRepository from '../../modules/assessments/typeorm/repository/AssessmentsRepository';
+
 import IToDosRepository from '../../modules/todos/repositories/IToDosRepository';
 import ToDosRepository from '../../modules/todos/typeorm/repositories/ToDosRepository';
 
@@ -43,6 +46,10 @@ container.registerSingleton<IOrdersRepository>(
 
 container.registerSingleton<IInstallationsRepository>(
   'InstallationsRepository', InstallationsRepository,
+);
+
+container.registerSingleton<IAssessmentsRepository>(
+  'AssessmentsRepository', AssessmentsRepository,
 );
 
 container.registerSingleton<IToDosRepository>(
