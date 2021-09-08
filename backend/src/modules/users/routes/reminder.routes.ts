@@ -20,7 +20,7 @@ remindersRoutes.get(
   '/:date',
   celebrate({
     [Segments.PARAMS]: {
-      date: Joi.string().length(10).required(),
+      date: Joi.string().length(10).required(), // Date format: DD-MM-YYYY
     },
   }),
   remindersController.get,
