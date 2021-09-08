@@ -42,17 +42,37 @@ portfolioItemsRoutes.use(ensureAdmin);
 portfolioItemsRoutes.post(
   '/',
   upload.single('image'),
+  celebrate({
+    [Segments.BODY]: {
+      title: Joi.string().max(45).required(),
+      description: Joi.string().required(),
+    },
+  }),
   portfolioItemsController.create,
 );
 
 portfolioItemsRoutes.put(
   '/:id',
   upload.single('image'),
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+    [Segments.BODY]: {
+      title: Joi.string().max(45).required(),
+      description: Joi.string().required(),
+    },
+  }),
   portfolioItemsController.update,
 );
 
 portfolioItemsRoutes.delete(
   '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
   portfolioItemsController.delete,
 );
 
