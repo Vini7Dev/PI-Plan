@@ -17,6 +17,16 @@ const adminsController = new AdminsController();
 
 // Criando as rotas dos administradores
 adminRoutes.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  adminsController.show,
+);
+
+adminRoutes.get(
   '/',
   adminsController.get,
 );

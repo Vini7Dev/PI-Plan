@@ -12,9 +12,9 @@ class ShowToDoService {
 
   public async execute(id: string): Promise<ToDo | undefined> {
     // Buscando pela tarefa com o seu id
-    const toDoShow = await this.toDosRepository.findById(id);
+    const findedToDo = await this.toDosRepository.findById(id);
 
-    return toDoShow;
+    return findedToDo;
   }
 }
 

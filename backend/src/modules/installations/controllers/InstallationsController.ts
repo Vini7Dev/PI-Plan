@@ -4,9 +4,23 @@ import { container } from 'tsyringe';
 import CreateInstallationsService from '../services/CreateInstallationsService';
 import DeleteInstallationService from '../services/DeleteInstallationService';
 import ListInstallationsServices from '../services/ListInstallationsServices';
+import ShowInstallationService from '../services/ShowInstallationService';
 import UpdateInstallationService from '../services/UpdateInstallationService';
 
 class InstallationsController {
+  // Buscando uma instalação pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id da instalação nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca da instalação
+    const showInstallationService = container.resolve(ShowInstallationService);
+
+    const findedInstallation = await showInstallationService.execute(id);
+
+    return response.json(findedInstallation);
+  }
+
   public async get(request: Request, response: Response): Promise<Response> {
     // Recuperando os dados do usuário conectado
     const {

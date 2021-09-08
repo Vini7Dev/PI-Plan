@@ -1,11 +1,26 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+
 import CreateOrderService from '../services/CreateOrderService';
 import DeleteOrderService from '../services/DeleteOrderService';
 import ListOrdersService from '../services/ListOrdersService';
+import ShowOrderService from '../services/ShowOrderService';
 import UpdateOrderService from '../services/UpdateOrderService';
 
 class OrdersController {
+  // Buscando um pedido pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id do pedido nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca do pedido
+    const showOrderService = container.resolve(ShowOrderService);
+
+    const findedOrder = await showOrderService.execute(id);
+
+    return response.json(findedOrder);
+  }
+
   // Listando todos os pedidos
   public async get(request: Request, response: Response): Promise<Response> {
     // Executando o serviço de listagem dos pedidos

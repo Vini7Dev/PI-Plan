@@ -7,15 +7,15 @@ import Assessment from '../typeorm/entities/Assessment';
 class ShowAssessmentService {
   constructor(
     // Repositório das avaliações
-    @inject('AssesmentRepository')
+    @inject('AssessmentsRepository')
     private assessmentRepository: IAssessmentsRepository,
   ) {}
 
   public async execute(id: string): Promise<Assessment|undefined> {
     // Buscando uma avaliação pelo id
-    const assesmentShow = await this.assessmentRepository.findById(id);
+    const findedAssessment = await this.assessmentRepository.findById(id);
 
-    return assesmentShow;
+    return findedAssessment;
   }
 }
 

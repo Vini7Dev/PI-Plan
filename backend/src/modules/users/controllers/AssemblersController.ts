@@ -4,9 +4,23 @@ import { container } from 'tsyringe';
 import CreateAssemblerService from '../services/assembler/CreateAssemblerService';
 import DeleteAssemblerService from '../services/assembler/DeleteAssemblerService';
 import ListAssemblersService from '../services/assembler/ListAssemblersService';
+import ShowAssemblerService from '../services/assembler/ShowAssemblerService';
 import UpdateAssemblerService from '../services/assembler/UpdateAssemblerService';
 
 class AssemblersController {
+  // Buscando um montador pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id do montador nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca do montador
+    const showAssemblerService = container.resolve(ShowAssemblerService);
+
+    const findedAssembler = await showAssemblerService.execute(id);
+
+    return response.json(findedAssembler);
+  }
+
   // Listando todos os montadores
   public async get(request: Request, response: Response): Promise<Response> {
     const listAssemblersService = container.resolve(ListAssemblersService);

@@ -4,9 +4,23 @@ import { container } from 'tsyringe';
 import CreateCustomerService from '../services/CreateCustomerService';
 import DeleteCustomerService from '../services/DeleteCustomerService';
 import ListCustomersService from '../services/ListCustomersService';
+import ShowCustomerService from '../services/ShowCustomerService';
 import UpdateCustomerService from '../services/UpdateCustomerService';
 
 class CustomersController {
+  // Buscando um cliente pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id do cliente nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca do cliente
+    const showCustomerService = container.resolve(ShowCustomerService);
+
+    const findedCustomer = await showCustomerService.execute(id);
+
+    return response.json(findedCustomer);
+  }
+
   // Listando todos os clientes cadastrados
   public async get(request: Request, response: Response): Promise<Response> {
     // Executando o serviço para criação do cliente

@@ -5,8 +5,22 @@ import ListAdminsService from '../services/admin/ListAdminsService';
 import CreateAdminService from '../services/admin/CreateAdminService';
 import UpdateAdminService from '../services/admin/UpdateAdminService';
 import DeleteAdminService from '../services/admin/DeleteAdminService';
+import ShowAdminService from '../services/admin/ShowAdminService';
 
 class AdminsController {
+  // Buscando um administrador pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id do administrador nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca do administrador
+    const showAdminService = container.resolve(ShowAdminService);
+
+    const findedAdmin = await showAdminService.execute(id);
+
+    return response.json(findedAdmin);
+  }
+
   // Listando todos os administradores
   public async get(request: Request, response: Response): Promise<Response> {
     const listAdminsService = container.resolve(ListAdminsService);

@@ -4,9 +4,23 @@ import { container } from 'tsyringe';
 import CreatePortfolioItemService from '../services/CreatePortfolioItemService';
 import DeletePortfolioItemService from '../services/DeletePortfolioItemService';
 import ListPortfolioItemsService from '../services/ListPortfolioItemsService';
+import ShowPortfolioItemService from '../services/ShowPortfolioItemService';
 import UpdatePorfolioItemService from '../services/UpdatePorfolioItemService';
 
 class PortfolioItemsController {
+  // Buscando um item do portfólio pelo id
+  public async show(request: Request, response: Response): Promise<Response> {
+    // Recuperando o id do item do portfólio nos parâmetros da requisição
+    const { id } = request.params;
+
+    // Executando o serviço para busca do item do portfólio
+    const showPortfolioItemService = container.resolve(ShowPortfolioItemService);
+
+    const findedPortfolioItem = await showPortfolioItemService.execute(id);
+
+    return response.json(findedPortfolioItem);
+  }
+
   public async get(request: Request, response: Response): Promise<Response> {
     // Executando o serviço para listagem dos itens do portfólio
     const listPortfolioItemsService = container.resolve(ListPortfolioItemsService);

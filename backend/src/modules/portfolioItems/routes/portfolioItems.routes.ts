@@ -1,3 +1,4 @@
+import { celebrate, Joi, Segments } from 'celebrate';
 import { Router } from 'express';
 import multer from 'multer';
 import uploadConfig from '../../../configs/uploadConfig';
@@ -18,7 +19,17 @@ const upload = multer({
 });
 
 // Criando as rotas dos itens do portfólio
-//      Esta rota é de acesso livre
+//      Essas rotas são de acesso livre
+portfolioItemsRoutes.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  portfolioItemsController.show,
+);
+
 portfolioItemsRoutes.get(
   '/',
   portfolioItemsController.get,

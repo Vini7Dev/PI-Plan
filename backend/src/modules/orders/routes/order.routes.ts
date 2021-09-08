@@ -17,6 +17,16 @@ const ordersController = new OrdersController();
 
 // Criando as rotas dos pedidos
 orderRoutes.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  ordersController.show,
+);
+
+orderRoutes.get(
   '/',
   ordersController.get,
 );

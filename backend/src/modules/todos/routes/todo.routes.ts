@@ -17,11 +17,6 @@ const todosController = new ToDosController();
 
 // Criando as rotas das tarefas
 toDoRoutes.get(
-  '/',
-  todosController.get,
-);
-
-toDoRoutes.get(
   '/:id',
   celebrate({
     [Segments.PARAMS]: {
@@ -29,6 +24,11 @@ toDoRoutes.get(
     },
   }),
   todosController.show,
+);
+
+toDoRoutes.get(
+  '/',
+  todosController.get,
 );
 
 toDoRoutes.post(

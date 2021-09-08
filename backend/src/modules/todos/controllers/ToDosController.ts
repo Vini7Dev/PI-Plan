@@ -15,9 +15,10 @@ class ToDosController {
 
     // Executando o serviço para buscar a tarefa
     const showToDoService = container.resolve(ShowToDoService);
-    const showToDo = await showToDoService.execute(id);
 
-    return response.json(showToDo);
+    const findedToDo = await showToDoService.execute(id);
+
+    return response.json(findedToDo);
   }
 
   // Listando todas as tarefas salvas

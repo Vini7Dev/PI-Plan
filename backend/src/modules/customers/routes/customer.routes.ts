@@ -17,6 +17,16 @@ const customerController = new CustomersController();
 
 // Criando as rotas dos clientes
 customerRoutes.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  customerController.show,
+);
+
+customerRoutes.get(
   '/',
   customerController.get,
 );

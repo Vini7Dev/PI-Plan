@@ -17,6 +17,16 @@ assemblerRoutes.use(ensureAdmin);
 
 // Criando as rotas dos montadores
 assemblerRoutes.get(
+  '/:id',
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.string().uuid().required(),
+    },
+  }),
+  assemblersController.show,
+);
+
+assemblerRoutes.get(
   '/',
   assemblersController.get,
 );
