@@ -22,7 +22,7 @@ interface ICreateOrderDTO {
   end_date?: string;
   furniture_delivery_forecast?: string;
   payment_method: string;
-  net_value: number;
+  gross_value: number;
   expenses_value: number;
 }
 

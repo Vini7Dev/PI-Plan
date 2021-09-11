@@ -46,7 +46,7 @@ class OrdersController {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     } = request.body;
 
@@ -65,7 +65,7 @@ class OrdersController {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     });
 
@@ -87,7 +87,7 @@ class OrdersController {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     } = request.body;
 
@@ -106,7 +106,7 @@ class OrdersController {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     });
 

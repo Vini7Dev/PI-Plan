@@ -28,7 +28,7 @@ interface IRequest {
   end_date?: string;
   furniture_delivery_forecast?: string;
   payment_method: string;
-  net_value: number;
+  gross_value: number;
   expenses_value: number;
 }
 
@@ -59,7 +59,7 @@ class UpdateOrderService {
     end_date,
     furniture_delivery_forecast,
     payment_method,
-    net_value,
+    gross_value,
     expenses_value,
   }: IRequest): Promise<Order> {
     // Verificar se a data de início é menor que a de finalização
@@ -102,7 +102,7 @@ class UpdateOrderService {
     orderToUpdate.end_date = end_date || '';
     orderToUpdate.furniture_delivery_forecast = furniture_delivery_forecast || '';
     orderToUpdate.payment_method = payment_method;
-    orderToUpdate.net_value = net_value;
+    orderToUpdate.gross_value = gross_value;
     orderToUpdate.expenses_value = expenses_value;
 
     // Salvando os dados atualizados

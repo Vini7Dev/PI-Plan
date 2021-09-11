@@ -1,6 +1,6 @@
 import { Router } from 'express';
-
 import { celebrate, Joi, Segments } from 'celebrate';
+
 import RemindersController from '../controllers/RemindersController';
 import ensureAuthenticated from '../../../shared/http/middlewares/ensureAuthenticated';
 import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';

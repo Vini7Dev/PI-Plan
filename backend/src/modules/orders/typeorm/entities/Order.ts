@@ -67,7 +67,7 @@ class Order {
   payment_method: string;
 
   @Column('numeric')
-  net_value: number;
+  gross_value: number;
 
   @Column('numeric')
   expenses_value: number;

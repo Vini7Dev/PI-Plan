@@ -50,7 +50,7 @@ class OrdersRepository implements IOrdersRepository {
     end_date,
     furniture_delivery_forecast,
     payment_method,
-    net_value,
+    gross_value,
     expenses_value,
   }: ICreateOrderDTO): Promise<Order> {
     const createdOrder = this.repository.create({
@@ -65,7 +65,7 @@ class OrdersRepository implements IOrdersRepository {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     });
 
@@ -87,7 +87,7 @@ class OrdersRepository implements IOrdersRepository {
     end_date,
     furniture_delivery_forecast,
     payment_method,
-    net_value,
+    gross_value,
     expenses_value,
   }: ICreateOrderDTO): Promise<Order> {
     const updatedOrder = await this.repository.save({
@@ -102,7 +102,7 @@ class OrdersRepository implements IOrdersRepository {
       end_date,
       furniture_delivery_forecast,
       payment_method,
-      net_value,
+      gross_value,
       expenses_value,
     });
 
