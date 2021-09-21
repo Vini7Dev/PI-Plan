@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+
 import { Container } from './styles';
 
 import Logo from '../../assets/images/PI_Plan_Ligth.png';
@@ -35,30 +36,32 @@ const Login: React.FC = () => {
 
   return (
     <Container>
-      <main>
-        <img src={Logo} alt="PI Plan" />
+      <div id="right-background-image-area">
+        <main>
+          <img src={Logo} alt="PI Plan" />
 
-        <div id="title">
-          <h2>Bem Vindo</h2>
-          <h1>Login</h1>
-        </div>
+          <div id="title">
+            <h2>Bem Vindo</h2>
+            <h1>Login</h1>
+          </div>
 
-        <Input
-          label="Usuario"
-          placeholder="Informe o usuário"
-          onChange={(e) => setUsername(e.target.value)}
-          autoFocus
-        />
+          <Input
+            label="Usuario"
+            placeholder="Informe o usuário"
+            onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+          />
 
-        <Input
-          label="Senha"
-          type="password"
-          placeholder="Informe a senha"
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <Input
+            label="Senha"
+            type="password"
+            placeholder="Informe a senha"
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <Button name="Entrar" onClick={handleLogin} />
-      </main>
+          <Button name="Entrar" onClick={handleLogin} />
+        </main>
+      </div>
     </Container>
   );
 };

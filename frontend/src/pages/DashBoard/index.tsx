@@ -2,7 +2,7 @@ import React, { useState , useCallback } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
-import Banner from '../../assets/images/BannerDashBoard.jpg';
+import LoginBanner from '../../assets/images/LoginBanner.jpg';
 import NavigationBar from '../../components/NavigationBar';
 import DashButton from '../../components/DashButton';
 import CheckBox from '../../components/CheckBox';
@@ -132,7 +132,7 @@ const DashBoard: React.FC = () =>{
 
       <div id="task-area">
         <header id="banner-area">
-          <img src={Banner} alt="Banner" />
+          <img src={LoginBanner} alt="Banner" />
         </header>
 
         <main>
