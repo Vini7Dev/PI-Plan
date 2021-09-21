@@ -48,10 +48,52 @@ const Portfolio: React.FC = () => {
       </section>
 
       <main id="items-list-area">
-        <PortfolioItem />
-        <PortfolioItem />
-        <PortfolioItem />
-        <PortfolioItem />
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
+
+        <PortfolioItem
+          id="1234567890"
+          title="Cadeira da Área de Lazer"
+          description="Descrição simples do projeto..."
+        />
       </main>
     </Container>
   );

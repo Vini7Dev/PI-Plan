@@ -2,13 +2,25 @@ import React from 'react';
 
 import { Container } from './styles';
 
-const PortfolioItem: React.FC = () => {
+interface IPortfolioItemProps {
+  id: string;
+  title: string;
+  description?: string;
+}
+
+const PortfolioItem: React.FC<IPortfolioItemProps> = ({
+  id,
+  title,
+  description,
+}) => {
   return (
     <Container>
-      <div className="portfolio-item-content">
-        <strong>Cadeiras A. Lazer</strong>
-        <p>Descrição simples do projeto...</p>
-      </div>
+      <button>
+        <div className="portfolio-item-content">
+          <strong>{title}</strong>
+          <p>{description}</p>
+        </div>
+      </button>
     </Container>
   );
 };

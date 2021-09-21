@@ -14,7 +14,8 @@ export const Container = styled.div`
     align-items: center;
     justify-content: space-between;
     background-color: #b8976b;
-    padding: 60px 100px 50px;
+    padding: 40px 100px 20px;
+    z-index: 1;
 
     div#w-125-px {
       width: 125px;
@@ -43,8 +44,10 @@ export const Container = styled.div`
 
   section#banner-area {
     width: 100%;
-    padding: 10px 100px;
+    padding: 10px;
+    border-radius: 0 0 25px 25px;
     background-color: #b8976b;
+    box-shadow: 1px 1px 3px #000000;
   }
 
   main#items-list-area {

@@ -40,6 +40,12 @@ export const Container = styled.div<IInputProps>`
     ${props => props.color === 'white' && css`color: #f0f0f0;` };
   }
 
+  ${props => props.color === 'white' && css`
+    input::placeholder {
+      color: #d9d9d9;
+    }
+  `}
+
   @media (max-width: 768px) {
     width: 100%;
   }
