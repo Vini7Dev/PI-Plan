@@ -1,20 +1,46 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface IButtonProps {
+  size: 'normal' | 'small';
+  color: 'green' | 'white';
+}
+
+export const Container = styled.div<IButtonProps>`
   position: relative;
   width: 100%;
   height: 80px;
 
   button {
-    height: 100%;
     width: 100%;
+    height: ${props => props.size === 'normal' ? '100%' : '80%'};
 
     border: none;
-    font-size: 30px;
+    font-size: ${props => props.size === 'normal' ? '30px' : '25px'};
     border-radius: 30px;
 
-    background-color: #91d2a1;
-    color: #ffffff;
+    background-color: ${props => {
+      switch(props.color) {
+        case 'green':
+          return '#91d2a1';
+        case 'white':
+          return '#fffff';
+        default:
+          return '#91d2a1';
+      }
+    }};
+
+    ${props => props.color === 'white' && css`box-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);`}
+
+    color: ${props => {
+      switch(props.color) {
+        case 'green':
+          return '#ffffff';
+        case 'white':
+          return '#ceaa7b';
+        default:
+        return '#ffffff';
+      }
+    }};
   }
 
   @media (max-width: 768px) {
