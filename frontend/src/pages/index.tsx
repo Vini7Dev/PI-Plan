@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import Portfolio from './Portfolio';
 import Login from './Login';
 import DashBoard from './DashBoard';
 import AdmData from './AdmData';
@@ -13,7 +14,8 @@ import OrdersList from './OrdersList';
 const Routes: React.FC = () => {
   return (
     <Switch>
-      <Route path="/" component={Login} exact />
+      <Route path="/" component={Portfolio} exact />
+      <Route path="/login" component={Login} exact />
       <Route path="/dashboard" component={DashBoard} exact />
       <Route path="/adm-data" component={AdmData} />
       <Route path="/users-list" component={UserList} exact />
