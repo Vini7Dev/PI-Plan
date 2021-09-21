@@ -7,6 +7,7 @@ import Logo from '../../assets/images/PI_Plan.png';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import PortfolioItem from '../../components/PortfolioItem';
 
 const Portfolio: React.FC = () => {
   return (
@@ -17,7 +18,12 @@ const Portfolio: React.FC = () => {
         <div id="nav-logo-area">
           <img src={Logo} alt="Planejados Inteligentes" />
 
-          <Input label="Pesquisar" color="white" hsize="small" />
+          <Input
+            label="Pesquisar"
+            placeholder="Pesquise por um móvel..."
+            color="white"
+            hsize="small"
+          />
         </div>
 
         <div id="nav-login-button">
@@ -40,6 +46,13 @@ const Portfolio: React.FC = () => {
           </div>
         </BannerImageArea>
       </section>
+
+      <main id="items-list-area">
+        <PortfolioItem />
+        <PortfolioItem />
+        <PortfolioItem />
+        <PortfolioItem />
+      </main>
     </Container>
   );
 }
