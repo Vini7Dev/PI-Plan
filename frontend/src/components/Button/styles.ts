@@ -8,14 +8,14 @@ interface IButtonProps {
 export const Container = styled.div<IButtonProps>`
   position: relative;
   width: 100%;
-  height: 80px;
+  height: ${props => props.size === 'normal' ? '80px' : '40px'};
 
   button {
     width: 100%;
-    height: ${props => props.size === 'normal' ? '100%' : '80%'};
+    height: 100%;
 
     border: none;
-    font-size: ${props => props.size === 'normal' ? '30px' : '25px'};
+    font-size: ${props => props.size === 'normal' ? '30px' : '20px'};
     border-radius: 30px;
 
     background-color: ${props => {

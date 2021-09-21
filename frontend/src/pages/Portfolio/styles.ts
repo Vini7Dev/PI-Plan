@@ -34,10 +34,20 @@ export const Container = styled.div`
     }
 
     div#nav-login-button {
-      width: 125px;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 300px;
 
       button {
-        margin: 8px 0;
+        min-width: 125px;
+      }
+
+      div.nav-btn-divisor {
+        width: 50px;
+        height: 5px;
       }
     }
   }
@@ -63,7 +73,7 @@ export const Container = styled.div`
     nav {
       height: 100%;
       flex-direction: column;
-      padding: 0;
+      padding: 0 5px;
 
       div#w-125-px {
         display: none;
@@ -74,7 +84,8 @@ export const Container = styled.div`
       }
 
       div#nav-login-button {
-        width: 50%;
+        margin-bottom: 15px;
+        flex-wrap: wrap;
       }
     }
 

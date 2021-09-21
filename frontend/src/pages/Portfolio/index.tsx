@@ -28,7 +28,15 @@ const Portfolio: React.FC = () => {
 
         <div id="nav-login-button">
           <Button
-            name="Entrar"
+            name="Adicionar item"
+            size="small"
+            color="white"
+          />
+
+          <div className="nav-btn-divisor" />
+
+          <Button
+            name="Sair"
             size="small"
             color="white"
           />
