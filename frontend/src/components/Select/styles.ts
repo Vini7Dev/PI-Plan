@@ -9,8 +9,8 @@ export const Container = styled.div`
 
   label {
     position: absolute;
-    top: -20px;
-    left: 25px;
+    top: -18px;
+    left: 12px;
 
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
@@ -22,7 +22,7 @@ export const Container = styled.div`
   }
 
   border: 2px solid #ceaa7b;
-  border-radius: 30px;
+  border-radius: 15px;
   padding: 10px;
 
   select {

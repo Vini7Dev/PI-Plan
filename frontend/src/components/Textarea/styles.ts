@@ -9,8 +9,8 @@ export const Container = styled.div`
 
   label {
     position: absolute;
-    top: -16px;
-    left: 25px;
+    top: -15px;
+    left: 12px;
 
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
@@ -27,7 +27,7 @@ export const Container = styled.div`
     width: 100%;
 
     border: 2px solid #ceaa7b;
-    border-radius: 30px;
+    border-radius: 15px;
 
     padding: 10px;
     font-size: 18px;

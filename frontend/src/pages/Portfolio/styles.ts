@@ -8,7 +8,7 @@ export const Container = styled.div`
   flex-wrap: wrap;
 
   nav {
-    height: 120px;
+    height: 100px;
     width: 100%;
     display: flex;
     align-items: center;
