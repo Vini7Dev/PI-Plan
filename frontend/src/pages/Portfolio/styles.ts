@@ -8,23 +8,36 @@ export const Container = styled.div`
   flex-wrap: wrap;
 
   nav {
-    position: relative;
     height: 100px;
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background-color: #b8976b;
+    padding: 60px 100px 50px;
 
-    img {
-      height: 100%;
+    div#w-125-px {
+      width: 125px;
+    }
+
+    div#nav-logo-area {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 100px;
+        margin-right: 10px;
+      }
     }
 
     div#nav-login-button {
-      position: absolute;
-      top: 18px;
-      right: 60px;
       width: 125px;
+
+      button {
+        margin: 8px 0;
+      }
     }
   }
 
@@ -36,13 +49,20 @@ export const Container = styled.div`
 
   @media (max-width: 768px) {
     nav {
+      height: 100%;
       flex-direction: column;
+      padding: 0;
+
+      div#w-125-px {
+        display: none;
+      }
+
+      div#nav-logo-area {
+        flex-wrap: wrap;
+      }
 
       div#nav-login-button {
-        position: absolute;
-        top: 0px;
-        right: 0px;
-        width: 100%;
+        width: 50%;
       }
     }
 

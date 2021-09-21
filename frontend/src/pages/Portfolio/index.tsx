@@ -5,13 +5,20 @@ import { Container, BannerImageArea } from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
 
+import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const Portfolio: React.FC = () => {
   return (
     <Container>
       <nav>
-        <img src={Logo} alt="Logo" />
+        <div id="w-125-px" />
+
+        <div id="nav-logo-area">
+          <img src={Logo} alt="Planejados Inteligentes" />
+
+          <Input label="Pesquisar" color="white" hsize="small" />
+        </div>
 
         <div id="nav-login-button">
           <Button
