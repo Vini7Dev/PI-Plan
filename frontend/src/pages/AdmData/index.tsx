@@ -98,6 +98,15 @@ const AdmData: React.FC = () =>{
         <form>
           <h1>Cadastro de Administrador</h1>
 
+          <div id="user-type-buttons-area">
+            <div className="user-type-button">
+              <Button name="Administrador" color="brown" />
+            </div>
+            <div className="user-type-button">
+              <Button name="Montador" active={false} />
+            </div>
+          </div>
+
           <Input
           autoFocus
           label="Nome"

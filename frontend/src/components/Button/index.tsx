@@ -4,7 +4,8 @@ import { Container } from './styles';
 interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
   size?: 'normal' | 'small';
-  color?: 'green' | 'white';
+  color?: 'green' | 'white' | 'brown';
+  active?: boolean;
 }
 
 const Button: React.FC<IButtonProps> = ({
@@ -12,12 +13,14 @@ const Button: React.FC<IButtonProps> = ({
   size = 'normal',
   color = 'green',
   type = 'button',
+  active = true,
   ...rest
 }) => {
   return (
     <Container
       size={size}
       color={color}
+      active={active}
     >
       <button type={type} {...rest}>
         {name}
