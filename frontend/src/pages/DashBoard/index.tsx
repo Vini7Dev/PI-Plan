@@ -122,6 +122,7 @@ const DashBoard: React.FC = () =>{
     <Container onLoad={handleLoadTasks}>
       <div id="navigation-area">
         <NavigationBar>
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" id="nav-link-selected" />
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" />

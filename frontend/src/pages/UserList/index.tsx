@@ -44,6 +44,7 @@ const UserList: React.FC = () => {
     <Container onLoad={handleLoadUsers}>
       <div id="navigation-area">
         <NavigationBar>
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard"/>
           <NavigationButton text="Usuários" toPage="/users-list" id="nav-link-selected" />
           <NavigationButton text="Clientes" toPage="/clients-list" />
