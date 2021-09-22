@@ -33,7 +33,9 @@ export const Container = styled.div<IButtonProps>`
       }
     }};
 
-    ${props => props.color === 'white' && css`box-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);`}
+    ${props => props.color === 'white' && css`
+      border: 2px solid #ceaa7b;
+    `}
 
     color: ${props => {
       switch(props.color) {
@@ -47,6 +49,12 @@ export const Container = styled.div<IButtonProps>`
         return '#ffffff';
       }
     }};
+
+    transition: opacity 200ms;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 
   @media (max-width: 768px) {

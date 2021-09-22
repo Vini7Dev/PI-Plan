@@ -227,6 +227,8 @@ const DashBoard: React.FC = () =>{
               <Button
                 className="margin-top-10"
                 name="Fechar"
+                color="white"
+                size="small"
                 onClick={() => handleShowPopup()}
               />
             </form>

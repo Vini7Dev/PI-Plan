@@ -53,8 +53,8 @@ export const Container = styled.nav<IContainerProps>`
 
       border: none;
       box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
-      background-color: #CEAA7B;
-      color: #FFFFFF;
+      background-color: #ceaa7b;
+      color: #ffffff;
 
       font-size: 25px;
     }
