@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 
-import { Container, BannerImageArea } from './styles';
+import ModalView from '../../components/ModalView';
+
+import {
+  Container,
+  BannerImageArea,
+  ModalContentArea,
+} from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
 
@@ -10,6 +16,8 @@ import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
 
 const Portfolio: React.FC = () => {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
   return (
     <Container>
       <nav>
@@ -31,6 +39,7 @@ const Portfolio: React.FC = () => {
             name="Adicionar item"
             size="small"
             color="white"
+            onClick={() => setModalIsOpen(true)}
           />
 
           <div className="nav-btn-divisor" />
@@ -103,6 +112,34 @@ const Portfolio: React.FC = () => {
           description="Descrição simples do projeto..."
         />
       </main>
+
+      <ModalView isOpen={modalIsOpen}>
+        <form>
+          <Input
+            label="Título"
+            placeholder="Informe o título do móvel"
+          />
+
+          <Input
+            label="Descrição"
+            placeholder="Descreva o móvel"
+          />
+
+          <Button
+            name="Adicionar"
+            onClick={() => setModalIsOpen(false)}
+          />
+
+          <div className="space-divisor" />
+
+          <Button
+            name="Fechar"
+            onClick={() => setModalIsOpen(false)}
+            color="white"
+            size="small"
+          />
+        </form>
+      </ModalView>
     </Container>
   );
 }

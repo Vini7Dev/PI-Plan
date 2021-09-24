@@ -8,7 +8,7 @@ interface IButtonProps {
 export const Container = styled.div<IButtonProps>`
   position: relative;
   width: 100%;
-  height: ${props => props.size === 'normal' ? '80px' : '40px'};
+  height: ${props => props.size === 'normal' ? '80px' : '50px'};
 
   button {
     width: 100%;
@@ -29,7 +29,9 @@ export const Container = styled.div<IButtonProps>`
       }
     }};
 
-    ${props => props.color === 'white' && css`box-shadow: 2px 2px 3px rgba(255, 255, 255, 0.5);`}
+    ${props => props.color === 'white' && css`
+      border: 2px solid #ceaa7b;
+    `}
 
     color: ${props => {
       switch(props.color) {
