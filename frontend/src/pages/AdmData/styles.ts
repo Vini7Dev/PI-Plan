@@ -28,8 +28,21 @@ export const Container = styled.div`
       h1 {
         margin-bottom: 20px;
       }
+
+      #user-type-buttons-area {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        justify-content: space-between;
+
+        .user-type-button {
+          width: 100%;
+          max-width: 250px;
+        }
+      }
     }
   }
+
   @media (max-width: 768px){
     flex-direction: column;
 
@@ -40,6 +53,11 @@ export const Container = styled.div`
       form{
         width: 100%;
         max-width: 720px;
+
+        #user-type-buttons-area .user-type-button {
+          max-width: 100%;
+          margin: 5px 0;
+        }
       }
     }
   }

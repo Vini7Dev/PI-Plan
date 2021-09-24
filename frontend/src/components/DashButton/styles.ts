@@ -16,6 +16,12 @@ export const Container = styled.div`
     color: #ffffff;
   }
 
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
   @media (max-width: 768px) {
     width: 100%;
   }

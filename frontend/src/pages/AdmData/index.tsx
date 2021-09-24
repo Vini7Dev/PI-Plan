@@ -86,6 +86,7 @@ const AdmData: React.FC = () =>{
     <Container>
       <div id="navigation-area">
         <NavigationBar>
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list" id="nav-link-selected" />
           <NavigationButton text="Clientes" toPage="/clients-list" />
@@ -97,6 +98,15 @@ const AdmData: React.FC = () =>{
       <main id="form-area">
         <form>
           <h1>Cadastro de Administrador</h1>
+
+          <div id="user-type-buttons-area">
+            <div className="user-type-button">
+              <Button name="Administrador" color="brown" />
+            </div>
+            <div className="user-type-button">
+              <Button name="Montador" active={false} />
+            </div>
+          </div>
 
           <Input
           autoFocus

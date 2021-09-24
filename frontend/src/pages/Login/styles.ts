@@ -18,7 +18,7 @@ export const Container = styled.div`
     max-width: 1100px;
 
     border-radius: 30px;
-    margin: 20px 80px;
+    margin: 50px 80px;
 
     background: url(${LoginBanner}) no-repeat;
     background-size: auto 100%;
@@ -33,7 +33,7 @@ export const Container = styled.div`
       border-radius: 30px;
       max-width: 536px;
       width: 50%;
-      padding: 30px;
+      padding: 30px 50px;
 
       img {
         width: 125px;

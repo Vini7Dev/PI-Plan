@@ -17,8 +17,8 @@ export const Container = styled.div`
     padding: 40px 100px 20px;
     z-index: 1;
 
-    div#w-125-px {
-      width: 125px;
+    div#nav-empty-div-align {
+      width: 300px;
     }
 
     div#nav-logo-area {

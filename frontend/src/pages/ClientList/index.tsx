@@ -64,6 +64,7 @@ const ClientList: React.FC = () => {
     <Container onLoad={handleLoadClients}>
       <div id="navigation-area">
         <NavigationBar>
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />

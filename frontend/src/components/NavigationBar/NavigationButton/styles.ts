@@ -14,13 +14,19 @@ export const Container = styled(Link)`
   font-family: Arial, Helvetica, sans-serif;
   font-size: 22px;
 
-  color: #FFFFFF;
-  background-color: #B8976B;
-  border: 4px solid #CEAA7B;
+  color: #ffffff;
+  background-color: #b8976b;
+  border: 4px solid #ceaa7b;
   border-radius: 20px;
   margin-bottom: 10px;
 
+  transition: opacity 200ms;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
   &#nav-link-selected {
-    background-color: #CEAA7B;
+    background-color: #ceaa7b;
   }
 `;

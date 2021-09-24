@@ -21,7 +21,7 @@ const Portfolio: React.FC = () => {
   return (
     <Container>
       <nav>
-        <div id="w-125-px" />
+        <div id="nav-empty-div-align" />
 
         <div id="nav-logo-area">
           <img src={Logo} alt="Planejados Inteligentes" />
