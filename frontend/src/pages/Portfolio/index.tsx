@@ -6,12 +6,12 @@ import ModalView from '../../components/ModalView';
 import {
   Container,
   BannerImageArea,
-  ModalContentArea,
 } from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
 
 import Input from '../../components/Input';
+import AddImageInput from '../../components/AddImageInput';
 import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
 
@@ -124,6 +124,8 @@ const Portfolio: React.FC = () => {
             label="Descrição"
             placeholder="Descreva o móvel"
           />
+
+          <AddImageInput />
 
           <Button
             name="Adicionar"
