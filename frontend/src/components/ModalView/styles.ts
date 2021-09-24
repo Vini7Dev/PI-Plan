@@ -17,6 +17,7 @@ export const Container = styled.div`
 
   div#modal-content-area {
     margin: 20px 0;
+    padding: 0 0 20px 0;
   }
 
   @media (max-width: 768px) {
