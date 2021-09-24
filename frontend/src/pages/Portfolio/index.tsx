@@ -113,7 +113,10 @@ const Portfolio: React.FC = () => {
         />
       </main>
 
-      <ModalView isOpen={modalIsOpen}>
+      <ModalView
+        isOpen={modalIsOpen}
+        title="Adicionar Item"
+      >
         <form>
           <Input
             label="Título"
@@ -132,7 +135,7 @@ const Portfolio: React.FC = () => {
             onClick={() => setModalIsOpen(false)}
           />
 
-          <div className="space-divisor" />
+          <div className="modal-space-divisor" />
 
           <Button
             name="Fechar"

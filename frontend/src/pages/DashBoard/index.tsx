@@ -9,6 +9,7 @@ import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import ModalView from '../../components/ModalView'
 
 interface ITaskProps {
   id: number;
@@ -183,9 +184,11 @@ const DashBoard: React.FC = () =>{
       </div>
       {
         showPopup && (
-          <div id="task-popup">
+          <ModalView
+            isOpen={showPopup}
+            title="Adicionar Tarefa"
+          >
             <form>
-              <h3>Cadastrar Tarefa</h3>
               <CheckBox
                 label="Finalizado"
                 onChange={(e) => setDone(e.target.checked)}
@@ -225,6 +228,8 @@ const DashBoard: React.FC = () =>{
                 onClick={handleSubmitTaskData}
               />
 
+              <div className="modal-space-divisor" />
+
               <Button
                 className="margin-top-10"
                 name="Fechar"
@@ -233,7 +238,7 @@ const DashBoard: React.FC = () =>{
                 onClick={() => handleShowPopup()}
               />
             </form>
-          </div>
+          </ModalView>
         )
       }
     </Container>

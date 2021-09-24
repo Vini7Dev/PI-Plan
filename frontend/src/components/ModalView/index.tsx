@@ -5,9 +5,14 @@ import { Container } from './styles';
 
 interface IModalViewProps {
   isOpen: boolean;
+  title: string;
 }
 
-const ModalView: React.FC<IModalViewProps> = ({ isOpen, children }) => {
+const ModalView: React.FC<IModalViewProps> = ({
+  isOpen,
+  title,
+  children
+}) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -25,7 +30,7 @@ const ModalView: React.FC<IModalViewProps> = ({ isOpen, children }) => {
       }}
     >
       <Container>
-        <h3>Título</h3>
+        <h3>{ title }</h3>
 
         <div id="modal-content-area">
           { children }
