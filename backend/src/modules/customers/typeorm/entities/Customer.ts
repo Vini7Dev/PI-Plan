@@ -11,7 +11,10 @@ class Customer {
   @PrimaryColumn('uuid')
   id: string;
 
-  @OneToMany(() => Order, () => Customer)
+  @OneToMany(
+    () => Order, (order) => order.customer,
+    { cascade: true },
+  )
   orders: Order[];
 
   @Column('boolean')

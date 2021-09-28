@@ -14,7 +14,11 @@ class CustomersRepository implements ICustomersRepository {
 
     // Buscando um cliente pelo id
     public async findById(id: string): Promise<Customer | undefined> {
-      const customer = await this.repository.findOne(id);
+      const customer = await this.repository.findOne(id, {
+        relations: [
+          'orders',
+        ],
+      });
 
       return customer;
     }
