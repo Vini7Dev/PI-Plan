@@ -13,7 +13,10 @@ class OrdersRepository implements IOrdersRepository {
   // Buscando um pedido pelo id
   public async findById(id: string): Promise<Order | undefined> {
     const findedOrder = await this.repository.findOne(id, {
-      relations: ['address'],
+      relations: [
+        'address',
+        'installation',
+      ],
     });
 
     return findedOrder;

@@ -37,6 +37,7 @@ class Order {
   @JoinTable()
   address: Address;
 
+  @OneToOne(() => Installation, (installation) => installation.order)
   installation: Installation;
 
   @Column('int')
