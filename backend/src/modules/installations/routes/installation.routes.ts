@@ -8,9 +8,8 @@ import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';
 // Instanciando as rotas do modelo instalação
 const installationRoutes = Router();
 
-// Aplicando os middlewares nas rotas abaixo
+// Aplicando o middleware de autenticação nas rotas abaixo
 installationRoutes.use(ensureAuthenticated);
-installationRoutes.use(ensureAdmin);
 
 // Instanciando o controller da instalação
 const installationsController = new InstallationsController();
@@ -30,6 +29,9 @@ installationRoutes.get(
   '/',
   installationsController.get,
 );
+
+// Aplicando o middleware para verificar se o usuário é administrador nas rotas abaixo
+installationRoutes.use(ensureAdmin);
 
 installationRoutes.post(
   '/',

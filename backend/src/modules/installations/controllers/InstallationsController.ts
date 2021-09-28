@@ -13,10 +13,17 @@ class InstallationsController {
     // Recuperando o id da instalação nos parâmetros da requisição
     const { id } = request.params;
 
+    // Recuperando o tipo do usuário conectado
+    const { user_type, id: user_id } = request.user;
+
     // Executando o serviço para busca da instalação
     const showInstallationService = container.resolve(ShowInstallationService);
 
-    const findedInstallation = await showInstallationService.execute(id);
+    const findedInstallation = await showInstallationService.execute({
+      id,
+      user_id,
+      user_type,
+    });
 
     return response.json(findedInstallation);
   }

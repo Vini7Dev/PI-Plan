@@ -9,9 +9,8 @@ import AssessmentsController from '../controllers/AssessmentsController';
 // Instanciando as rotas das avaliações
 const assessmentRoutes = Router();
 
-// Aplicando os middlewares nas rotas abaixo
+// Aplicando o middleware de autenticação nas rotas abaixo
 assessmentRoutes.use(ensureAuthenticated);
-assessmentRoutes.use(ensureAdmin);
 
 // Instanciando o controller das avaliações
 const assessmentsController = new AssessmentsController();
@@ -31,6 +30,9 @@ assessmentRoutes.get(
   }),
   assessmentsController.show,
 );
+
+// Aplicando o middleware para verificar se o usuário é administrador nas rotas abaixo
+assessmentRoutes.use(ensureAdmin);
 
 assessmentRoutes.post(
   '/',

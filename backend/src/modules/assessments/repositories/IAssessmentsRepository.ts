@@ -3,6 +3,7 @@ import Assessment from '../typeorm/entities/Assessment';
 
 interface IAssessmentsRepository{
   findById(id: string): Promise<Assessment | undefined>;
+  findByAssemblerId(assembler_id: string): Promise<Assessment[]>;
   list(): Promise<Assessment[]>;
   create(data: IAssessmentDTO): Promise<Assessment>;
   update(data: IAssessmentDTO): Promise<Assessment>;

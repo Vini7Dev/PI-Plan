@@ -102,8 +102,6 @@ class UpdateInstallationService {
     installationToUpdate.end_date = end_date || installationToUpdate.end_date;
     installationToUpdate.assemblers_installation = assemblersWithInstallationId as AssemblerInstallation[];
 
-    console.log(installationToUpdate);
-
     // Salvando os dados atualizados
     const updatedInstallation = await this.installationsRepository.update(installationToUpdate);
 

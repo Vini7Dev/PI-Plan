@@ -13,14 +13,41 @@ class AssessmentsRepository implements IAssessmentsRepository {
 
   // Buscando uma avaliação pelo id
   public async findById(id: string): Promise<Assessment | undefined> {
-    const findedAssessment = await this.repository.findOne(id);
+    const findedAssessment = await this.repository.findOne(id, {
+      relations: [
+        'installation',
+        'installation.order',
+        'installation.assemblers_installation',
+        'installation.assemblers_installation.assembler',
+      ],
+    });
 
     return findedAssessment;
   }
 
   // Listando todas as avaliações
   public async list(): Promise<Assessment[]> {
-    const assessmentList = await this.repository.find();
+    const assessmentList = await this.repository.find({
+      relations: [
+        'installation',
+        'installation.order',
+        'installation.assemblers_installation',
+        'installation.assemblers_installation.assembler',
+      ],
+    });
+
+    return assessmentList;
+  }
+
+  // Listando todas as avaliações de um montador
+  public async findByAssemblerId(assembler_id: string): Promise<Assessment[]> {
+    const assessmentList = await this.repository.createQueryBuilder('assessment')
+      .leftJoinAndSelect('assessment.installation', 'installation')
+      .leftJoinAndSelect('installation.order', 'order')
+      .leftJoinAndSelect('installation.assemblers_installation', 'assembler')
+      .leftJoinAndSelect('assembler.assembler', 'assembler_data')
+      .where('assembler.assembler_id = :assembler_id', { assembler_id })
+      .getMany();
 
     return assessmentList;
   }

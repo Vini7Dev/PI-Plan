@@ -13,20 +13,33 @@ class AssessmentsController {
     // Recuperando o id da valiação na requisição
     const { id } = request.params;
 
+    // Recuperando os dados do usuário autenticado
+    const { user_type, id: user_id } = request.user;
+
     // Executando o serviço para buscar a avaliação
     const showAssessmentService = container.resolve(ShowAssessmentService);
 
-    const showAssessment = await showAssessmentService.execute(id);
+    const showAssessment = await showAssessmentService.execute({
+      user_type,
+      user_id,
+      id,
+    });
 
     return response.json(showAssessment);
   }
 
   // Listando todas as avaliações salvas
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando os dados do usuário autenticado
+    const { user_type, id: user_id } = request.user;
+
     // Executando o serviço para a listagem das avaliações
     const listAssessmentsService = container.resolve(ListAssessmentsService);
 
-    const assessmentList = await listAssessmentsService.execute();
+    const assessmentList = await listAssessmentsService.execute({
+      user_id,
+      user_type,
+    });
 
     return response.json(assessmentList);
   }

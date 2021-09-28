@@ -58,6 +58,8 @@ class InstallationsRepository implements IInstallationsRepository {
     const findedInstallations = await this.repository.createQueryBuilder('installation')
       .leftJoinAndSelect('installation.order', 'order')
       .leftJoinAndSelect('installation.assemblers_installation', 'assembler')
+      .leftJoinAndSelect('assembler.assembler', 'assembler_data')
+      .leftJoinAndSelect('installation.assessment', 'assessment')
       .where('assembler.assembler_id = :assembler_id', { assembler_id })
       .getMany();
 
