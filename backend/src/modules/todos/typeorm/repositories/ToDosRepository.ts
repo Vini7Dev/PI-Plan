@@ -12,16 +12,25 @@ class ToDosRepository implements IToDosRepository {
 
   // Buscando uma tarefa pelo id
   public async findById(id: string): Promise<ToDo | undefined> {
-    const customer = await this.repository.findOne(id);
+    const toDoList = await this.repository.findOne(id);
 
-    return customer;
+    return toDoList;
+  }
+
+  // Buscando as tarefas pelo id do administrador
+  public async findByAdminId(admin_id: string): Promise<ToDo[]> {
+    const toDoList = await this.repository.find({
+      admin_id,
+    });
+
+    return toDoList;
   }
 
   // Listando todas as tarefas
   public async list(): Promise<ToDo[]> {
-    const customersList = await this.repository.find();
+    const toDosList = await this.repository.find();
 
-    return customersList;
+    return toDosList;
   }
 
   // Cadastrando uma nova tarefa
@@ -31,16 +40,16 @@ class ToDosRepository implements IToDosRepository {
     title,
     description,
   }: ICreateToDoDTO): Promise<ToDo> {
-    const createdCustomer = this.repository.create({
+    const createdToDo = this.repository.create({
       admin_id,
       done,
       title,
       description,
     });
 
-    await this.repository.save(createdCustomer);
+    await this.repository.save(createdToDo);
 
-    return createdCustomer;
+    return createdToDo;
   }
 
   // Atualizando os dados de uma tarefa
@@ -50,14 +59,14 @@ class ToDosRepository implements IToDosRepository {
     title,
     description,
   }: ICreateToDoDTO): Promise<ToDo> {
-    const updatedCustomer = await this.repository.save({
+    const updatedToDo = await this.repository.save({
       id,
       done,
       title,
       description,
     });
 
-    return updatedCustomer;
+    return updatedToDo;
   }
 
   // Apagando uma tarefa

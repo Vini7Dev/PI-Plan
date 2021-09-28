@@ -9,6 +9,7 @@ import installationRoutes from '../../../modules/installations/routes/installati
 import assessmentRoutes from '../../../modules/assessments/routes/assessments.routes';
 import reminderRoutes from '../../../modules/users/routes/reminder.routes';
 import todoRoutes from '../../../modules/todos/routes/todo.routes';
+import adminToDoRoutes from '../../../modules/todos/routes/adminToDo.routes';
 import portfolioItemsRoutes from '../../../modules/portfolioItems/routes/portfolioItems.routes';
 
 // Instanciando o objeto de rotas principal
@@ -24,6 +25,7 @@ routes.use('/installations', installationRoutes);
 routes.use('/assessments', assessmentRoutes);
 routes.use('/reminders', reminderRoutes);
 routes.use('/todos', todoRoutes);
+routes.use('/admin-todos', adminToDoRoutes);
 routes.use('/portfolio-items', portfolioItemsRoutes);
 
 export default routes;
