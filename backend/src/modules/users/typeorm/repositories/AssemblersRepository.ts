@@ -32,6 +32,17 @@ class AssemblersRepository implements IAssemblersRepository {
     return findedAssembers;
   }
 
+  // Aplicando a busca por um montador a partir de uma string
+  public async findBySearchParameter(search_string: string): Promise<Assembler[]> {
+    const assemblersList = await this.repository.createQueryBuilder('assembler')
+      .where(`assembler.name ILIKE '%${search_string}%'`)
+      .orWhere(`assembler.username ILIKE '%${search_string}%'`)
+      .orWhere(`assembler.cellphone ILIKE '%${search_string}%'`)
+      .getMany();
+
+    return assemblersList;
+  }
+
   // Listando todos os montadores
   public async list(): Promise<Assembler[]> {
     const assemblers = await this.repository.find();

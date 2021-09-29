@@ -18,6 +18,16 @@ class AdminsRepository implements IAdminsRepository {
       return admin;
     }
 
+    // Aplicando a busca por um administrador a partir de uma string
+    public async findBySearchParameter(search_string: string): Promise<Admin[]> {
+      const adminsList = await this.repository.createQueryBuilder('admin')
+        .where(`admin.name ILIKE '%${search_string}%'`)
+        .orWhere(`admin.username ILIKE '%${search_string}%'`)
+        .getMany();
+
+      return adminsList;
+    }
+
     // Buscando um administrador pelo seu username
     public async findByUsername(username: string): Promise<Admin | undefined> {
       const admin = await this.repository.findOne({ username });
