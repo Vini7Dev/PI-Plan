@@ -194,14 +194,6 @@ const ClientData: React.FC = () =>{
           />
 
           <Input
-          label="Ultimo Contato"
-          placeholder="Informe a data do Ultimo Contato"
-          type="date"
-          onChange={(e) => setLastContact(e.target.value)}
-          defaultValue={lastContact}
-          />
-
-          <Input
           label="Próximo Contato"
           placeholder="Informe a data do Próximo Contato"
           type="date"

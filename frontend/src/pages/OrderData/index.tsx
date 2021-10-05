@@ -165,6 +165,7 @@ const OrderData: React.FC = () => {
             value={actualStatus}
             onChange={(e) => setActualStatus(Number(e.target.value))}
           />
+          
           <Select
             label="Processo Atual"
             options={[
