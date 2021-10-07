@@ -29,6 +29,9 @@ class InstallationsController {
   }
 
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando a string para busca
+    const { search_string } = request.body;
+
     // Recuperando os dados do usuário conectado
     const {
       user_type,
@@ -41,6 +44,7 @@ class InstallationsController {
     const installationsList = await listInstallationsServices.execute({
       user_type,
       user_id,
+      search_string,
     });
 
     return response.json(installationsList);

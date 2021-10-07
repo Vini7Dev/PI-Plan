@@ -6,7 +6,7 @@ interface IInstallationsRepository {
   findByOrderId(order_id: string): Promise<Installation | undefined>;
   findByAssemblerId(assembler_id: string): Promise<Installation[]>;
   listInProgress(): Promise<Installation[]>;
-  list(): Promise<Installation[]>;
+  list(search_string: string): Promise<Installation[]>;
   create(data: ICreateInstallationDTO): Promise<Installation>;
   update(data: ICreateInstallationDTO): Promise<Installation>;
   delete(id: string): Promise<string>;

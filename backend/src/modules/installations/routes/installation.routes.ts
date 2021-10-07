@@ -27,6 +27,11 @@ installationRoutes.get(
 
 installationRoutes.get(
   '/',
+  celebrate({
+    [Segments.BODY]: {
+      search_string: Joi.string(),
+    },
+  }),
   installationsController.get,
 );
 

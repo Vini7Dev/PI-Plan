@@ -67,15 +67,25 @@ class InstallationsRepository implements IInstallationsRepository {
   }
 
   // Listando todas as instalações salvas
-  public async list(): Promise<Installation[]> {
-    const installationList = await this.repository.find({
-      relations: [
-        'order',
-        'assessment',
-        'assemblers_installation',
-        'assemblers_installation.assembler',
-      ],
-    });
+  public async list(search_string: string): Promise<Installation[]> {
+    const installationList = await this.repository.createQueryBuilder('installation')
+      .innerJoinAndSelect('installation.order', 'order')
+      .innerJoinAndSelect('order.address', 'address')
+      .innerJoinAndSelect('installation.assemblers_installation', 'assemblers_installation')
+      .innerJoinAndSelect('assemblers_installation.assembler', 'assembler')
+      .leftJoinAndSelect('installation.assessment', 'assessment')
+      .where(`order.title ILIKE '%${search_string}%'`)
+      .orWhere(`order.description ILIKE '%${search_string}%'`)
+      .orWhere(`order.installation_environments ILIKE '%${search_string}%'`)
+      .orWhere(`address.cep ILIKE '%${search_string}%'`)
+      .orWhere(`address.street ILIKE '%${search_string}%'`)
+      .orWhere(`address.district ILIKE '%${search_string}%'`)
+      .orWhere(`address.city ILIKE '%${search_string}%'`)
+      .orWhere(`address.uf ILIKE '%${search_string}%'`)
+      .orWhere(`assembler.name ILIKE '%${search_string}%'`)
+      .orWhere(`assembler.username ILIKE '%${search_string}%'`)
+      .orWhere(`assembler.cellphone ILIKE '%${search_string}%'`)
+      .getMany();
 
     return installationList;
   }

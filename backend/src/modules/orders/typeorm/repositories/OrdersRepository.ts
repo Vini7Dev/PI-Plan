@@ -1,4 +1,4 @@
-import { getRepository, ILike, Repository } from 'typeorm';
+import { getRepository, Repository } from 'typeorm';
 import ICreateOrderDTO from '../../dtos/ICreateOrderDTO';
 import IOrdersRepository from '../../repositories/IOrdersRepository';
 import Order from '../entities/Order';
@@ -33,7 +33,7 @@ class OrdersRepository implements IOrdersRepository {
 
   // Listando todos os pedidos
   public async list(search_string: string): Promise<Order[]> {
-    const ordersList = this.repository.createQueryBuilder('order')
+    const ordersList = await this.repository.createQueryBuilder('order')
       .innerJoinAndSelect('order.address', 'address')
       .where(`order.title ILIKE '%${search_string}%'`)
       .orWhere(`order.description ILIKE '%${search_string}%'`)
