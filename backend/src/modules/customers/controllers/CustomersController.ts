@@ -23,10 +23,13 @@ class CustomersController {
 
   // Listando todos os clientes cadastrados
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando a string para busca
+    const { search_string } = request.body;
+
     // Executando o serviço para criação do cliente
     const listCustomersService = container.resolve(ListCustomersService);
 
-    const customersList = await listCustomersService.execute();
+    const customersList = await listCustomersService.execute(search_string);
 
     return response.json(customersList);
   }

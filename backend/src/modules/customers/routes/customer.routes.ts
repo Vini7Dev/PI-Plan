@@ -28,6 +28,11 @@ customerRoutes.get(
 
 customerRoutes.get(
   '/',
+  celebrate({
+    [Segments.BODY]: {
+      search_string: Joi.string(),
+    },
+  }),
   customerController.get,
 );
 

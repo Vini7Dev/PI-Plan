@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 
 import ICustomersRepository from '../../repositories/ICustomersRepository';
 import Customer from '../entities/Customer';
@@ -48,8 +48,14 @@ class CustomersRepository implements ICustomersRepository {
     }
 
     // Listando os clientees
-    public async list(): Promise<Customer[]> {
-      const customersList = await this.repository.find();
+    public async list(search_string?: string): Promise<Customer[]> {
+      const customersList = await this.repository.find({
+        where: [
+          { name: ILike(`%${search_string}%`) },
+          { phone: ILike(`%${search_string}%`) },
+          { document: ILike(`%${search_string}%`) },
+        ],
+      });
 
       return customersList;
     }

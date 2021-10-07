@@ -12,8 +12,8 @@ class ListCustomersService {
   ) {}
 
   // Serviço para listar os clientes cadastrados
-  public async execute(): Promise<Customer[]> {
-    const customersList = await this.customersRepository.list();
+  public async execute(search_string = ''): Promise<Customer[]> {
+    const customersList = await this.customersRepository.list(search_string);
 
     return customersList;
   }
