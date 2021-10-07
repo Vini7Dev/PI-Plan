@@ -23,10 +23,13 @@ class OrdersController {
 
   // Listando todos os pedidos
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando a string para busca
+    const { search_string } = request.body;
+
     // Executando o serviço de listagem dos pedidos
     const listOrdersService = container.resolve(ListOrdersService);
 
-    const ordersList = await listOrdersService.execute();
+    const ordersList = await listOrdersService.execute(search_string);
 
     return response.json(ordersList);
   }

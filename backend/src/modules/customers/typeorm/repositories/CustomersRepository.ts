@@ -48,7 +48,7 @@ class CustomersRepository implements ICustomersRepository {
     }
 
     // Listando os clientees
-    public async list(search_string?: string): Promise<Customer[]> {
+    public async list(search_string: string): Promise<Customer[]> {
       const customersList = await this.repository.find({
         where: [
           { name: ILike(`%${search_string}%`) },

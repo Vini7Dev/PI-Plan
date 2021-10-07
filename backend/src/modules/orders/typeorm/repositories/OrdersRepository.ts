@@ -1,4 +1,4 @@
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, ILike, Repository } from 'typeorm';
 import ICreateOrderDTO from '../../dtos/ICreateOrderDTO';
 import IOrdersRepository from '../../repositories/IOrdersRepository';
 import Order from '../entities/Order';
@@ -32,10 +32,19 @@ class OrdersRepository implements IOrdersRepository {
   }
 
   // Listando todos os pedidos
-  public async list(): Promise<Order[]> {
-    const ordersList = await this.repository.find({
-      relations: ['address'],
-    });
+  public async list(search_string: string): Promise<Order[]> {
+    const ordersList = this.repository.createQueryBuilder('order')
+      .innerJoinAndSelect('order.address', 'address')
+      .where(`order.title ILIKE '%${search_string}%'`)
+      .orWhere(`order.description ILIKE '%${search_string}%'`)
+      .orWhere(`order.installation_environments ILIKE '%${search_string}%'`)
+      .orWhere(`address.cep ILIKE '%${search_string}%'`)
+      .orWhere(`address.street ILIKE '%${search_string}%'`)
+      .orWhere(`address.district ILIKE '%${search_string}%'`)
+      .orWhere(`address.city ILIKE '%${search_string}%'`)
+      .orWhere(`address.uf ILIKE '%${search_string}%'`)
+      .orWhere(`address.country ILIKE '%${search_string}%'`)
+      .getMany();
 
     return ordersList;
   }

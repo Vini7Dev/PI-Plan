@@ -12,8 +12,8 @@ class ListOrdersService {
   ) {}
 
   // Serviço para listagem dos pedidos
-  public async execute(): Promise<Order[]> {
-    const ordersList = await this.ordersRepository.list();
+  public async execute(search_string = ''): Promise<Order[]> {
+    const ordersList = await this.ordersRepository.list(search_string);
 
     return ordersList;
   }
