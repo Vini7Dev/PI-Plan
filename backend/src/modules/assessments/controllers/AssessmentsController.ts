@@ -30,6 +30,9 @@ class AssessmentsController {
 
   // Listando todas as avaliações salvas
   public async get(request: Request, response: Response): Promise<Response> {
+    // Recuperando a string para busca
+    const { search_string } = request.body;
+
     // Recuperando os dados do usuário autenticado
     const { user_type, id: user_id } = request.user;
 
@@ -39,6 +42,7 @@ class AssessmentsController {
     const assessmentList = await listAssessmentsService.execute({
       user_id,
       user_type,
+      search_string,
     });
 
     return response.json(assessmentList);

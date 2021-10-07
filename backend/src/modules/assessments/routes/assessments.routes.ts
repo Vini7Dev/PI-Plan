@@ -18,6 +18,11 @@ const assessmentsController = new AssessmentsController();
 // Criando as rotas das avaliações
 assessmentRoutes.get(
   '/',
+  celebrate({
+    [Segments.BODY]: {
+      search_string: Joi.string(),
+    },
+  }),
   assessmentsController.get,
 );
 
