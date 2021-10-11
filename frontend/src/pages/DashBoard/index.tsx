@@ -164,14 +164,27 @@ const DashBoard: React.FC = () =>{
             breakPoints={breakPoints}
             disableArrowsOnEnd={false}
           >
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
-            <ReminderItem />
+            <ReminderItem
+              id="1"
+              title="Título do Pedido"
+              subtitle="Modelagem"
+              description="Descrição detalhada do pedido..."
+              reminder_type="order"
+            />
+            <ReminderItem
+              id="2"
+              title="Título da Instalação"
+              subtitle="Finalizar em 10/09"
+              description="Descrição detalhada do pedido..."
+              reminder_type="installation"
+            />
+            <ReminderItem
+              id="3"
+              title="Contactar Cliente"
+              subtitle="Contactar em 08/09"
+              description="(99)12345-6789"
+              reminder_type="contact_alert"
+            />
           </Carousel>
         </div>
 

@@ -1,17 +1,40 @@
 import React from 'react';
-import { FiLayers } from 'react-icons/fi';
+import { FiLayers, FiSettings, FiMail } from 'react-icons/fi';
 
 import { Container } from './styles';
 
-const ReminderItem: React.FC = () => {
+interface IReminderItemProps {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  reminder_type: 'contact_alert' | 'order' | 'installation';
+}
+
+const ReminderItem: React.FC<IReminderItemProps> = ({
+  id, title, subtitle, description, reminder_type,
+}) => {
   return (
-    <Container>
-      <FiLayers color="#A48760" size={35} />
-      <strong>Título do Projeto</strong>
-      <span>Modelagem</span>
-      <p>
-        Descrição e mais detalhes do projeto apresentado no card
-      </p>
+    <Container
+      reminder_type={reminder_type}
+    >
+      {
+        (function() {
+          switch (reminder_type) {
+            case 'order':
+              return <FiLayers color="#A48760" size={35} />
+            case 'installation':
+              return <FiSettings color="#73A780" size={35} />
+            case 'contact_alert':
+              return <FiMail color="#7C56AF" size={35} />
+            default:
+              return <FiLayers color="#A48760" size={35} />
+          }
+        })()
+      }
+      <strong>{title}</strong>
+      <span>{subtitle}</span>
+      <p>{description}</p>
     </Container>
   );
 }
