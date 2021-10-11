@@ -5,6 +5,7 @@ import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+import Header from '../../components/Header';
 
 interface IOrderProps {
   id: number;
@@ -54,7 +55,7 @@ const OrdersList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <h1 id="title">Pedidos</h1>
+        <Header title="Pedidos" />
 
         <div id="register-page-link">
           <Link to="order-data">

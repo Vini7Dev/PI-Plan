@@ -7,6 +7,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+import Header from '../../components/Header';
 
 interface ICustomerProps{
   id?: number;
@@ -161,9 +162,9 @@ const CustomerData: React.FC = () =>{
       </div>
 
       <main id="form-area">
-        <form>
-          <h1>Cadastro de Cliente</h1>
+        <Header title="Cadastro de Cliente" />
 
+        <form>
           <Input
           label="Nome"
           placeholder="Digíte o Nome"
@@ -185,7 +186,7 @@ const CustomerData: React.FC = () =>{
           defaultValue={document}
           />
 
-          <h1>Alerta de Contato</h1>
+          <h2>Alerta de Contato</h2>
 
           <ChechBox
             label="Emitir o alerta de contato para este Cliente"

@@ -5,9 +5,10 @@ export const Container = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  h1 {
+  h2, h3 {
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
+    font-size: 25px;
     color: #60626C;
   }
 

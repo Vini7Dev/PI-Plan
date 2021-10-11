@@ -5,13 +5,6 @@ export const Container = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
 
-  h1{
-    margin-bottom: -12px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: italic;
-    color: #60626C;
-  }
-
   #navigation-area{
     flex: 0.5;
   }

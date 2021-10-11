@@ -21,13 +21,6 @@ export const Container = styled.div`
     padding: 20px 8%;
 
     #scroll-items-area {
-      h1 {
-        font-family: Arial, Helvetica, sans-serif;
-        font-style: italic;
-        color: #60626C;
-        margin-bottom: 20px;
-      }
-
       div button {
         background-color: #FFFFFF;
         color: #797D8A;

@@ -4,6 +4,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
+import Header from '../../components/Header';
 import DashButton from '../../components/DashButton';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
@@ -32,22 +33,10 @@ const DashBoard: React.FC = () =>{
   const [taskDate, setTaskDate] = useState('');
 
   const breakPoints = [
-    {
-      width: 180,
-      itemsToShow: 1,
-    },
-    {
-      width: 360,
-      itemsToShow: 2,
-    },
-    {
-      width: 550,
-      itemsToShow: 3,
-    },
-    {
-      width: 720,
-      itemsToShow: 4,
-    },
+    { width: 180, itemsToShow: 1 },
+    { width: 360, itemsToShow: 2 },
+    { width: 550, itemsToShow: 3 },
+    { width: 720, itemsToShow: 4 },
   ];
 
   const handleShowPopup = useCallback((id?: number) => {
@@ -154,9 +143,9 @@ const DashBoard: React.FC = () =>{
       </div>
 
       <div id="page-area">
-        <div id="scroll-items-area">
-          <h1>Lembretes do Dia</h1>
+        <Header title="Lembretes do Dia" />
 
+        <div id="scroll-items-area">
           <Carousel
             isRTL={false}
             itemsToShow={4}

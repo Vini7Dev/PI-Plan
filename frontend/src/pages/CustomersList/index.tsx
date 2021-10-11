@@ -5,6 +5,7 @@ import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+import Header from '../../components/Header';
 
 interface IClientProps {
   id: number;
@@ -74,7 +75,7 @@ const CustomersList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <h1 id="title">Clientes</h1>
+        <Header title="Clientes" />
 
         <div id="register-page-link">
           <Link to="customer-data">

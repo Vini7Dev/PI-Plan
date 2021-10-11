@@ -7,6 +7,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
+import Header from '../../components/Header';
 
 interface IAdminProps {
   id: number;
@@ -96,9 +97,9 @@ const AdmData: React.FC = () =>{
       </div>
 
       <main id="form-area">
-        <form>
-          <h1>Cadastro de Administrador</h1>
+        <Header title="Cadastro de Administrador" />
 
+        <form>
           <div id="user-type-buttons-area">
             <div className="user-type-button">
               <Button name="Administrador" color="brown" />

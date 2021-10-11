@@ -8,6 +8,7 @@ import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
+import Header from '../../components/Header';
 
 interface IOrderProps {
   id?: number;
@@ -151,9 +152,9 @@ const OrderData: React.FC = () => {
       </div>
 
       <main id="form-area">
-        <form>
-          <h1>Dados do Pedido</h1>
+        <Header title="Cadastro de Pedido" />
 
+        <form>
           <Select
             autoFocus
             label="Status do Pedido"
@@ -215,7 +216,7 @@ const OrderData: React.FC = () => {
             onChange={(e) => setFurnitureDeliveryDate(e.target.value)}
           />
 
-          <h1>Endereço</h1>
+          <h2>Endereço</h2>
           <Input
             label="CEP"
             placeholder="Informe o CEP"
@@ -306,7 +307,7 @@ const OrderData: React.FC = () => {
             onChange={(e) => setInstallationEnvironments(e.target.value)}
           />
 
-          <h1>Valores e Pagamento</h1>
+          <h3>Valores e Pagamento</h3>
           <Select
             label="Forma de Pagamento"
             options={[
