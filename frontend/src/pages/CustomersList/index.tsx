@@ -14,7 +14,7 @@ interface IClientProps {
   cnpj?: string;
 }
 
-const ClientList: React.FC = () => {
+const CustomersList: React.FC = () => {
   const [legalClients, setLegalClients] = useState<IClientProps[]>([]);
   const [physicalClients, setPhysicalClients] = useState<IClientProps[]>([]);
 
@@ -67,7 +67,7 @@ const ClientList: React.FC = () => {
           <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list"/>
-          <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />
+          <NavigationButton text="Clientes" toPage="/customers-list" id="nav-link-selected" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
@@ -77,7 +77,7 @@ const ClientList: React.FC = () => {
         <h1 id="title">Clientes</h1>
 
         <div id="register-page-link">
-          <Link to="client-data">
+          <Link to="customer-data">
             Cadastrar
           </Link>
         </div>
@@ -152,4 +152,4 @@ const ClientList: React.FC = () => {
   );
 };
 
-export default ClientList;
+export default CustomersList;

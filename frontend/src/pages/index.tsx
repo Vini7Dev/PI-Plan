@@ -6,8 +6,8 @@ import Login from './Login';
 import DashBoard from './DashBoard';
 import AdmData from './AdmData';
 import UserList from './UserList';
-import ClientData from './ClientData';
-import ClientList from './ClientList';
+import CustomerData from './CustomerData';
+import CustomersList from './CustomersList';
 import OrderData from './OrderData';
 import OrdersList from './OrdersList';
 
@@ -19,8 +19,8 @@ const Routes: React.FC = () => {
       <Route path="/dashboard" component={DashBoard} exact />
       <Route path="/adm-data" component={AdmData} />
       <Route path="/users-list" component={UserList} exact />
-      <Route path="/client-data" component={ClientData} />
-      <Route path="/clients-list" component={ClientList} exact />
+      <Route path="/customer-data" component={CustomerData} />
+      <Route path="/customers-list" component={CustomersList} exact />
       <Route path="/order-data" component={OrderData} />
       <Route path="/orders-list" component={OrdersList} exact />
     </Switch>

@@ -89,7 +89,7 @@ const AdmData: React.FC = () =>{
           <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list" id="nav-link-selected" />
-          <NavigationButton text="Clientes" toPage="/clients-list" />
+          <NavigationButton text="Clientes" toPage="/customers-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>

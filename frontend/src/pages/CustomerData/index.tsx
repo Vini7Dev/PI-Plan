@@ -8,7 +8,7 @@ import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 
-interface IClientProps{
+interface ICustomerProps{
   id?: number;
   warn_contact: boolean;
   name: string;
@@ -19,7 +19,7 @@ interface IClientProps{
   cnpj?: string;
 }
 
-const ClientData: React.FC = () =>{
+const CustomerData: React.FC = () =>{
   const location = useLocation();
   const history = useHistory();
 
@@ -104,7 +104,7 @@ const ClientData: React.FC = () =>{
         last_contact: lastContact,
         next_contact: nextContact,
         warn_contact: warnContact,
-      } as IClientProps;
+      } as ICustomerProps;
 
       let httpVerb = '';
       if(clientId) {
@@ -127,7 +127,7 @@ const ClientData: React.FC = () =>{
         last_contact: lastContact,
         next_contact: nextContact,
         warn_contact: warnContact,
-      }as IClientProps;
+      }as ICustomerProps;
 
       let httpVerb = '';
       if(clientId) {
@@ -154,7 +154,7 @@ const ClientData: React.FC = () =>{
           <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list"/>
-          <NavigationButton text="Clientes" toPage="/clients-list" id="nav-link-selected" />
+          <NavigationButton text="Clientes" toPage="/customers-list" id="nav-link-selected" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
@@ -208,4 +208,4 @@ const ClientData: React.FC = () =>{
   );
 };
 
-export default ClientData;
+export default CustomerData;
