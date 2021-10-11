@@ -44,11 +44,11 @@ const OrdersList: React.FC = () => {
     <Container onLoad={handleLoadOrders}>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard"/>
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/customers-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" id="nav-link-selected" />
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>

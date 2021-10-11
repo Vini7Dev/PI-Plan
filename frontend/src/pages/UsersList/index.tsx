@@ -13,7 +13,7 @@ interface IUserProps {
   permission_create_adm: boolean;
 }
 
-const UserList: React.FC = () => {
+const UsersList: React.FC = () => {
   const [users, setUsers] = useState<IUserProps[]>([]);
 
   const handleLoadUsers = useCallback(() => {
@@ -44,11 +44,11 @@ const UserList: React.FC = () => {
     <Container onLoad={handleLoadUsers}>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard"/>
           <NavigationButton text="Usuários" toPage="/users-list" id="nav-link-selected" />
           <NavigationButton text="Clientes" toPage="/customers-list" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
@@ -110,4 +110,4 @@ const UserList: React.FC = () => {
   );
 };
 
-export default UserList;
+export default UsersList;

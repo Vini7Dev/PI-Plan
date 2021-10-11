@@ -151,11 +151,11 @@ const CustomerData: React.FC = () =>{
     <Container>
       <div id="navigation-area">
         <NavigationBar>
-          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Página Inicial" toPage="/dashboard" />
           <NavigationButton text="Usuários" toPage="/users-list"/>
           <NavigationButton text="Clientes" toPage="/customers-list" id="nav-link-selected" />
           <NavigationButton text="Pedidos" toPage="/orders-list" />
+          <NavigationButton text="Portfólio" toPage="/" />
           <NavigationButton text="Sair" toPage="/" />
         </NavigationBar>
       </div>
