@@ -8,13 +8,6 @@ export const Container = styled.div`
   min-height: 100vh;
   height: 100%;
 
-  h1 {
-    margin-bottom: -50px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-style: italic;
-    color: #60626C;
-  }
-
   .margin-top-10 {
     margin-top: 10px;
   }
@@ -23,20 +16,23 @@ export const Container = styled.div`
     flex: 0.5;
   }
 
-  #task-area {
+  #page-area {
     flex: 2;
-
     padding: 20px 8%;
 
-    #banner-area {
-      margin: 0 -150px 20px -150px;
-      width: 10000px;
-      max-width: 75vw;
+    #scroll-items-area {
+      h1 {
+        font-family: Arial, Helvetica, sans-serif;
+        font-style: italic;
+        color: #60626C;
+        margin-bottom: 20px;
+      }
 
-      img {
-        width: 100%;
-        border-radius: 50px;
-        box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+      div button {
+        background-color: #FFFFFF;
+        color: #797D8A;
+        font-size: 50px;
+        box-shadow: none;
       }
     }
 
@@ -48,7 +44,7 @@ export const Container = styled.div`
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
-        margin-top: 75px;
+        margin-top: 40px;
 
         .size1{
           width: 25%;
@@ -146,13 +142,9 @@ export const Container = styled.div`
     flex-direction: column;
     width: 100%;
 
-    #task-area {
-      padding: 10px;
+    #page-area {
       flex: 2;
-
-      #banner-area {
-        display: none;
-      }
+      padding: 10px;
 
       main {
         max-width: 720px;

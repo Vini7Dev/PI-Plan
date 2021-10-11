@@ -1,15 +1,17 @@
 import React, { useState , useCallback } from 'react';
+import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
-import LoginBanner from '../../assets/images/LoginBanner.jpg';
 import NavigationBar from '../../components/NavigationBar';
 import DashButton from '../../components/DashButton';
 import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import ModalView from '../../components/ModalView'
+import ModalView from '../../components/ModalView';
+
+import ReminderItem from '../../components/ReminderItem';
 
 interface ITaskProps {
   id: number;
@@ -28,6 +30,25 @@ const DashBoard: React.FC = () =>{
   const [description, setDescription] = useState('');
   const [taskTime, setTaskTime] = useState('');
   const [taskDate, setTaskDate] = useState('');
+
+  const breakPoints = [
+    {
+      width: 180,
+      itemsToShow: 1,
+    },
+    {
+      width: 360,
+      itemsToShow: 2,
+    },
+    {
+      width: 550,
+      itemsToShow: 3,
+    },
+    {
+      width: 720,
+      itemsToShow: 4,
+    },
+  ];
 
   const handleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
@@ -132,13 +153,29 @@ const DashBoard: React.FC = () =>{
         </NavigationBar>
       </div>
 
-      <div id="task-area">
-        <header id="banner-area">
-          <img src={LoginBanner} alt="Banner" />
-        </header>
+      <div id="page-area">
+        <div id="scroll-items-area">
+          <h1>Lembretes do Dia</h1>
+
+          <Carousel
+            isRTL={false}
+            itemsToShow={4}
+            pagination={false}
+            breakPoints={breakPoints}
+            disableArrowsOnEnd={false}
+          >
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+            <ReminderItem />
+          </Carousel>
+        </div>
 
         <main>
-          <h1>Lembretes</h1>
           <div className= "space-division">
             <div className="size2">
               <DashButton name="Tarefas"/>
