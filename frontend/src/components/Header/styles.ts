@@ -5,6 +5,9 @@ export const Container = styled.header`
   width: 100%;
 
   strong {
+    display: flex;
+    align-items: center;
+
     position: absolute;
     top: 0;
     right: 0;
@@ -15,6 +18,10 @@ export const Container = styled.header`
     font-weight: 600;
     color: #FFFFFF;
     border-radius: 30px;
+
+    svg {
+      margin-right: 5px;
+    }
   }
 
   h1 {
@@ -31,6 +38,10 @@ export const Container = styled.header`
       padding: 10px 30px;
       font-size: 18px;
       text-align: center;
+
+      svg {
+        display: none;
+      }
     }
 
     h1 {
