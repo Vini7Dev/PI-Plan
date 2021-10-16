@@ -5,34 +5,33 @@ import { Container } from './styles';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import CheckBox from '../../components/CheckBox';
 import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Header from '../../components/Header';
 
-interface IAdminProps {
+interface IAssemblerProps {
   id: number;
   name: string;
   username: string;
   password: string;
-  permission_create_adm: boolean;
+  cellphone: boolean;
 }
 
-const AdmData: React.FC = () =>{
+const AssemblerData: React.FC = () =>{
   const location = useLocation();
   const history = useHistory();
   const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
+  const [cellphone, setCellphone] = useState('');
 
   useEffect(() => {
-    const userId = location.pathname.split('/adm-data/')[1];
+    const userId = location.pathname.split('/assembler-data/')[1];
 
     if(userId) {
       const request = new XMLHttpRequest();
 
-      request.open('GET', `http://localhost:8080/admins/${userId}`, true);
+      request.open('GET', `http://localhost:8080/assemblers/${userId}`, true);
 
       request.onload = function() {
         if(this.response) {
@@ -41,7 +40,7 @@ const AdmData: React.FC = () =>{
           setName(userData.name);
           setUsername(userData.username);
           setPassword(userData.password);
-          setPermissionCreateAdmin(userData.permission_create_adm);
+          setCellphone(userData.cellphone);
         }
       }
 
@@ -50,38 +49,8 @@ const AdmData: React.FC = () =>{
   }, [location]);
 
   const handleSubmitAdmData = useCallback(function(){
-    const userId = location.pathname.split('/adm-data/')[1];
-
-    const admin = {
-      name,
-      username,
-      password,
-      permission_create_adm: permissionCreateAdmin,
-    } as IAdminProps;
-
-    let httpVerb = '';
-    if(userId) {
-      httpVerb = 'PUT';
-      admin.id = Number(userId);
-    } else {
-      httpVerb = 'POST';
-    }
-
-    if(password !== confirmPassword) {
-      alert('Erro ao confirmar a senha.');
-      return;
-    }
-
-    const request = new XMLHttpRequest();
-
-    request.open(httpVerb, `http://localhost:8080/admins`, true);
-
-    request.setRequestHeader(`Content-Type`, `application/json`);
-    request.send(JSON.stringify(admin));
-
-    alert('Sucesso!');
-    history.push('/users-list')
-  },[name, username, password, confirmPassword, permissionCreateAdmin, location, history]);
+    // const userId = location.pathname.split('/assembler-data/')[1];
+  },[]);
 
   return(
     <Container>
@@ -97,17 +66,17 @@ const AdmData: React.FC = () =>{
       </div>
 
       <main id="form-area">
-        <Header title="Cadastro de Administrador" />
+        <Header title="Cadastro de Montador" />
 
         <form>
           <div id="user-type-buttons-area">
             <div className="user-type-button">
-              <Button name="Administrador" color="brown" />
+              <Link to="/adm-data/">
+                <Button name="Administrador" color="brown" active={false} />
+              </Link>
             </div>
             <div className="user-type-button">
-              <Link to="/assembler-data/">
-                <Button name="Montador" active={false} />
-              </Link>
+              <Button name="Montador" />
             </div>
           </div>
 
@@ -127,6 +96,13 @@ const AdmData: React.FC = () =>{
           />
 
           <Input
+            label="Telefone"
+            placeholder="(99) XXXXX-XXXX"
+            defaultValue={cellphone}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <Input
           label="Senha"
           placeholder="Digíte a Senha"
           type="password"
@@ -141,12 +117,6 @@ const AdmData: React.FC = () =>{
           onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <CheckBox
-            label="Pode criar administrador"
-            onChange={e => setPermissionCreateAdmin(e.target.checked)}
-            checked={permissionCreateAdmin}
-          />
-
           <Button name="Cadastrar" onClick={handleSubmitAdmData} />
         </form>
       </main>
@@ -154,4 +124,4 @@ const AdmData: React.FC = () =>{
   );
 };
 
-export default AdmData;
+export default AssemblerData;
