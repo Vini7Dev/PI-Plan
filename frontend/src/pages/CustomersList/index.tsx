@@ -4,7 +4,6 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
-import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import Header from '../../components/Header';
 
 interface IClientProps {
@@ -64,14 +63,7 @@ const CustomersList: React.FC = () => {
   return (
     <Container onLoad={handleLoadClients}>
       <div id="navigation-area">
-        <NavigationBar>
-          <NavigationButton text="Página Inicial" toPage="/dashboard" />
-          <NavigationButton text="Usuários" toPage="/users-list"/>
-          <NavigationButton text="Clientes" toPage="/customers-list" id="nav-link-selected" />
-          <NavigationButton text="Pedidos" toPage="/orders-list" />
-          <NavigationButton text="Portfólio" toPage="/" />
-          <NavigationButton text="Sair" toPage="/" />
-        </NavigationBar>
+        <NavigationBar optionSelected={2} />
       </div>
 
       <main id="table-area">

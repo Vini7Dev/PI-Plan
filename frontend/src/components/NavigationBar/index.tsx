@@ -3,8 +3,23 @@ import { FiMenu } from 'react-icons/fi';
 import { Container } from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
+import NavigationButton from './NavigationButton';
 
-const NavigationBar: React.FC = ({ children }) => {
+interface INavigationBarProps {
+  optionSelected: number;
+}
+
+const navigationOptions = [
+  { id: 0, text: 'Página Inicial', toPage: '/dashboard' },
+  { id: 1, text: 'Usuários', toPage: '/users-list' },
+  { id: 2, text: 'Clientes', toPage: '/customers-list' },
+  { id: 3, text: 'Pedidos', toPage: '/orders-list' },
+  { id: 4, text: 'Instalações', toPage: '/installations-list' },
+  { id: 5, text: 'Avaliações', toPage: '/assessments-list' },
+  { id: 6, text: 'Portfólio', toPage: '/' },
+];
+
+const NavigationBar: React.FC<INavigationBarProps> = ({ optionSelected }) => {
   const [showNav, setShowNav] = useState(false);
 
   const handleChangeShowNav = useCallback(() => {
@@ -21,7 +36,13 @@ const NavigationBar: React.FC = ({ children }) => {
       </button>
 
       <div id="nav-links-list">
-        {children}
+        {navigationOptions.map(option => (
+          <NavigationButton
+            text={option.text}
+            toPage={option.toPage}
+            id={optionSelected === option.id ? 'nav-link-selected' : undefined}
+          />
+        ))}
       </div>
     </Container>
   );

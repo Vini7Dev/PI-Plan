@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Container } from './styles';
 
-import NavigationButton from '../../components/NavigationBar/NavigationButton';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
@@ -141,14 +140,7 @@ const OrderData: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar>
-          <NavigationButton text="Página Inicial" toPage="/dashboard"/>
-          <NavigationButton text="Usuários" toPage="/users-list"/>
-          <NavigationButton text="Clientes" toPage="/customers-list" />
-          <NavigationButton text="Pedidos" toPage="/orders-list" id="nav-link-selected" />
-          <NavigationButton text="Portfólio" toPage="/" />
-          <NavigationButton text="Sair" toPage="/" />
-        </NavigationBar>
+        <NavigationBar optionSelected={3} />
       </div>
 
       <main id="form-area">
