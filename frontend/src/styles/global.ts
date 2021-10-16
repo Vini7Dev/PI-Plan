@@ -11,4 +11,8 @@ export default createGlobalStyle`
   body {
     -webkit-font-smoothing: antialiased;
   }
+
+  button, input, textarea, label, a {
+    cursor: pointer;
+  }
 `;

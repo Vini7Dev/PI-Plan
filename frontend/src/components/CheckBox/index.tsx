@@ -10,7 +10,8 @@ const ChechBox: React.FC<ICheckBoxProps> = ({label, onClickLabel, children, ...r
 
   return(
     <Container>
-      <label htmlFor={label} onClick={onClickLabel}>{label}</label>
+      {label && <label htmlFor={label} onClick={onClickLabel}>{label}</label>}
+
       <input id={label} type="checkbox" {...rest} />
       <div>
         { children }

@@ -11,6 +11,7 @@ import CustomerData from './CustomerData';
 import CustomersList from './CustomersList';
 import OrderData from './OrderData';
 import OrdersList from './OrdersList';
+import AssessmentsList from './AssessmentsList';
 
 const Routes: React.FC = () => {
   return (
@@ -25,6 +26,7 @@ const Routes: React.FC = () => {
       <Route path="/customers-list" component={CustomersList} exact />
       <Route path="/order-data" component={OrderData} />
       <Route path="/orders-list" component={OrdersList} exact />
+      <Route path="/assessments-list" component={AssessmentsList} exact />
     </Switch>
   );
 }
