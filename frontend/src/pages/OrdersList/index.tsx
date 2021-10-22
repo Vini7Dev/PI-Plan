@@ -59,7 +59,7 @@ const OrdersList: React.FC = () => {
           <Table>
             <thead>
               <tr>
-                <th className="start-border-r td-x1">Código</th>
+                <th className="start-border-r td-x1">Status</th>
                 <th className="text-left td-x3">Título</th>
                 <th className="end-border-r td-x2">Processo Atual</th>
               </tr>

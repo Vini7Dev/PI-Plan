@@ -11,8 +11,7 @@ export const Container = styled.div`
 
   #table-area {
     flex: 2;
-
-    padding: 20px 8%;
+    padding: 20px 8% 50px;
 
     #title {
       margin-bottom: 20px;

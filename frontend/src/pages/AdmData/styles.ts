@@ -11,12 +11,10 @@ export const Container = styled.div`
 
   #form-area{
     flex: 2;
-
-    padding: 20px 8%;
+    padding: 20px 8% 50px;
 
     form{
       width: 100%;
-      max-width: 720px;
 
       h1 {
         margin-bottom: 20px;

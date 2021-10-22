@@ -18,7 +18,7 @@ export const Container = styled.div`
 
   #page-area {
     flex: 2;
-    padding: 20px 8%;
+    padding: 20px 8% 50px;
 
     #scroll-items-area {
       div button {

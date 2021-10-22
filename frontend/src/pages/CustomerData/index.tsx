@@ -1,6 +1,8 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
-import { Container } from './styles';
+import { useLocation, useHistory, Link } from 'react-router-dom';
+import { FiTrash2 } from 'react-icons/fi';
+
+import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
@@ -153,49 +155,113 @@ const CustomerData: React.FC = () =>{
         <NavigationBar optionSelected={2} />
       </div>
 
-      <main id="form-area">
-        <Header title="Cadastro de Cliente" />
+      <main>
+        <section id="form-area">
+          <Header title="Cadastro de Cliente" />
 
-        <form>
-          <Input
-          label="Nome"
-          placeholder="Digíte o Nome"
-          onChange={(e) => setName(e.target.value)}
-          defaultValue={name}
-          />
+          <form>
+            <Input
+            label="Nome"
+            placeholder="Digíte o Nome"
+            onChange={(e) => setName(e.target.value)}
+            defaultValue={name}
+            />
 
-          <Input
-          label="Telefone"
-          placeholder="Digíte o Telefone"
-          onChange={(e) => setCellphone(e.target.value)}
-          defaultValue={cellphone}
-          />
+            <Input
+            label="Telefone"
+            placeholder="Digíte o Telefone"
+            onChange={(e) => setCellphone(e.target.value)}
+            defaultValue={cellphone}
+            />
 
-          <Input
-          label="CPF/CNPJ"
-          placeholder="Digíte o CPF / CNPJ"
-          onChange={(e) => setDocument(e.target.value)}
-          defaultValue={document}
-          />
+            <Input
+            label="CPF/CNPJ"
+            placeholder="Digíte o CPF ou o CNPJ"
+            onChange={(e) => setDocument(e.target.value)}
+            defaultValue={document}
+            />
 
-          <h2>Alerta de Contato</h2>
+            <h2>Alerta de Contato</h2>
 
-          <ChechBox
-            label="Emitir o alerta de contato para este Cliente"
-            onChange={(e) => setWarnContact(e.target.checked)}
-            checked={warnContact}
-          />
+            <ChechBox
+              label="Emitir o alerta de contato para este Cliente"
+              onChange={(e) => setWarnContact(e.target.checked)}
+              checked={warnContact}
+            />
 
-          <Input
-          label="Próximo Contato"
-          placeholder="Informe a data do Próximo Contato"
-          type="date"
-          onChange={(e) => setNextContact(e.target.value)}
-          defaultValue={nextContact}
-          />
+            <Input
+            label="Próximo Contato"
+            placeholder="Informe a data do Próximo Contato"
+            type="date"
+            onChange={(e) => setNextContact(e.target.value)}
+            defaultValue={nextContact}
+            />
 
-          <Button name="Cadastrar" onClick={handleClientData} />
-        </form>
+            <Button name="Cadastrar" onClick={handleClientData} />
+          </form>
+        </section>
+
+        <section id="table-area">
+          <div id="table-border">
+            <div id="table-title-area">
+              <h3>Pedidos do Cliente</h3>
+              <Button
+                name="Adicionar"
+                color="green"
+                size="small"
+              />
+            </div>
+
+            <Table>
+              <thead>
+                <tr>
+                  <th className="start-border-r td-x1">Status</th>
+                  <th className="text-left td-x3">Título</th>
+                  <th className="end-border-r td-x2">Processo Atual</th>
+                </tr>
+              </thead>
+              <tbody>
+                    <tr key={1}>
+                      <td className="text-center td-id td-x1">
+                        <Link to={`/order-data/${1}`}>
+                          <span
+                            className="ic ic-inprogress"
+                          >IC</span>
+                        </Link>
+                      </td>
+                      <td className="text-left td-x3">
+                        <Link to={`/order-data/${1}`}>
+                          Armário de Cozinha
+                        </Link>
+                        </td>
+                      <td className="text-center td-x2">
+                      <Link to={`/order-data/${1}`}>
+                        {
+                          function () {
+                            switch(1 - 0) {
+                              case(1):
+                                return 'Iniciando';
+                              case(2):
+                                return 'Pedido na Fábrica'
+                              case(3):
+                                return 'Instalando'
+                              case(4):
+                                return 'Reunião com os Montadores'
+                              default:
+                                return 'Não Encontrado';
+                            }
+                          }()
+                        }
+                        </Link>
+                        <button className="ic-remove" onClick={() => console.log(1)}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+              </tbody>
+            </Table>
+          </div>
+        </section>
       </main>
     </Container>
   );
