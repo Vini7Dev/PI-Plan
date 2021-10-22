@@ -4,6 +4,7 @@ import Modal from 'react-modal';
 
 import GlobalStyles from './styles/global';
 
+import AuthProvider from './contexts/AuthProvider';
 import Routes from './routes';
 
 Modal.setAppElement("#root");
@@ -12,7 +13,9 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <BrowserRouter>
-        <Routes />
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
         <GlobalStyles />
       </BrowserRouter>
     </div>
