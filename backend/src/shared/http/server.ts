@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from 'express';
 import 'express-async-errors';
 import 'reflect-metadata';
+import cors from 'cors';
 import { errors as celebrateErrors } from 'celebrate';
 
 import '../typeorm'; // Criando a conexão com o banco
@@ -12,6 +13,9 @@ import AppError from '../errors/AppError';
 
 // Instanciando o servidor
 const app = express();
+
+// Adicionando o CORS na aplicação
+app.use(cors());
 
 // Definindo o uso do JSON na aplicação
 app.use(express.json());
