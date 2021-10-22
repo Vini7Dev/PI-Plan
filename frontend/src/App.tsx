@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 import GlobalStyles from './styles/global';
 
-import Routes from './pages';
+import Routes from './routes';
 
 Modal.setAppElement("#root");
 

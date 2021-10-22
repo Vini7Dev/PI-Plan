@@ -1,17 +1,17 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Portfolio from './Portfolio';
-import Login from './Login';
-import DashBoard from './DashBoard';
-import AdmData from './AdmData';
-import AssemblerData from './AssemblerData';
-import UsersList from './UsersList';
-import CustomerData from './CustomerData';
-import CustomersList from './CustomersList';
-import OrderData from './OrderData';
-import OrdersList from './OrdersList';
-import AssessmentsList from './AssessmentsList';
+import Portfolio from '../pages/Portfolio';
+import Login from '../pages/Login';
+import DashBoard from '../pages/DashBoard';
+import AdmData from '../pages/AdmData';
+import AssemblerData from '../pages/AssemblerData';
+import UsersList from '../pages/UsersList';
+import CustomerData from '../pages/CustomerData';
+import CustomersList from '../pages/CustomersList';
+import OrderData from '../pages/OrderData';
+import OrdersList from '../pages/OrdersList';
+import AssessmentsList from '../pages/AssessmentsList';
 
 const Routes: React.FC = () => {
   return (
