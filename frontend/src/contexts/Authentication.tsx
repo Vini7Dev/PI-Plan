@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useState } from 'react';
+import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import api from '../services/api';
 
@@ -28,7 +28,7 @@ interface IAuthContext {
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
-const AuthProvider: React.FC = ({ children }) => {
+export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<ISectionData>(() => {
     const token = localStorage.getItem('@PI-Plan:token');
     const user = localStorage.getItem('@PI-Plan:user');
@@ -66,4 +66,8 @@ const AuthProvider: React.FC = ({ children }) => {
   );
 }
 
-export default AuthProvider;
+export const useAuth = (): IAuthContext => {
+  const context = useContext(AuthContext);
+
+  return context;
+}

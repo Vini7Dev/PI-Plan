@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 import GlobalStyles from './styles/global';
 
-import AuthProvider from './contexts/AuthProvider';
+import { AuthProvider } from './contexts/Authentication';
 import Routes from './routes';
 
 Modal.setAppElement("#root");
