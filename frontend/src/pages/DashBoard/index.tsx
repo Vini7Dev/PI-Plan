@@ -191,6 +191,7 @@ const DashBoard: React.FC = () =>{
                     <CheckBox
                       id={`${task.id}`}
                       label={label}
+                      color="black"
                       onClickLabel={() => handleShowPopup(task.id)}
                       checked={task.done}
                       readOnly

@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+interface IContainerProps {
+  color: 'brown' | 'black';
+}
+
+export const Container = styled.div<IContainerProps>`
   display: flex;
   align-items: center;
   margin: 20px 0;
@@ -10,7 +14,7 @@ export const Container = styled.div`
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
-    color: #36373D;
+    color: ${props => props.color === 'brown' ? '#B8976B' : '#36373D'};
     margin-right: 20px;
   }
 

@@ -3,13 +3,15 @@ import { Container } from './styles';
 
 interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
   label?:string;
+  color?: 'brown' | 'black';
   onClickLabel?: (e: unknown) => unknown;
 }
 
-const ChechBox: React.FC<ICheckBoxProps> = ({label, onClickLabel, children, ...rest}) => {
-
+const ChechBox: React.FC<ICheckBoxProps> = ({
+  label, color = 'brown', onClickLabel, children, ...rest
+}) => {
   return(
-    <Container>
+    <Container color={color}>
       {label && <label htmlFor={label} onClick={onClickLabel}>{label}</label>}
 
       <input id={label} type="checkbox" {...rest} />
