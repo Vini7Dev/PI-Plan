@@ -1,7 +1,8 @@
 import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
-import { Container } from './styles';
+
+import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
@@ -56,7 +57,7 @@ const UsersList: React.FC = () => {
         </div>
 
         <div id="table-border">
-          <table>
+          <Table>
             <thead>
               <tr>
                 <th className="start-border-r text-left td-x2">Nome</th>
@@ -65,38 +66,57 @@ const UsersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                users.map(user => {
-                  return (
-                    <tr key={user.id}>
+                    <tr>
                         <td className="td-id td-x2">
-                          <Link to={`/adm-data/${user.id}`}>
-                            {user.name}
+                          <Link to={`/adm-data/${1}`}>
+                            Admin1
                           </Link>
                         </td>
                         <td className="text-center td-x2">
-                          <Link to={`/adm-data/${user.id}`}>
-                            {user.username}
+                          <Link to={`/adm-data/${1}`}>
+                            admin1
                           </Link>
                         </td>
                         <td className="text-center td-x1">
-                          <Link to={`/adm-data/${user.id}`}>
+                          <Link to={`/adm-data/${1}`}>
                             {
-                              typeof user.permission_create_adm === 'boolean'
+                              typeof true === 'boolean'
                                 ? 'Administrador'
                                 : 'Montador'
                             }
                           </Link>
-                          <button className="ic-remove" onClick={() => handleDeleteUser(user.id)}>
+                          <button className="ic-remove" onClick={() => handleDeleteUser(1)}>
                             <FiTrash2 />
                           </button>
                         </td>
                     </tr>
-                  );
-                })
-              }
+
+                    <tr>
+                        <td className="td-id td-x2">
+                          <Link to={`/assembler-data/${1}`}>
+                            Mont1
+                          </Link>
+                        </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/assembler-data/${1}`}>
+                            mont1
+                          </Link>
+                        </td>
+                        <td className="text-center td-x1">
+                          <Link to={`/assembler-data/${1}`}>
+                            {
+                              typeof 0 === 'boolean'
+                                ? 'Administrador'
+                                : 'Montador'
+                            }
+                          </Link>
+                          <button className="ic-remove" onClick={() => handleDeleteUser(1)}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                    </tr>
             </tbody>
-          </table>
+          </Table>
         </div>
       </main>
     </Container>

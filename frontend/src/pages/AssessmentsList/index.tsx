@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { FiTrash2 } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
 
-import { Container } from './styles';
+import { Container, Table } from './styles';
 
 import Header from '../../components/Header';
 import Button from '../../components/Button';
@@ -32,7 +31,7 @@ const AssessmentsList: React.FC = () => {
   return (
     <Container>
       <div id="navigation-area">
-        <NavigationBar optionSelected={3} />
+        <NavigationBar optionSelected={5} />
       </div>
 
       <main id="table-area">
@@ -43,7 +42,7 @@ const AssessmentsList: React.FC = () => {
         </div>
 
         <div id="table-border">
-          <table>
+          <Table>
             <thead>
               <tr>
                 <th className="start-border-r td-x1">
@@ -58,7 +57,7 @@ const AssessmentsList: React.FC = () => {
                 assessments.map(({ id, order_title, cleaning_note, finish_note, customer_note, manager_note }) => (
                   <tr key={id}>
                     <td className="text-center td-id td-x1">
-                      <CheckBox label="" className="center" />
+                      <CheckBox className="checkbox" />
                     </td>
                     <td className="text-left td-x3">
                       {order_title}
@@ -75,7 +74,7 @@ const AssessmentsList: React.FC = () => {
                 ))
               }
             </tbody>
-          </table>
+          </Table>
         </div>
       </main>
     </Container>

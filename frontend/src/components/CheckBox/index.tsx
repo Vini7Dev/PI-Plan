@@ -2,7 +2,7 @@ import React, { InputHTMLAttributes } from 'react';
 import { Container } from './styles';
 
 interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
-  label:string;
+  label?:string;
   onClickLabel?: (e: unknown) => unknown;
 }
 

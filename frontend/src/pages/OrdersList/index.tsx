@@ -1,7 +1,7 @@
 import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { FiTrash2 } from 'react-icons/fi';
-import { Container } from './styles';
+import { FiTrash2 } from 'react-icons/fi'
+import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
@@ -56,7 +56,7 @@ const OrdersList: React.FC = () => {
         </div>
 
         <div id="table-border">
-          <table>
+          <Table>
             <thead>
               <tr>
                 <th className="start-border-r td-x1">Código</th>
@@ -65,33 +65,24 @@ const OrdersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                orders.map(order => (
-                  <tr key={order.id}>
+                  <tr key={1}>
                     <td className="text-center td-id td-x1">
-                    <Link to={`/order-data/${order.id}`}>
-                      <span
-                        className={`ic
-                          ${order.actual_status === 1 && 'ic-inprogress'}
-                          ${order.actual_status === 2 && 'ic-completed'}
-                          ${order.actual_status === 3 && 'ic-canceled'}
-                        `}
-                      >IC</span>
-                      </Link>
-                      <Link to={`/order-data/${order.id}`}>
-                        #{order.id}
+                      <Link to={`/order-data/${1}`}>
+                        <span
+                          className="ic ic-inprogress"
+                        >IC</span>
                       </Link>
                     </td>
                     <td className="text-left td-x3">
-                      <Link to={`/order-data/${order.id}`}>
-                        {order.title}
+                      <Link to={`/order-data/${1}`}>
+                        Armário de Cozinha
                       </Link>
                       </td>
                     <td className="text-center td-x2">
-                    <Link to={`/order-data/${order.id}`}>
+                    <Link to={`/order-data/${1}`}>
                       {
                         function () {
-                          switch(order.actual_process) {
+                          switch(1 - 0) {
                             case(1):
                               return 'Iniciando';
                             case(2):
@@ -106,15 +97,13 @@ const OrdersList: React.FC = () => {
                         }()
                       }
                       </Link>
-                      <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
+                      <button className="ic-remove" onClick={() => handleDeleteOrder(1)}>
                         <FiTrash2 />
                       </button>
                     </td>
                   </tr>
-                ))
-              }
             </tbody>
-          </table>
+          </Table>
         </div>
       </main>
     </Container>

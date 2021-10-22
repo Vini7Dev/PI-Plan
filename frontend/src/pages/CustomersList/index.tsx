@@ -1,7 +1,8 @@
 import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
-import { Container } from './styles';
+
+import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
@@ -10,49 +11,29 @@ interface IClientProps {
   id: number;
   name: string;
   cellphone: string;
-  cpf?: string;
-  cnpj?: string;
+  document?: string;
 }
 
 const CustomersList: React.FC = () => {
-  const [legalClients, setLegalClients] = useState<IClientProps[]>([]);
-  const [physicalClients, setPhysicalClients] = useState<IClientProps[]>([]);
+  const [clients, setClients] = useState<IClientProps[]>([]);
 
   const handleLoadClients = useCallback(() => {
-    const requestLegalClients = new XMLHttpRequest();
-    const requestPhysicalClients = new XMLHttpRequest();
+    const requestClients = new XMLHttpRequest();
 
-    requestLegalClients.open('GET', `http://localhost:8080/legalclients`, true);
-    requestPhysicalClients.open('GET', `http://localhost:8080/physicalclients`, true);
+    requestClients.open('GET', `http://localhost:8080/clients`, true);
 
-    requestLegalClients.onload = function() {
-      setLegalClients(JSON.parse(this.response));
+    requestClients.onload = function() {
+      setClients(JSON.parse(this.response));
     }
 
-    requestPhysicalClients.onload = function() {
-      setPhysicalClients(JSON.parse(this.response));
-    }
-
-    requestLegalClients.send();
-    requestPhysicalClients.send();
+    requestClients.send();
   }, []);
 
-  const handleDeleteLegalClient = useCallback((id: number) => {
+  const handleDeleteClient = useCallback((id: number) => {
     const request = new XMLHttpRequest();
 
     request.open('DELETE', `http://localhost:8080/legalclients/${id}`, true);
 
-    request.onload = function() {
-      handleLoadClients();
-    }
-
-    request.send();
-  }, [handleLoadClients]);
-
-  const handleDeletePhysicalClient = useCallback((id: number) => {
-    const request = new XMLHttpRequest();
-
-    request.open('DELETE', `http://localhost:8080/physicalclients/${id}`, true);
     request.onload = function() {
       handleLoadClients();
     }
@@ -76,7 +57,7 @@ const CustomersList: React.FC = () => {
         </div>
 
         <div id="table-border">
-          <table>
+          <Table>
             <thead>
               <tr>
                 <th className="text-left start-border-r td-x2">Título</th>
@@ -85,60 +66,53 @@ const CustomersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                legalClients.map(client => (
-                  <tr key={client.id}>
+                  <tr key={1}>
                     <td className="text-left td-id td-x2">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.name}
+                      <Link to={`/client-data/${1}`}>
+                        Fulano de Tal
                       </Link>
                     </td>
 
                     <td className="td-x1">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.cnpj}
+                      <Link to={`/client-data/${1}`}>
+                        123.456.789-00
                       </Link>
                     </td>
 
                     <td className="text-right td-x1">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.cellphone}
+                      <Link to={`/client-data/${1}`}>
+                        (16) 91234-5678
                       </Link>
-                      <button className="ic-remove" onClick={() => handleDeleteLegalClient(client.id)}>
+                      <button className="ic-remove" onClick={() => handleDeleteClient(1)}>
                         <FiTrash2 />
                       </button>
                     </td>
                   </tr>
-                ))
-              }
-              {
-                physicalClients.map(client => (
-                  <tr key={client.id}>
+
+                  <tr key={2}>
                     <td className="text-left td-id td-x2">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.name}
+                      <Link to={`/client-data/${2}`}>
+                        Ciclano de Lat
                       </Link>
                     </td>
 
                     <td className="td-x1">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.cpf}
+                      <Link to={`/client-data/${2}`}>
+                        987.654.321-00
                       </Link>
                     </td>
 
                     <td className="text-right td-x1">
-                      <Link to={`/client-data/${client.id}`}>
-                        {client.cellphone}
+                      <Link to={`/client-data/${2}`}>
+                        (16) 99999-9999
                       </Link>
-                      <button className="ic-remove" onClick={() => handleDeletePhysicalClient(client.id)}>
+                      <button className="ic-remove" onClick={() => handleDeleteClient(2)}>
                         <FiTrash2 />
                       </button>
                     </td>
                   </tr>
-                ))
-              }
             </tbody>
-          </table>
+          </Table>
         </div>
       </main>
     </Container>
