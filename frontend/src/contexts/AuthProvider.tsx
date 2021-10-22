@@ -23,6 +23,7 @@ interface ILoginCredentials {
 interface IAuthContext {
   user: IUser;
   login(credentials: ILoginCredentials): Promise<void>;
+  logout(): void;
 }
 
 export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
@@ -50,8 +51,15 @@ const AuthProvider: React.FC = ({ children }) => {
     setData(response.data);
   }, []);
 
+  const logout = useCallback(() => {
+    localStorage.removeItem('@PI-Plan:token');
+    localStorage.removeItem('@PI-Plan:user');
+
+    setData({} as ISectionData);
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user: data.user, login }}>
+    <AuthContext.Provider value={{ user: data.user, login, logout }}>
       { children }
     </AuthContext.Provider>
 
