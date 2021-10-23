@@ -1,28 +1,37 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-
-import ModalView from '../../components/ModalView';
+import { useHistory } from 'react-router-dom';
 
 import {
   Container,
   BannerImageArea,
 } from './styles';
 
+import { useAuth } from '../../contexts/Authentication';
 import Logo from '../../assets/images/PI_Plan.png';
 
+import ModalView from '../../components/ModalView';
 import Input from '../../components/Input';
 import AddImageInput from '../../components/AddImageInput';
 import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
 
 const Portfolio: React.FC = () => {
+  const { user } = useAuth();
+  const history = useHistory();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  return (
-    <Container>
-      <nav>
-        <div id="nav-empty-div-align" />
+  const handleNavigateToLogin = useCallback(() => {
+    history.push('/login');
+  }, [history]);
 
+  const handleNavigateToDashboard = useCallback(() => {
+    history.push('/dashboard');
+  }, [history]);
+
+  return (
+    <Container isAuthenticated>
+      <nav>
         <div id="nav-logo-area">
           <img src={Logo} alt="Planejados Inteligentes" />
 
@@ -34,21 +43,35 @@ const Portfolio: React.FC = () => {
           />
         </div>
 
-        <div id="nav-login-button">
-          <Button
-            name="Adicionar item"
-            size="small"
-            color="white"
-            onClick={() => setModalIsOpen(true)}
-          />
+        <div id="nav-button">
+          {
+            user ? (
+              <>
+                <Button
+                  name="Adicionar item"
+                  size="small"
+                  color="white"
+                  onClick={() => setModalIsOpen(true)}
+                />
 
-          <div className="nav-btn-divisor" />
+                <div className="nav-btn-divisor" />
 
-          <Button
-            name="Sair"
-            size="small"
-            color="white"
-          />
+                <Button
+                  name="Página Inicial"
+                  size="small"
+                  color="white"
+                  onClick={handleNavigateToDashboard}
+                />
+              </>
+            ) : (
+              <Button
+                name="Entrar"
+                size="small"
+                color="white"
+                onClick={handleNavigateToLogin}
+              />
+            )
+          }
         </div>
       </nav>
 

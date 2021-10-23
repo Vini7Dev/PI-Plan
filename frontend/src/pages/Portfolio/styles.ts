@@ -2,30 +2,32 @@ import styled from 'styled-components';
 
 import Banner from '../../assets/images/Portfolio_Banner.png';
 
-export const Container = styled.div`
+interface IContainerProps {
+  isAuthenticated: boolean;
+}
+
+export const Container = styled.div<IContainerProps>`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 
   nav {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100px;
     width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     background-color: #b8976b;
     padding: 40px 100px 20px;
     z-index: 1;
-
-    div#nav-empty-div-align {
-      width: 300px;
-    }
 
     div#nav-logo-area {
       display: flex;
       flex-direction: row;
       align-items: center;
       justify-content: center;
+      max-width: 500px;
 
       img {
         height: 100px;
@@ -33,7 +35,11 @@ export const Container = styled.div`
       }
     }
 
-    div#nav-login-button {
+    div#nav-button {
+      position: absolute;
+      right: 25px;
+      top: 34px;
+
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -41,12 +47,8 @@ export const Container = styled.div`
       width: 100%;
       max-width: 300px;
 
-      button {
-        min-width: 125px;
-      }
-
       div.nav-btn-divisor {
-        width: 50px;
+        width: 20px;
         height: 5px;
       }
     }
@@ -75,17 +77,19 @@ export const Container = styled.div`
       flex-direction: column;
       padding: 0 5px;
 
-      div#w-125-px {
-        display: none;
-      }
-
       div#nav-logo-area {
         flex-wrap: wrap;
+        max-width: 80%;
+        width: 100%;
       }
 
-      div#nav-login-button {
-        margin-bottom: 15px;
+      div#nav-button {
+        position: relative;
+        right: 0;
         flex-wrap: wrap;
+        max-width: 80%;
+        width: 100%;
+        margin: -25px 0 50px;
       }
     }
 
