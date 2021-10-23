@@ -47,6 +47,7 @@
           "tsx": "never"
         }
      ],
+     "no-nested-ternary": "off",
      "prettier/prettier": "off",
      "no-console": "off",
      "react/jsx-props-no-spreading": "off",

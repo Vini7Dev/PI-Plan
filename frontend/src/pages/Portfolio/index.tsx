@@ -26,8 +26,10 @@ const Portfolio: React.FC = () => {
   }, [history]);
 
   const handleNavigateToDashboard = useCallback(() => {
-    history.push('/dashboard');
-  }, [history]);
+    user.user_type === 'admin'
+      ? history.push('/dashboard')
+      : history.push('/orders-list');
+  }, [history, user]);
 
   return (
     <Container isAuthenticated>

@@ -1,6 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { useAuth } from '../contexts/Authentication';
+import { AdminRoute, AuthRoute } from './MyRoutes';
+
 import Portfolio from '../pages/Portfolio';
 import Login from '../pages/Login';
 import DashBoard from '../pages/DashBoard';
@@ -17,16 +20,18 @@ const Routes: React.FC = () => {
   return (
     <Switch>
       <Route path="/" component={Portfolio} exact />
-      <Route path="/login" component={Login} exact />
-      <Route path="/dashboard" component={DashBoard} exact />
-      <Route path="/adm-data" component={AdmData} />
-      <Route path="/assembler-data" component={AssemblerData} />
-      <Route path="/users-list" component={UsersList} exact />
-      <Route path="/customer-data" component={CustomerData} />
-      <Route path="/customers-list" component={CustomersList} exact />
-      <Route path="/order-data" component={OrderData} />
-      <Route path="/orders-list" component={OrdersList} exact />
-      <Route path="/assessments-list" component={AssessmentsList} exact />
+      <Route path="/login" component={Login} />
+
+      <AdminRoute path="/dashboard" component={DashBoard} />
+      <AdminRoute path="/adm-data" component={AdmData} />
+      <AdminRoute path="/assembler-data" component={AssemblerData} />
+      <AdminRoute path="/users-list" component={UsersList} />
+      <AdminRoute path="/customer-data" component={CustomerData} />
+      <AdminRoute path="/customers-list" component={CustomersList} />
+
+      <AuthRoute path="/order-data" component={OrderData} />
+      <AuthRoute path="/orders-list" component={OrdersList} />
+      <AuthRoute path="/assessments-list" component={AssessmentsList} />
     </Switch>
   );
 }

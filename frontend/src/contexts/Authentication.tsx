@@ -2,7 +2,7 @@ import React, { createContext, useCallback, useContext, useState } from 'react';
 
 import api from '../services/api';
 
-interface IUser {
+export interface IAuthUser {
   id: string;
   user_type: 'admin' | 'assembler';
   name: string;
@@ -12,7 +12,7 @@ interface IUser {
 
 interface ISectionData {
   token: string;
-  user: IUser;
+  user: IAuthUser;
 }
 
 interface ILoginCredentials {
@@ -21,7 +21,7 @@ interface ILoginCredentials {
 }
 
 interface IAuthContext {
-  user: IUser;
+  user: IAuthUser;
   login(credentials: ILoginCredentials): Promise<void>;
   logout(): void;
 }
