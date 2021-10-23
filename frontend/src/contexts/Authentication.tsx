@@ -48,6 +48,9 @@ export const AuthProvider: React.FC = ({ children }) => {
       password,
     });
 
+    localStorage.setItem('@PI-Plan:token', response.data.token);
+    localStorage.setItem('@PI-Plan:user', JSON.stringify(response.data.user));
+
     setData(response.data);
   }, []);
 
