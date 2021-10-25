@@ -13,6 +13,7 @@ import CustomerData from '../pages/CustomerData';
 import CustomersList from '../pages/CustomersList';
 import OrderData from '../pages/OrderData';
 import OrdersList from '../pages/OrdersList';
+import InstallationData from '../pages/InstallationData';
 import InstallationsList from '../pages/InstallationsList';
 import AssessmentsList from '../pages/AssessmentsList';
 
@@ -31,6 +32,7 @@ const Routes: React.FC = () => {
 
       <AuthRoute path="/order-data" component={OrderData} />
       <AuthRoute path="/orders-list" component={OrdersList} />
+      <AuthRoute path="/installation-data" component={InstallationData} />
       <AuthRoute path="/installations-list" component={InstallationsList} />
       <AuthRoute path="/assessments-list" component={AssessmentsList} />
     </Switch>

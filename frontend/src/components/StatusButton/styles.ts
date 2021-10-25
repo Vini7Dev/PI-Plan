@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+interface IContainerProps {
+  buttonColor: 'red' | 'green';
+}
+
+export const Container = styled.div<IContainerProps>`
   display: flex;
   justify-content: space-between;
   margin-bottom: 30px;
@@ -23,13 +27,31 @@ export const Container = styled.div`
 
   button {
     background: #FFFFFF;
-    border: 2px solid #FF5555;
-    color: #FF5555;
+    border: 2px solid ${(props) => {
+      switch(props.buttonColor) {
+        case 'red': return '#FF5555';
+        case 'green': return '#91D2A1';
+        default: return '#FF5555';
+      }
+    }};
+    color: ${(props) => {
+      switch(props.buttonColor) {
+        case 'red': return '#FF5555';
+        case 'green': return '#91D2A1';
+        default: return '#FF5555';
+      }
+    }};
     font-weight: 600;
-    transition: background-color 500ms;
+    transition: 500ms;
 
     &:hover {
-      background-color: #FF5555;
+      background-color: ${(props) => {
+      switch(props.buttonColor) {
+        case 'red': return '#FF5555';
+        case 'green': return '#91D2A1';
+        default: return '#FF5555';
+      }
+    }};
       color: #FFFFFF;
       border: 2px solid #FFFFFF;
     }

@@ -2,12 +2,20 @@ import React from 'react';
 
 import { Container } from './styles';
 
-const StatusButton: React.FC = () => {
+interface IStatusButtonProps {
+  buttonText: string;
+  buttonColor: 'red' | 'green';
+  status: string;
+}
+
+const StatusButton: React.FC<IStatusButtonProps> = ({
+  buttonText, buttonColor, status
+}) => {
   return (
-    <Container>
-      <span>Em Andamento</span>
+    <Container buttonColor={buttonColor}>
+      <span>{status}</span>
       <div />
-      <button type="button">Cancelar Pedido</button>
+      <button type="button">{buttonText}</button>
     </Container>
   );
 }

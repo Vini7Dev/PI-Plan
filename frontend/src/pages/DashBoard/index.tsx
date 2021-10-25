@@ -38,7 +38,7 @@ const DashBoard: React.FC = () =>{
     { width: 720, itemsToShow: 4 },
   ];
 
-  const handleShowPopup = useCallback((id?: number) => {
+  const toggleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
 
     if(id) {
@@ -113,8 +113,8 @@ const DashBoard: React.FC = () =>{
     request.setRequestHeader(`Content-Type`, `application/json`);
     request.send(JSON.stringify(task));
 
-    handleShowPopup();
-  },[done, title, description, taskTime, taskDate, taskId, handleShowPopup, handleLoadTasks]);
+    toggleShowPopup();
+  },[done, title, description, taskTime, taskDate, taskId, toggleShowPopup, handleLoadTasks]);
 
   const handleDeleteTask = useCallback((id: number) => {
     const request = new XMLHttpRequest();
@@ -175,7 +175,7 @@ const DashBoard: React.FC = () =>{
               <DashButton name="Tarefas"/>
             </div>
             <div className="size1">
-              <DashButton name="Adicionar" onClick={() => handleShowPopup()}/>
+              <DashButton name="Adicionar" onClick={() => toggleShowPopup()}/>
             </div>
           </div>
           <div id="tasks-list">
@@ -192,7 +192,7 @@ const DashBoard: React.FC = () =>{
                       id={`${task.id}`}
                       label={label}
                       color="black"
-                      onClickLabel={() => handleShowPopup(task.id)}
+                      onClickLabel={() => toggleShowPopup(task.id)}
                       checked={task.done}
                       readOnly
                     >
@@ -267,7 +267,7 @@ const DashBoard: React.FC = () =>{
                 name="Fechar"
                 color="white"
                 size="small"
-                onClick={() => handleShowPopup()}
+                onClick={() => toggleShowPopup()}
               />
             </form>
           </ModalView>

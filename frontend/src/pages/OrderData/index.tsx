@@ -149,18 +149,10 @@ const OrderData: React.FC = () => {
         <Header title="Cadastro de Pedido" />
 
         <form>
-          <StatusButton />
-
-          <Select
-            autoFocus
-            label="Status do Pedido"
-            options={[
-              { value: 1, description: 'Em andamento' },
-              { value: 2, description: 'Finalizado' },
-              { value: 3, description: 'Cancelado' },
-            ]}
-            value={actualStatus}
-            onChange={(e) => setActualStatus(Number(e.target.value))}
+          <StatusButton
+            buttonText="Cancelar Pedido"
+            buttonColor="red"
+            status="Em Andamento"
           />
 
           <Select
