@@ -81,7 +81,7 @@ export const Table = styled.table`
 
       th {
         height: 50px;
-        padding: 37px 25px;
+        padding: 25px;
         color: #FFFFFF;
         font-size: 20px;
         font-family: Arial, Helvetica, sans-serif;
