@@ -73,7 +73,7 @@ const CustomersList: React.FC = () => {
                       </Link>
                     </td>
 
-                    <td className="td-x1">
+                    <td className="td-x1 text-center">
                       <Link to={`/client-data/${1}`}>
                         123.456.789-00
                       </Link>
@@ -96,7 +96,7 @@ const CustomersList: React.FC = () => {
                       </Link>
                     </td>
 
-                    <td className="td-x1">
+                    <td className="td-x1 text-center">
                       <Link to={`/client-data/${2}`}>
                         987.654.321-00
                       </Link>

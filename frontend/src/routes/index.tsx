@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { useAuth } from '../contexts/Authentication';
 import { AdminRoute, AuthRoute } from './MyRoutes';
 
 import Portfolio from '../pages/Portfolio';
@@ -34,6 +33,6 @@ const Routes: React.FC = () => {
       <AuthRoute path="/assessments-list" component={AssessmentsList} />
     </Switch>
   );
-}
+};
 
 export default Routes;

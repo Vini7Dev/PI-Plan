@@ -80,13 +80,21 @@ export const Table = styled.table`
       background-color: #CEAA7B;
 
       th, button {
-        padding: 25px;
         color: #FFFFFF;
         font-size: 20px;
         font-family: Arial, Helvetica, sans-serif;
         font-weight: 600;
         border: none;
         background: none;
+      }
+
+      th {
+        height: 50px;
+        padding: 25px;
+      }
+
+      button {
+        height: 100%;
       }
     }
   }
@@ -106,6 +114,11 @@ export const Table = styled.table`
 
       a {
         text-decoration: none;
+      }
+
+      div {
+        padding: 0;
+        margin: 0;
       }
     }
 

@@ -80,6 +80,7 @@ export const Table = styled.table`
       background-color: #CEAA7B;
 
       th {
+        height: 50px;
         padding: 25px;
         color: #FFFFFF;
         font-size: 20px;

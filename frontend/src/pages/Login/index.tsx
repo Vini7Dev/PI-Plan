@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import { useAuth } from '../../contexts/Authentication';
 import { Container } from './styles';
@@ -8,15 +9,22 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 
 const Login: React.FC = () => {
+  const history = useHistory();
   const { login } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = useCallback(async () => {
-    await login({
-      username,
-      password,
-    });
+    try {
+      await login({
+        username,
+        password,
+      });
+
+      history.push('/dashboard');
+    } catch(error) {
+      alert('Credenciais inválidas!');
+    }
   }, [username, password, login]);
 
   return (
