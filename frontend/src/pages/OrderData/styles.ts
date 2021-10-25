@@ -30,11 +30,16 @@ export const Container = styled.div`
         margin: -20px 0;
 
         .x1 {
-          flex: 0.25;
+          flex: 0.35;
         }
 
         .x2 {
-          flex: 0.75;
+          flex: 0.65;
+        }
+
+        .x-divisor {
+          width: 15px;
+          margin-bottom: -20px;
         }
       }
     }

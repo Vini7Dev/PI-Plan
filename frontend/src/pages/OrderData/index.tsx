@@ -1,8 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
+
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
+import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
 import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
@@ -147,6 +149,8 @@ const OrderData: React.FC = () => {
         <Header title="Cadastro de Pedido" />
 
         <form>
+          <StatusButton />
+
           <Select
             autoFocus
             label="Status do Pedido"
@@ -216,7 +220,7 @@ const OrderData: React.FC = () => {
             onChange={(e) => setCep(e.target.value)}
           />
 
-          <div className="-division">
+          <div className="space-division">
             <div className="x2">
               <Input
                 label="Rua"
@@ -225,6 +229,7 @@ const OrderData: React.FC = () => {
                 onChange={(e) => setStreet(e.target.value)}
               />
             </div>
+            <div className="x-divisor" />
             <div className="x1">
               <Input
                 label="Número"
@@ -248,7 +253,7 @@ const OrderData: React.FC = () => {
             onChange={(e) => setNeighborhood(e.target.value)}
           />
 
-          <div className="-division">
+          <div className="space-division">
             <div className="x1">
               <Select
                 label="UF"
@@ -263,6 +268,7 @@ const OrderData: React.FC = () => {
                 onChange={(e) => setUF(e.target.value)}
               />
             </div>
+            <div className="x-divisor" />
             <div className="x2">
               <Select
                 label="Cidade"

@@ -13,7 +13,6 @@ export const Container = styled.div`
     left: 12px;
 
     font-size: 20px;
-    font-family: Arial, Helvetica, sans-serif;
     color: #ceaa7b;
     font-weight: bold;
 
@@ -25,11 +24,11 @@ export const Container = styled.div`
     resize: none;
     height: 100%;
     width: 100%;
+    padding: 15px 10px;
 
     border: 2px solid #ceaa7b;
     border-radius: 15px;
 
-    padding: 10px;
     font-size: 18px;
   }
 
