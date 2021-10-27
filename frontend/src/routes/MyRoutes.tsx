@@ -7,6 +7,7 @@ interface MyRouteProps extends RouteProps {
   component: React.ComponentType;
 }
 
+// Componente de rota exclusiva para usuários autenticados (administrador e montador)
 export const AuthRoute: React.FC<MyRouteProps> = ({
   component: Component,
   ...rest
@@ -25,6 +26,7 @@ export const AuthRoute: React.FC<MyRouteProps> = ({
   );
 };
 
+// Componente de rota exclusiva para os usuários administradores
 export const AdminRoute: React.FC<MyRouteProps> = ({
   component: Component,
   ...rest

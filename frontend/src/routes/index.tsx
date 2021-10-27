@@ -17,12 +17,15 @@ import InstallationData from '../pages/InstallationData';
 import InstallationsList from '../pages/InstallationsList';
 import AssessmentsList from '../pages/AssessmentsList';
 
+// Componente que armazena todas as rotas da aplicação
 const Routes: React.FC = () => {
   return (
     <Switch>
+      {/** Rotas abertas */}
       <Route path="/" component={Portfolio} exact />
       <Route path="/login" component={Login} />
 
+      {/** Rotas exclusivas para os usuários administradores  */}
       <AdminRoute path="/dashboard" component={DashBoard} />
       <AdminRoute path="/adm-data" component={AdmData} />
       <AdminRoute path="/assembler-data" component={AssemblerData} />
@@ -30,6 +33,7 @@ const Routes: React.FC = () => {
       <AdminRoute path="/customer-data" component={CustomerData} />
       <AdminRoute path="/customers-list" component={CustomersList} />
 
+      {/** Rotas exclusivas para usuários autenticados (administrador e montador) */}
       <AuthRoute path="/order-data" component={OrderData} />
       <AuthRoute path="/orders-list" component={OrdersList} />
       <AuthRoute path="/installation-data" component={InstallationData} />
