@@ -20,6 +20,7 @@ interface IAssessmentProps {
   comment: string;
 }
 
+// Página de listagem das avaliações
 const AssessmentsList: React.FC = () => {
   const [assessments, setAssessments] = useState<IAssessmentProps[]>([
     { id: '1', order_title: 'Título 1', cleaning_note: 10, finish_note: 10, customer_note: 10, manager_note: 10, loss_amount: 0, comment: 'Comentários...'},

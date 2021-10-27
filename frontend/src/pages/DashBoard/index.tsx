@@ -22,16 +22,14 @@ interface ITaskProps {
   task_date: string;
 }
 
+// Página inicial do site
 const DashBoard: React.FC = () =>{
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [taskId, setTaskId] = useState(-1);
   const [done, setDone] = useState(false);
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [taskTime, setTaskTime] = useState('');
-  const [taskDate, setTaskDate] = useState('');
 
+  // Configurando os break points do carrossel de lembretes
   const breakPoints = [
     { width: 180, itemsToShow: 1 },
     { width: 360, itemsToShow: 2 },
@@ -39,6 +37,7 @@ const DashBoard: React.FC = () =>{
     { width: 720, itemsToShow: 4 },
   ];
 
+  // Função para apresentar o modal com os dados de uma tarefa
   const toggleShowPopup = useCallback((id?: number) => {
     setShowPopup(!showPopup);
 
@@ -52,82 +51,29 @@ const DashBoard: React.FC = () =>{
         const taskData = JSON.parse(this.response);
 
         const taskDateTime = taskData.task_date.split(/t+/i);
-
-        setDone(taskData.done);
-        setTitle(taskData.title);
-        setDescription(taskData.description);
-        setTaskTime(taskDateTime[1].slice(0, 5));
-        setTaskDate(taskDateTime[0]);
       }
 
       request.send();
     } else {
       setTaskId(-1);
       setDone(false);
-      setTitle('');
-      setDescription('');
-      setTaskTime('');
-      setTaskDate('');
     }
-
   }, [showPopup]);
 
+  // Função para buscar as tarefas cadastradas
   const handleLoadTasks = useCallback(() => {
-      const request = new XMLHttpRequest();
-
-      request.open('GET', `http://localhost:8080/tasks`, true);
-
-      request.onload = function() {
-        const tasksList = JSON.parse(this.response);
-        setTasks(tasksList);
-      }
-
-      request.send();
+    //
   }, []);
 
-  const handleSubmitTaskData = useCallback(function(){
-    const request = new XMLHttpRequest();
+  // Função para cadastrar uma nova tarefa
+  const handleSubmitTaskData = useCallback(() => {
+    //
+  },[]);
 
-    const task_date = `${taskDate}T${taskTime}:00`;
-
-    const task = {
-      done,
-      title,
-      description,
-      task_date,
-    } as ITaskProps;
-
-    let httpVerb = '';
-    if(taskId !== -1) {
-      httpVerb = 'PUT';
-      task.id = Number(taskId);
-    } else {
-      httpVerb = 'POST';
-    }
-
-    request.open(httpVerb, `http://localhost:8080/tasks`, true);
-
-    request.onload = function() {
-      handleLoadTasks();
-    }
-
-    request.setRequestHeader(`Content-Type`, `application/json`);
-    request.send(JSON.stringify(task));
-
-    toggleShowPopup();
-  },[done, title, description, taskTime, taskDate, taskId, toggleShowPopup, handleLoadTasks]);
-
+  // Função para apagar uma tarefa
   const handleDeleteTask = useCallback((id: number) => {
-    const request = new XMLHttpRequest();
-
-    request.open('DELETE', `http://localhost:8080/tasks/${id}`, true);
-
-    request.onload = function() {
-      handleLoadTasks();
-    }
-
-    request.send();
-  }, [handleLoadTasks]);
+    //
+  }, []);
 
   return(
     <Container onLoad={handleLoadTasks}>
@@ -238,32 +184,24 @@ const DashBoard: React.FC = () =>{
               label="Título"
               name="title"
               placeholder="Digíte o Título"
-              defaultValue={title}
-              onChange={(e) => setTitle(e.target.value)}
               />
 
               <Input
               label="Descrição"
               name="description"
               placeholder="Digíte a Descrição"
-              defaultValue={description}
-              onChange={(e) => setDescription(e.target.value)}
               />
 
               <Input
               label="Horário"
               name="time"
               type="time"
-              defaultValue={taskTime}
-              onChange={(e) => setTaskTime(e.target.value)}
               />
 
               <Input
               label="Data"
               name="date"
               type="date"
-              defaultValue={taskDate}
-              onChange={(e) => setTaskDate(e.target.value)}
               />
 
               <Button

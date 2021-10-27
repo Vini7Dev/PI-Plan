@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useContext, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import api from '../services/api';
 
@@ -31,6 +32,8 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 // Criando e exportando o provedor do contexto de autenticação
 export const AuthProvider: React.FC = ({ children }) => {
+  const history = useHistory();
+
   // Criando e armazenando os dados de autenticação presentes no local storage dentro da variável "data"
   const [data, setData] = useState<ISectionData>(() => {
     // Buscando os dados salvos no local storage
@@ -63,6 +66,11 @@ export const AuthProvider: React.FC = ({ children }) => {
 
     // Atualizando a variável "data" com os dados obtidos no retorno da requisição
     setData(response.data);
+
+    // Enviando o usuário para sua respectiva página inicial
+    response.data.user.user_type === 'admin'
+      ? history.push('/dashboard')
+      : history.push('/orders-list');
   }, []);
 
   // Função para desconectar o usuário do sistema

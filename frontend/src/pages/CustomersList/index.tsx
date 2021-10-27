@@ -15,32 +15,19 @@ interface IClientProps {
   document?: string;
 }
 
+// Página de listagem dos clientes
 const CustomersList: React.FC = () => {
   const [clients, setClients] = useState<IClientProps[]>([]);
 
+  // Função para carregar os clientes cadastrados
   const handleLoadClients = useCallback(() => {
-    const requestClients = new XMLHttpRequest();
-
-    requestClients.open('GET', `http://localhost:8080/clients`, true);
-
-    requestClients.onload = function() {
-      setClients(JSON.parse(this.response));
-    }
-
-    requestClients.send();
+    //
   }, []);
 
+  // Função para apagar um cliente
   const handleDeleteClient = useCallback((id: number) => {
-    const request = new XMLHttpRequest();
-
-    request.open('DELETE', `http://localhost:8080/legalclients/${id}`, true);
-
-    request.onload = function() {
-      handleLoadClients();
-    }
-
-    request.send();
-  }, [handleLoadClients]);
+    //
+  }, []);
 
   return (
     <Container onLoad={handleLoadClients}>

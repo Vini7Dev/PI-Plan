@@ -18,15 +18,18 @@ import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
 import SearchBarButton from '../../components/SearchBarButton';
 
+// Página para listagem dos itens salvos no portfólio
 const Portfolio: React.FC = () => {
   const { user } = useAuth();
   const history = useHistory();
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
+  // Enviando o usuário para a tela de login
   const handleNavigateToLogin = useCallback(() => {
     history.push('/login');
   }, [history]);
 
+  // Enviando o usuário para sua respectiva página inicial
   const handleNavigateToDashboard = useCallback(() => {
     user.user_type === 'admin'
       ? history.push('/dashboard')

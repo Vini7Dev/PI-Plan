@@ -15,6 +15,7 @@ interface IInstallationProps {
   end_date?: string;
 }
 
+// Página para listagem das intalações
 const InstallationsList: React.FC = () => {
   const [installations, setInstallations] = useState<IInstallationProps[]>([]);
 

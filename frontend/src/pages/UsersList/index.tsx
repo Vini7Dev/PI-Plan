@@ -15,32 +15,19 @@ interface IUserProps {
   permission_create_adm: boolean;
 }
 
+// Página para listagem dos usuários cadastrados
 const UsersList: React.FC = () => {
   const [users, setUsers] = useState<IUserProps[]>([]);
 
+  // Função para carregar os usuários cadastrados
   const handleLoadUsers = useCallback(() => {
-    const request = new XMLHttpRequest();
-
-    request.open('GET', `http://localhost:8080/admins`, true);
-
-    request.onload = function() {
-      const usersList = JSON.parse(this.response);
-      setUsers(usersList);
-    }
-
-    request.send();
+    //
   }, []);
 
+  // Função para apagar um usuário
   const handleDeleteUser = useCallback((id: number) => {
-    const request = new XMLHttpRequest();
-
-    request.open('DELETE', `http://localhost:8080/admins/${id}`, true);
-    request.onload = function() {
-      handleLoadUsers();
-    }
-
-    request.send();
-  }, [handleLoadUsers]);
+    //
+  }, []);
 
   return (
     <Container onLoad={handleLoadUsers}>

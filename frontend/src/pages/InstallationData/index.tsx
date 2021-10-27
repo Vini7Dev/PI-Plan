@@ -28,9 +28,11 @@ interface IInstallationProps {
   assemblers: IAssemblerInstallation[];
 }
 
+// Página para criar uma instalação ou apresentar os seus dados
 const InstallationData: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
 
+  // Função para mostrar ou esconder o modal para adicionar montador
   const toggleShowPopup = useCallback(() => {
     setShowPopup(!showPopup);
   }, [showPopup]);

@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react';
-import { useHistory } from 'react-router-dom';
 import { Form } from '@unform/web';
 
 import { useAuth } from '../../contexts/Authentication';
@@ -9,22 +8,23 @@ import Logo from '../../assets/images/PI_Plan_Ligth.png';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+// Página de login do sistema
 const Login: React.FC = () => {
-  const history = useHistory();
   const { login } = useAuth();
 
+  // Função para realizar o login no sistema
   const handleLogin = useCallback(async (data) => {
     try {
+      // Executando a função para iniciar a sessão enviando o username e password obtidos no formulário
       await login({
         username: data.username,
         password: data.password,
       });
-
-      history.push('/dashboard');
     } catch(error) {
+      // Caso de erro, informar que as credenciais estão inválidas
       alert('Credenciais inválidas!');
     }
-  }, [login, history]);
+  }, [login]);
 
   return (
     <Container>

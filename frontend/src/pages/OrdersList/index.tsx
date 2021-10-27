@@ -14,32 +14,19 @@ interface IOrderProps {
   title: string;
 }
 
+// Página de listagem dos pedidos
 const OrdersList: React.FC = () => {
   const [orders, setOrders] = useState<IOrderProps[]>([]);
 
+  // Buscando os pedidos cadastrados
   const handleLoadOrders = useCallback(() => {
-    const request = new XMLHttpRequest();
-
-    request.open('GET', `http://localhost:8080/orders`, true);
-
-    request.onload = function() {
-      const ordersList = JSON.parse(this.response);
-      setOrders(ordersList);
-    }
-
-    request.send();
+    //
   }, []);
 
+  // Apagando um pedido
   const handleDeleteOrder = useCallback((id: number) => {
-    const request = new XMLHttpRequest();
-
-    request.open('DELETE', `http://localhost:8080/orders/${id}`, true);
-    request.onload = function() {
-      handleLoadOrders();
-    }
-
-    request.send();
-  }, [handleLoadOrders]);
+    //
+  }, []);
 
   return (
     <Container onLoad={handleLoadOrders}>

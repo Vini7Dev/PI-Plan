@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { Form } from '@unform/web';
 
 import { Container } from './styles';
@@ -18,71 +18,20 @@ interface IAdminProps {
   permission_create_adm: boolean;
 }
 
+// Página para criar um administrador ou apresentar os seus dados
 const AdmData: React.FC = () =>{
   const location = useLocation();
-  const history = useHistory();
-  const [name, setName] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
 
+  // Caso exista o id do administrador na rota, buscar os seus dados no banco de dados
   useEffect(() => {
     const userId = location.pathname.split('/adm-data/')[1];
-
-    if(userId) {
-      const request = new XMLHttpRequest();
-
-      request.open('GET', `http://localhost:8080/admins/${userId}`, true);
-
-      request.onload = function() {
-        if(this.response) {
-          const userData = JSON.parse(this.response);
-
-          setName(userData.name);
-          setUsername(userData.username);
-          setPassword(userData.password);
-          setPermissionCreateAdmin(userData.permission_create_adm);
-        }
-      }
-
-      request.send();
-    }
   }, [location]);
 
-  const handleSubmitAdmData = useCallback(function(){
-    const userId = location.pathname.split('/adm-data/')[1];
-
-    const admin = {
-      name,
-      username,
-      password,
-      permission_create_adm: permissionCreateAdmin,
-    } as IAdminProps;
-
-    let httpVerb = '';
-    if(userId) {
-      httpVerb = 'PUT';
-      admin.id = Number(userId);
-    } else {
-      httpVerb = 'POST';
-    }
-
-    if(password !== confirmPassword) {
-      alert('Erro ao confirmar a senha.');
-      return;
-    }
-
-    const request = new XMLHttpRequest();
-
-    request.open(httpVerb, `http://localhost:8080/admins`, true);
-
-    request.setRequestHeader(`Content-Type`, `application/json`);
-    request.send(JSON.stringify(admin));
-
-    alert('Sucesso!');
-    history.push('/users-list')
-  },[name, username, password, confirmPassword, permissionCreateAdmin, location, history]);
+  // Função para criar um administrador ou atualizar os seus dados
+  const handleSubmitAdmData = useCallback(() => {
+    //
+  },[]);
 
   return(
     <Container>
@@ -110,16 +59,12 @@ const AdmData: React.FC = () =>{
           label="Nome"
           name="name"
           placeholder="Digíte o Nome"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
           />
 
           <Input
           label="Usuário"
           name="username"
           placeholder="Digíte o Usuário"
-          defaultValue={username}
-          onChange={(e) => setUsername(e.target.value)}
           />
 
           <Input
@@ -127,8 +72,6 @@ const AdmData: React.FC = () =>{
           name="password"
           placeholder="Digíte a Senha"
           type="password"
-          defaultValue={password}
-          onChange={(e) => setPassword(e.target.value)}
           />
 
           <Input
@@ -136,7 +79,6 @@ const AdmData: React.FC = () =>{
           name="confirm_password"
           placeholder="Digíte a Senha Novamente"
           type="password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
           <CheckBox

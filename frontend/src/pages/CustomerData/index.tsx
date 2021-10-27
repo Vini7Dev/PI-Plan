@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
@@ -22,133 +22,21 @@ interface ICustomerProps{
   cnpj?: string;
 }
 
+// Página para criar um cliente ou apresentar os seus dados
 const CustomerData: React.FC = () =>{
   const location = useLocation();
-  const history = useHistory();
 
-  const [name, setName] = useState('');
-  const [cellphone, setCellphone] = useState('');
-  const [document, setDocument] = useState('');
-  const [lastContact, setLastContact] = useState('');
-  const [nextContact, setNextContact] = useState('');
-  const [warnContact, setWarnContact] = useState(false);
+  const [sendContactAlert, setSendContactAlert] = useState(false);
 
-  const loadLegalClientData = useCallback((clientId: string) => {
-    const legalRequest = new XMLHttpRequest();
-
-    legalRequest.open('GET', `http://localhost:8080/legalclients/${clientId}`, true);
-
-    legalRequest.onload = function() {
-      if(this.response) {
-        const clientData = JSON.parse(this.response);
-
-        if(clientData && clientData.cnpj) {
-          const lastContactDate = clientData.last_contact.split(/t+/i)[0];
-          const nextContactDate = clientData.next_contact.split(/t+/i)[0];
-
-
-          setName(clientData.name);
-          setCellphone(clientData.cellphone);
-          setDocument(clientData.cnpj);
-          setLastContact(lastContactDate);
-          setNextContact(nextContactDate);
-          setWarnContact(clientData.warn_contact);
-        }
-      }
-    }
-    legalRequest.send();
-  }, []);
-
-  const loadPhysicalClientData = useCallback((clientId: string) => {
-
-    const physicalRequest = new XMLHttpRequest();
-
-    physicalRequest.open('GET', `http://localhost:8080/physicalclients/${clientId}`, true);
-
-    physicalRequest.onload = function() {
-      if(this.response) {
-        const clientData = JSON.parse(this.response);
-
-        if(clientData && clientData.cpf) {
-          const lastContactDate = clientData.last_contact.split(/t+/i)[0];
-          const nextContactDate = clientData.next_contact.split(/t+/i)[0];
-
-          setName(clientData.name);
-          setCellphone(clientData.cellphone);
-          setDocument(clientData.cpf);
-          setLastContact(lastContactDate);
-          setNextContact(nextContactDate);
-          setWarnContact(clientData.warn_contact);
-        }
-      }
-    }
-    physicalRequest.send();
-  }, []);
-
+  // Caso exista o id do cliente na rota, buscar os seus dados no banco de dados
   useEffect(() => {
     const clientId = location.pathname.split('/client-data/')[1];
+  }, [location]);
 
-    if(clientId) {
-      loadLegalClientData(clientId);
-      loadPhysicalClientData(clientId);
-    }
-
-  }, [location, loadLegalClientData, loadPhysicalClientData]);
-
+  // Função para criar um cliente ou atualizar os seus dados
   const handleClientData = useCallback(function(){
-    const clientId = location.pathname.split('/client-data/')[1];
-    const request = new XMLHttpRequest();
-
-    if(document.length > 11){
-      const client = {
-        name,
-        cellphone,
-        cnpj: document,
-        last_contact: lastContact,
-        next_contact: nextContact,
-        warn_contact: warnContact,
-      } as ICustomerProps;
-
-      let httpVerb = '';
-      if(clientId) {
-        httpVerb = 'PUT';
-        client.id = Number(clientId);
-      } else {
-        httpVerb = 'POST';
-      }
-
-      request.open(httpVerb, `http://localhost:8080/legalclients`, true);
-
-      request.setRequestHeader(`Content-Type`, `application/json`);
-      request.send(JSON.stringify(client));
-    }
-    else{
-      const client = {
-        name,
-        cellphone,
-        cpf: document,
-        last_contact: lastContact,
-        next_contact: nextContact,
-        warn_contact: warnContact,
-      }as ICustomerProps;
-
-      let httpVerb = '';
-      if(clientId) {
-        httpVerb = 'PUT';
-        client.id = Number(clientId);
-      } else {
-        httpVerb = 'POST';
-      }
-
-      request.open(httpVerb, `http://localhost:8080/physicalclients`, true);
-
-      request.setRequestHeader(`Content-Type`, `application/json`);
-      request.send(JSON.stringify(client));
-    }
-
-    alert('Sucesso!');
-    history.push('/clients-list');
-  },[name, cellphone, document, lastContact, nextContact, warnContact, location, history]);
+    //
+  },[]);
 
   return(
     <Container>
@@ -165,24 +53,18 @@ const CustomerData: React.FC = () =>{
             label="Nome"
             name="name"
             placeholder="Digíte o Nome"
-            onChange={(e) => setName(e.target.value)}
-            defaultValue={name}
             />
 
             <Input
             label="Telefone"
             name="cellphone"
             placeholder="Digíte o Telefone"
-            onChange={(e) => setCellphone(e.target.value)}
-            defaultValue={cellphone}
             />
 
             <Input
             label="CPF/CNPJ"
             name="document"
             placeholder="Digíte o CPF ou o CNPJ"
-            onChange={(e) => setDocument(e.target.value)}
-            defaultValue={document}
             />
 
             <h2>Alerta de Contato</h2>
@@ -190,8 +72,8 @@ const CustomerData: React.FC = () =>{
             <ChechBox
               label="Emitir o alerta de contato para este Cliente"
               name="send_contact_alert"
-              onChange={(e) => setWarnContact(e.target.checked)}
-              checked={warnContact}
+              onChange={(e) => setSendContactAlert(e.target.checked)}
+              checked={sendContactAlert}
             />
 
             <Input
@@ -199,8 +81,6 @@ const CustomerData: React.FC = () =>{
             name="next_contact_date"
             placeholder="Informe a data do Próximo Contato"
             type="date"
-            onChange={(e) => setNextContact(e.target.value)}
-            defaultValue={nextContact}
             />
 
             <Button name="Cadastrar" type="submit" />
