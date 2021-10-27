@@ -8,14 +8,16 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   color?: 'brown' | 'white';
   hsize?: 'normal' | 'small';
+  hasError?: boolean;
 }
 
 // Componente padrão de input
 const Input: React.FC<IInputProps> = ({
   label,
+  name,
   color = 'brown',
   hsize = 'normal',
-  name,
+  hasError = false,
   ...rest
 }) => {
   // Definindo uma referência ao input para a biblioteca unform
@@ -32,9 +34,9 @@ const Input: React.FC<IInputProps> = ({
   }, [fieldName, registerField]);
 
   return (
-    <Container color={color} hsize={hsize}>
+    <Container color={color} hsize={hsize} hasError={hasError}>
       <label htmlFor={label}>{label}</label>
-      <input id={label} defaultValue={defaultValue} ref={inputRef}  {...rest} />
+      <input id={label} defaultValue={defaultValue} ref={inputRef} {...rest} />
     </Container>
   );
 };

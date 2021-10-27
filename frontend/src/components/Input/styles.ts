@@ -3,6 +3,7 @@ import styled, { css } from 'styled-components';
 interface IInputProps {
   color: 'brown' | 'white';
   hsize: 'normal' | 'small';
+  hasError: boolean;
 }
 
 export const Container = styled.div<IInputProps>`
@@ -19,7 +20,7 @@ export const Container = styled.div<IInputProps>`
 
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    color: ${props => props.color === 'brown' ? '#ceaa7b' : '#ffffff'};
+    color: ${props => props.hasError ? '#FF3300' : props.color === 'brown' ? '#ceaa7b' : '#ffffff'};
     font-weight: bold;
 
     background-color: ${props => props.color === 'brown' ? '#ffffff' : '#b8976b'};
@@ -30,7 +31,11 @@ export const Container = styled.div<IInputProps>`
     height: ${props => props.hsize === 'normal' ? '100%' : '80%'};
     width: 100%;
 
-    border: 2px solid ${props => props.color === 'brown' ? '#ceaa7b' : '#ffffff'};
+    border: ${props => props.hasError
+      ? '4px solid #FF3300'
+      : `2px solid ${props.color === 'brown' ? '#ceaa7b' : '#ffffff'}`
+    };
+
     background-color: ${props => props.color === 'brown' ? '#ffffff' : '#b8976b'};
     border-radius: 15px;
 

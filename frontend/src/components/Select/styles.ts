@@ -1,6 +1,10 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+interface IContainerProps {
+  hasError: boolean;
+}
+
+export const Container = styled.div<IContainerProps>`
   position: relative;
   width: 100%;
   height: 65px;
@@ -14,14 +18,14 @@ export const Container = styled.div`
 
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #ceaa7b;
+    color: ${props => props.hasError ? '#FF3300' : '#CEAA7B'};
     font-weight: bold;
 
     background-color: white;
     padding: 5px;
   }
 
-  border: 2px solid #ceaa7b;
+  border: 2px solid ${props => props.hasError ? '#FF3300' : '#CEAA7B'};
   border-radius: 15px;
   padding: 10px;
 
