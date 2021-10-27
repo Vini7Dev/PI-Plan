@@ -6,6 +6,7 @@ interface INavigationButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement>
   toPage?: string;
 }
 
+// Componente do botão da barra de navegação
 const NavigationButton: React.FC<INavigationButtonProps> = ({ text, toPage = '/', ...rest }) => {
   return (
     <Container href={toPage} {...rest} to={toPage}>

@@ -10,6 +10,7 @@ export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   hsize?: 'normal' | 'small';
 }
 
+// Componente padrão de input
 const Input: React.FC<IInputProps> = ({
   label,
   color = 'brown',
@@ -17,9 +18,11 @@ const Input: React.FC<IInputProps> = ({
   name,
   ...rest
 }) => {
+  // Definindo uma referência ao input para a biblioteca unform
   const inputRef = useRef<HTMLInputElement>(null);
   const { fieldName, defaultValue, error, registerField } = useField(name);
 
+  // Registrando o input para recuperar os seus dados posteriormente
   useEffect(() => {
     registerField({
         name: fieldName,

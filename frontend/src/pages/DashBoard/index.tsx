@@ -3,11 +3,10 @@ import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
-import { Container } from './styles';
+import { Container, AddTaskButton } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
-import DashButton from '../../components/DashButton';
 import CheckBox from '../../components/CheckBox';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -174,10 +173,14 @@ const DashBoard: React.FC = () =>{
         <main>
           <div className= "space-division">
             <div className="size2">
-              <DashButton name="Tarefas"/>
+              <AddTaskButton>
+                <button>Tarefas</button>
+              </AddTaskButton>
             </div>
             <div className="size1">
-              <DashButton name="Adicionar" onClick={() => toggleShowPopup()}/>
+              <AddTaskButton>
+                <button onClick={() => toggleShowPopup()}>Adicionar</button>
+              </AddTaskButton>
             </div>
           </div>
           <div id="tasks-list">

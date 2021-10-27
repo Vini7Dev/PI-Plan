@@ -11,6 +11,7 @@ interface IReminderItemProps {
   reminder_type: 'contact_alert' | 'order' | 'installation';
 }
 
+// Componente para apresentar os lembretes do administrador
 const ReminderItem: React.FC<IReminderItemProps> = ({
   id, title, subtitle, description, reminder_type,
 }) => {

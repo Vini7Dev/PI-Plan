@@ -13,10 +13,13 @@ interface IInputProps extends InputHTMLAttributes<HTMLSelectElement> {
   options: IOptionProps[];
 }
 
+// Componente de select
 const Select: React.FC<IInputProps> = ({ label, name, options, ...rest }) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+  // Definindo uma referência ao input para a biblioteca unform
+  const inputRef = useRef<HTMLSelectElement>(null);
   const { fieldName, defaultValue, error, registerField } = useField(name);
 
+  // Registrando o input para recuperar os seus dados posteriormente
   useEffect(() => {
     registerField({
       name: fieldName,
@@ -28,7 +31,7 @@ const Select: React.FC<IInputProps> = ({ label, name, options, ...rest }) => {
   return (
     <Container>
       <label htmlFor={label}>{label}</label>
-      <select id={label} {...rest}>
+      <select id={label} ref={inputRef} defaultValue={defaultValue} {...rest}>
         {options.map(option => (
           <option
             value={option.value || option.description}

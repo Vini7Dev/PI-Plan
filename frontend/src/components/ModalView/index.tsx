@@ -8,6 +8,7 @@ interface IModalViewProps {
   title: string;
 }
 
+// Componente de modal customizado
 const ModalView: React.FC<IModalViewProps> = ({
   isOpen,
   title,

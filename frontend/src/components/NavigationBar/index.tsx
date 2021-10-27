@@ -9,6 +9,7 @@ interface INavigationBarProps {
   optionSelected: number;
 }
 
+// Opições de navegação
 const navigationOptions = [
   { id: 0, text: 'Página Inicial', toPage: '/dashboard' },
   { id: 1, text: 'Usuários', toPage: '/users-list' },
@@ -19,16 +20,17 @@ const navigationOptions = [
   { id: 6, text: 'Portfólio', toPage: '/' },
 ];
 
+// Componente da barra de navegação
 const NavigationBar: React.FC<INavigationBarProps> = ({ optionSelected }) => {
   const [showNav, setShowNav] = useState(false);
 
+  // Para o mobile, atualizando a variável para mostrar ou esconder os botões de navegação
   const handleChangeShowNav = useCallback(() => {
     setShowNav(!showNav)
   }, [showNav]);
 
   return (
     <Container showNav={showNav}>
-      { /* OBS: O componente "NavigationBar" é um "nav" definido no arquivo de estilização */ }
       <img src={Logo} alt="pi-plan" />
 
       <button id="show-nav-button" onClick={handleChangeShowNav}>
@@ -36,6 +38,7 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ optionSelected }) => {
       </button>
 
       <div id="nav-links-list">
+        {/** Percorrendo as opções de navegação e renderizando-as */}
         {navigationOptions.map(option => (
           <NavigationButton
             text={option.text}

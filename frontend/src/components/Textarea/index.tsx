@@ -5,6 +5,7 @@ interface IInputProps extends InputHTMLAttributes<HTMLTextAreaElement> {
   label: string;
 }
 
+// Componente de textarea padrão
 const Textarea: React.FC<IInputProps> = ({ label, ...rest }) => {
   return (
     <Container>

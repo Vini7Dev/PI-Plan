@@ -8,6 +8,7 @@ interface IButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   active?: boolean;
 }
 
+// Componente padrão de botão
 const Button: React.FC<IButtonProps> = ({
   name,
   size = 'normal',

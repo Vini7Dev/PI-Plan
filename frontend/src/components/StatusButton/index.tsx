@@ -8,6 +8,7 @@ interface IStatusButtonProps {
   status: string;
 }
 
+// Componente do botão para alterar status de pedido e instalação
 const StatusButton: React.FC<IStatusButtonProps> = ({
   buttonText, buttonColor, status
 }) => {

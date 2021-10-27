@@ -10,6 +10,7 @@ interface ISearchBarButton extends IInputProps {
   onClickInSearchButton(): void;
 }
 
+// Componente contendo o input e o botão para realizar buscas
 const SearchBarButton: React.FC<ISearchBarButton> = ({
   label,
   color = 'brown',

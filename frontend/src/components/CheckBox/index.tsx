@@ -1,5 +1,4 @@
-import React, { InputHTMLAttributes, useEffect, useRef } from 'react';
-import { useField } from '@unform/core';
+import React, { InputHTMLAttributes } from 'react';
 
 import { Container } from './styles';
 
@@ -9,6 +8,7 @@ interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
   onClickLabel?: (e: unknown) => unknown;
 }
 
+// Componente de input do tipo checkbox
 const ChechBox: React.FC<ICheckBoxProps> = ({
   label, color = 'brown', onClickLabel, children, ...rest
 }) => {

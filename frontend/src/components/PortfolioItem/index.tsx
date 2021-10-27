@@ -8,6 +8,7 @@ interface IPortfolioItemProps {
   description?: string;
 }
 
+// Componente para apresentar um item cadastrado no portfólio
 const PortfolioItem: React.FC<IPortfolioItemProps> = ({
   id,
   title,

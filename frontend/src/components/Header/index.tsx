@@ -8,13 +8,16 @@ interface IHeaderProps {
   title: string;
 }
 
+// Componente de cabeçalho das páginas
 const Header: React.FC<IHeaderProps> = ({ title, children }) => {
   const { user, logout } = useAuth();
 
+  // Função para desconectar o usuário do sistema
   const handleLogOut = useCallback(() => {
-    // eslint-disable-next-line no-restricted-globals
+    // Confirmando se o usuário deseja realmente se desconectar
     const response = confirm('Deseja se desconectar?');
 
+    // Caso sim, executando a função para desconectar o usuário do sistema
     if(response) {
       logout();
     }
