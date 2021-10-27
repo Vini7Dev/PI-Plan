@@ -1,5 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { Form } from '@unform/web';
 
 import { useAuth } from '../../contexts/Authentication';
 import { Container } from './styles';
@@ -11,21 +12,19 @@ import Button from '../../components/Button';
 const Login: React.FC = () => {
   const history = useHistory();
   const { login } = useAuth();
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
 
-  const handleLogin = useCallback(async () => {
+  const handleLogin = useCallback(async (data) => {
     try {
       await login({
-        username,
-        password,
+        username: data.username,
+        password: data.password,
       });
 
       history.push('/dashboard');
     } catch(error) {
       alert('Credenciais inválidas!');
     }
-  }, [username, password, login]);
+  }, [login, history]);
 
   return (
     <Container>
@@ -38,21 +37,25 @@ const Login: React.FC = () => {
             <h1>Login</h1>
           </div>
 
-          <Input
-            label="Usuario"
-            placeholder="Informe o usuário"
-            onChange={(e) => setUsername(e.target.value)}
-            autoFocus
-          />
+          <Form
+            onSubmit={handleLogin}
+          >
+            <Input
+              label="Usuario"
+              name="username"
+              placeholder="Informe o usuário"
+              autoFocus
+            />
 
-          <Input
-            label="Senha"
-            type="password"
-            placeholder="Informe a senha"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+            <Input
+              label="Senha"
+              name="password"
+              type="password"
+              placeholder="Informe a senha"
+            />
 
-          <Button name="Entrar" onClick={handleLogin} />
+            <Button name="Entrar" type="submit" />
+          </Form>
         </main>
       </div>
     </Container>

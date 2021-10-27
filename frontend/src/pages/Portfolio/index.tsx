@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
+import { Form } from '@unform/web';
 
 import {
   Container,
@@ -40,6 +41,7 @@ const Portfolio: React.FC = () => {
 
           <SearchBarButton
             label="Buscar"
+            name="search_string"
             placeholder="Busque por um produto"
             color="white"
             onClickInSearchButton={() => {
@@ -145,14 +147,16 @@ const Portfolio: React.FC = () => {
         isOpen={modalIsOpen}
         title="Adicionar Item"
       >
-        <form>
+        <Form onSubmit={() => setModalIsOpen(false)}>
           <Input
             label="Título"
+            name="title"
             placeholder="Informe o título do móvel"
           />
 
           <Input
             label="Descrição"
+            name="description"
             placeholder="Descreva o móvel"
           />
 
@@ -160,7 +164,7 @@ const Portfolio: React.FC = () => {
 
           <Button
             name="Adicionar"
-            onClick={() => setModalIsOpen(false)}
+            type="submit"
           />
 
           <div className="modal-space-divisor" />
@@ -171,7 +175,7 @@ const Portfolio: React.FC = () => {
             color="white"
             size="small"
           />
-        </form>
+        </Form>
       </ModalView>
     </Container>
   );

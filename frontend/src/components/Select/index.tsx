@@ -1,4 +1,5 @@
-import React, { InputHTMLAttributes } from 'react';
+import { useField } from '@unform/core';
+import React, { InputHTMLAttributes, useEffect, useRef } from 'react';
 import { Container } from './styles';
 
 interface IOptionProps {
@@ -8,10 +9,22 @@ interface IOptionProps {
 
 interface IInputProps extends InputHTMLAttributes<HTMLSelectElement> {
   label: string;
+  name: string;
   options: IOptionProps[];
 }
 
-const Select: React.FC<IInputProps> = ({ label, options, ...rest }) => {
+const Select: React.FC<IInputProps> = ({ label, name, options, ...rest }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const { fieldName, defaultValue, error, registerField } = useField(name);
+
+  useEffect(() => {
+    registerField({
+      name: fieldName,
+      ref: inputRef.current,
+      path: 'value',
+    });
+  }, [registerField, fieldName]);
+
   return (
     <Container>
       <label htmlFor={label}>{label}</label>

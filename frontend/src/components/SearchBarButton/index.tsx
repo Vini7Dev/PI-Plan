@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiSearch } from 'react-icons/fi';
+import { Form } from '@unform/web';
 
 import { Container } from './styles';
 
@@ -18,10 +19,12 @@ const SearchBarButton: React.FC<ISearchBarButton> = ({
 }) => {
   return (
     <Container color={color}>
-      <Input label={label} color={color} hsize={hsize} {...rest} />
-      <button onClick={onClickInSearchButton}>
-        <FiSearch size={30} />
-      </button>
+      <Form onSubmit={onClickInSearchButton}>
+        <Input label={label} color={color} hsize={hsize} {...rest} />
+        <button type="submit">
+          <FiSearch size={30} />
+        </button>
+      </Form>
     </Container>
   );
 }

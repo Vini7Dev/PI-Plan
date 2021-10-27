@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useLocation, useHistory, Link } from 'react-router-dom';
+import { Form } from '@unform/web';
+
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -60,7 +62,7 @@ const AssemblerData: React.FC = () =>{
       <main id="form-area">
         <Header title="Cadastro de Montador" />
 
-        <form>
+        <Form onSubmit={handleSubmitAdmData}>
           <div id="user-type-buttons-area">
             <div className="user-type-button">
               <Link to="/adm-data/">
@@ -73,44 +75,49 @@ const AssemblerData: React.FC = () =>{
           </div>
 
           <Input
-          autoFocus
-          label="Nome"
-          placeholder="Digíte o Nome"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
+            autoFocus
+            label="Nome"
+            name="name"
+            placeholder="Digíte o Nome"
+            defaultValue={name}
+            onChange={(e) => setName(e.target.value)}
           />
 
           <Input
-          label="Usuário"
-          placeholder="Digíte o Usuário"
-          defaultValue={username}
-          onChange={(e) => setUsername(e.target.value)}
+            label="Usuário"
+            name="username"
+            placeholder="Digíte o Usuário"
+            defaultValue={username}
+            onChange={(e) => setUsername(e.target.value)}
           />
 
           <Input
-            label="Telefone"
-            placeholder="(99) XXXXX-XXXX"
-            defaultValue={cellphone}
+              label="Telefone"
+              name="cellphone"
+              placeholder="(99) XXXXX-XXXX"
+              defaultValue={cellphone}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+
+          <Input
+            label="Senha"
+            name="password"
+            placeholder="Digíte a Senha"
+            type="password"
+            defaultValue={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <Input
+            label="Confirme a Senha"
+            name="confirm_password"
+            placeholder="Digíte a Senha Novamente"
+            type="password"
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <Input
-          label="Senha"
-          placeholder="Digíte a Senha"
-          type="password"
-          defaultValue={password}
-          onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <Input
-          label="Confirme a Senha"
-          placeholder="Digíte a Senha Novamente"
-          type="password"
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-
-          <Button name="Cadastrar" onClick={handleSubmitAdmData} />
-        </form>
+          <Button name="Cadastrar" type="submit" />
+        </Form>
       </main>
     </Container>
   );

@@ -1,5 +1,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { useLocation, useHistory, Link } from 'react-router-dom';
+import { Form } from '@unform/web';
+
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -91,7 +93,7 @@ const AdmData: React.FC = () =>{
       <main id="form-area">
         <Header title="Cadastro de Administrador" />
 
-        <form>
+        <Form onSubmit={handleSubmitAdmData}>
           <div id="user-type-buttons-area">
             <div className="user-type-button">
               <Button name="Administrador" color="brown" />
@@ -106,6 +108,7 @@ const AdmData: React.FC = () =>{
           <Input
           autoFocus
           label="Nome"
+          name="name"
           placeholder="Digíte o Nome"
           defaultValue={name}
           onChange={(e) => setName(e.target.value)}
@@ -113,6 +116,7 @@ const AdmData: React.FC = () =>{
 
           <Input
           label="Usuário"
+          name="username"
           placeholder="Digíte o Usuário"
           defaultValue={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -120,6 +124,7 @@ const AdmData: React.FC = () =>{
 
           <Input
           label="Senha"
+          name="password"
           placeholder="Digíte a Senha"
           type="password"
           defaultValue={password}
@@ -128,6 +133,7 @@ const AdmData: React.FC = () =>{
 
           <Input
           label="Confirme a Senha"
+          name="confirm_password"
           placeholder="Digíte a Senha Novamente"
           type="password"
           onChange={(e) => setConfirmPassword(e.target.value)}
@@ -135,12 +141,13 @@ const AdmData: React.FC = () =>{
 
           <CheckBox
             label="Pode criar administrador"
+            name="permission_create_admin"
             onChange={e => setPermissionCreateAdmin(e.target.checked)}
             checked={permissionCreateAdmin}
           />
 
-          <Button name="Cadastrar" onClick={handleSubmitAdmData} />
-        </form>
+          <Button name="Cadastrar" type="submit" />
+        </Form>
       </main>
     </Container>
   );

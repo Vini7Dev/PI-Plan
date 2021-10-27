@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { FiX } from 'react-icons/fi';
 
+import { Form } from '@unform/web';
 import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
@@ -43,43 +44,40 @@ const InstallationData: React.FC = () => {
       <main id="form-area">
         <Header title="Cadastro de Instalação" />
 
-        <form>
+        <Form onSubmit={() => {
+          //
+        }}>
           <StatusButton
             buttonText="Finalizar Instalação"
             buttonColor="green"
             status="Em Andamento"
           />
 
-          <Select
-            autoFocus
-            label="Status da Instalação"
-            options={[
-              { value: 1, description: 'Em andamento' },
-              { value: 2, description: 'Finalizado' },
-              { value: 3, description: 'Cancelado' },
-            ]}
-          />
-
           <Input
+            autoFocus
             label="Data de Início"
+            name="start_date"
             placeholder="Informe a data de início"
             type="date"
           />
 
           <Input
             label="Previsão da Finalização"
+            name="completion_forecast"
             placeholder="Informe a data prevista para a finalização"
             type="date"
           />
 
           <Input
             label="Data de Finalização"
+            name="end_date"
             placeholder="Informe a data de finalização"
             type="date"
           />
 
           <Input
             label="Valor da Instalação"
+            name="price"
             placeholder="R$ 0,00"
             type="date"
           />
@@ -149,41 +147,45 @@ const InstallationData: React.FC = () => {
             </div>
           </AssessmentArea>
 
-          <Button name="Salvar" />
-        </form>
+          <Button name="Salvar" type="submit" />
+        </Form>
       </main>
       {
         showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
           <ModalContent>
-            <div className="space-division">
-              <div className="x2">
-                <Select
-                  label="Status do Pedido"
-                  options={[
-                    { value: 1, description: 'Fulano' },
-                    { value: 2, description: 'Ciclano' },
-                    { value: 3, description: 'Beltano' },
-                  ]}
-                />
+            <Form onSubmit={toggleShowPopup}>
+              <div className="space-division">
+                <div className="x2">
+                  <Select
+                    label="Montador"
+                    name="assembler_id"
+                    options={[
+                      { value: 1, description: 'Fulano' },
+                      { value: 2, description: 'Ciclano' },
+                      { value: 3, description: 'Beltano' },
+                    ]}
+                  />
+                </div>
+                <div className="x-divisor" />
+                <div className="x1">
+                  <Input
+                    label="Comissão"
+                    name="commission_percentage"
+                    placeholder="10%"
+                  />
+                </div>
               </div>
-              <div className="x-divisor" />
-              <div className="x1">
-                <Input
-                  label="Comissão"
-                  placeholder="10%"
-                />
-              </div>
-            </div>
-            <Button name="Adicionar" />
+              <Button name="Adicionar" />
 
-            <div className="modal-space-divisor" />
+              <div className="modal-space-divisor" />
 
-            <Button
-              name="Fechar"
-              color="white"
-              size="small"
-              onClick={toggleShowPopup}
-            />
+              <Button
+                name="Fechar"
+                color="white"
+                size="small"
+                type="submit"
+              />
+            </Form>
           </ModalContent>
         </ModalView>
       }

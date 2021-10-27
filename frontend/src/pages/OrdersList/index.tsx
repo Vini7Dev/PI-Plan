@@ -51,6 +51,7 @@ const OrdersList: React.FC = () => {
         <Header title="Pedidos">
           <SearchBarButton
             label="Buscar"
+            name="search_string"
             placeholder="Procure por um pedido"
             onClickInSearchButton={() => {
               //

@@ -1,6 +1,8 @@
 import React, { useState , useCallback } from 'react';
 import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
+import { Form } from '@unform/web';
+
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -190,6 +192,7 @@ const DashBoard: React.FC = () =>{
                   <div className="task-item" key={task.id}>
                     <CheckBox
                       id={`${task.id}`}
+                      name="show_popup"
                       label={label}
                       color="black"
                       onClickLabel={() => toggleShowPopup(task.id)}
@@ -220,15 +223,17 @@ const DashBoard: React.FC = () =>{
             isOpen={showPopup}
             title="Adicionar Tarefa"
           >
-            <form>
+            <Form onSubmit={handleSubmitTaskData}>
               <CheckBox
                 label="Finalizado"
+                name="done"
                 onChange={(e) => setDone(e.target.checked)}
                 checked={done}
               />
 
               <Input
               label="Título"
+              name="title"
               placeholder="Digíte o Título"
               defaultValue={title}
               onChange={(e) => setTitle(e.target.value)}
@@ -236,6 +241,7 @@ const DashBoard: React.FC = () =>{
 
               <Input
               label="Descrição"
+              name="description"
               placeholder="Digíte a Descrição"
               defaultValue={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -243,6 +249,7 @@ const DashBoard: React.FC = () =>{
 
               <Input
               label="Horário"
+              name="time"
               type="time"
               defaultValue={taskTime}
               onChange={(e) => setTaskTime(e.target.value)}
@@ -250,6 +257,7 @@ const DashBoard: React.FC = () =>{
 
               <Input
               label="Data"
+              name="date"
               type="date"
               defaultValue={taskDate}
               onChange={(e) => setTaskDate(e.target.value)}
@@ -257,7 +265,7 @@ const DashBoard: React.FC = () =>{
 
               <Button
                 name="Cadastrar"
-                onClick={handleSubmitTaskData}
+                type="submit"
               />
 
               <div className="modal-space-divisor" />
@@ -269,7 +277,7 @@ const DashBoard: React.FC = () =>{
                 size="small"
                 onClick={() => toggleShowPopup()}
               />
-            </form>
+            </Form>
           </ModalView>
         )
       }

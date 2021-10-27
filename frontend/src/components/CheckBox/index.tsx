@@ -1,4 +1,6 @@
-import React, { InputHTMLAttributes } from 'react';
+import React, { InputHTMLAttributes, useEffect, useRef } from 'react';
+import { useField } from '@unform/core';
+
 import { Container } from './styles';
 
 interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
@@ -10,6 +12,7 @@ interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
 const ChechBox: React.FC<ICheckBoxProps> = ({
   label, color = 'brown', onClickLabel, children, ...rest
 }) => {
+
   return(
     <Container color={color}>
       {label && <label htmlFor={label} onClick={onClickLabel}>{label}</label>}

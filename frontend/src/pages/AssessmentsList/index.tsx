@@ -39,6 +39,7 @@ const AssessmentsList: React.FC = () => {
         <Header title="Avaliações">
           <SearchBarButton
             label="Buscar"
+            name="search_string"
             placeholder="Procure por uma avaliação"
             onClickInSearchButton={() => {
               //
@@ -66,7 +67,7 @@ const AssessmentsList: React.FC = () => {
                 assessments.map(({ id, order_title, cleaning_note, finish_note, customer_note, manager_note }) => (
                   <tr key={id}>
                     <td className="text-center td-id td-x1">
-                      <CheckBox className="checkbox" />
+                      <CheckBox name="markup" className="checkbox" />
                     </td>
                     <td className="text-left td-x3">
                       {order_title}

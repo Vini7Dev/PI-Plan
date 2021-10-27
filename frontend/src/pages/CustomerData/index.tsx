@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useEffect} from 'react';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
+import { Form } from '@unform/web';
 
 import { Container, Table } from './styles';
 
@@ -159,9 +160,10 @@ const CustomerData: React.FC = () =>{
         <section id="form-area">
           <Header title="Cadastro de Cliente" />
 
-          <form>
+          <Form onSubmit={handleClientData}>
             <Input
             label="Nome"
+            name="name"
             placeholder="Digíte o Nome"
             onChange={(e) => setName(e.target.value)}
             defaultValue={name}
@@ -169,6 +171,7 @@ const CustomerData: React.FC = () =>{
 
             <Input
             label="Telefone"
+            name="cellphone"
             placeholder="Digíte o Telefone"
             onChange={(e) => setCellphone(e.target.value)}
             defaultValue={cellphone}
@@ -176,6 +179,7 @@ const CustomerData: React.FC = () =>{
 
             <Input
             label="CPF/CNPJ"
+            name="document"
             placeholder="Digíte o CPF ou o CNPJ"
             onChange={(e) => setDocument(e.target.value)}
             defaultValue={document}
@@ -185,20 +189,22 @@ const CustomerData: React.FC = () =>{
 
             <ChechBox
               label="Emitir o alerta de contato para este Cliente"
+              name="send_contact_alert"
               onChange={(e) => setWarnContact(e.target.checked)}
               checked={warnContact}
             />
 
             <Input
             label="Próximo Contato"
+            name="next_contact_date"
             placeholder="Informe a data do Próximo Contato"
             type="date"
             onChange={(e) => setNextContact(e.target.value)}
             defaultValue={nextContact}
             />
 
-            <Button name="Cadastrar" onClick={handleClientData} />
-          </form>
+            <Button name="Cadastrar" type="submit" />
+          </Form>
         </section>
 
         <section id="table-area">

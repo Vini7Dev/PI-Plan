@@ -54,6 +54,10 @@ export const Container = styled.div`
           margin-left: 32px;
         }
       }
+
+      form {
+        width: 100%;
+      }
     }
   }
 

@@ -28,6 +28,7 @@ const InstallationsList: React.FC = () => {
         <Header title="Instalações">
           <SearchBarButton
             label="Buscar"
+            name="search_string"
             placeholder="Procure por uma instalação"
             onClickInSearchButton={() => {
               //

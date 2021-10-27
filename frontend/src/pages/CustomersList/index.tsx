@@ -52,6 +52,7 @@ const CustomersList: React.FC = () => {
         <Header title="Clientes">
           <SearchBarButton
             label="Buscar"
+            name="search_string"
             placeholder="Procure por um cliente"
             onClickInSearchButton={() => {
               //

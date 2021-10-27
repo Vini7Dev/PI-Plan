@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 
+import { Form } from '@unform/web';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -148,7 +149,7 @@ const OrderData: React.FC = () => {
       <main id="form-area">
         <Header title="Cadastro de Pedido" />
 
-        <form>
+        <Form onSubmit={handleCreateOrder}>
           <StatusButton
             buttonText="Cancelar Pedido"
             buttonColor="red"
@@ -157,6 +158,7 @@ const OrderData: React.FC = () => {
 
           <Select
             label="Processo Atual"
+            name="current_proccess"
             options={[
               { value: 1, description: 'Iniciando' },
               { value: 2, description: 'Visita Inicial' },
@@ -172,18 +174,21 @@ const OrderData: React.FC = () => {
 
           <Input
             label="Título"
+            name="title"
             placeholder="Informe o título do pedido"
             defaultValue={title}
             onChange={(e) => setTitle(e.target.value)}
           />
           <Textarea
             label="Descrição"
+            name="description"
             placeholder="Informe a descrição do pedido"
             defaultValue={description}
             onChange={(e) => setDescription(e.target.value)}
           />
           <Input
             label="Data de Início"
+            name="start_date"
             placeholder="Informe a data de início"
             type="date"
             defaultValue={startDate}
@@ -191,6 +196,7 @@ const OrderData: React.FC = () => {
           />
           <Input
             label="Data de Finalização"
+            name="end_date"
             placeholder="Informe a data de finalização"
             type="date"
             defaultValue={finalDate}
@@ -198,6 +204,7 @@ const OrderData: React.FC = () => {
           />
           <Input
             label="Data de Entrega do Móvel"
+            name="furniture_delivery_forecast"
             placeholder="Informe a data de entrega do móvel"
             type="date"
             defaultValue={furnitureDeliveryDate}
@@ -207,6 +214,7 @@ const OrderData: React.FC = () => {
           <h2>Endereço</h2>
           <Input
             label="CEP"
+            name="cep"
             placeholder="Informe o CEP"
             defaultValue={cep}
             onChange={(e) => setCep(e.target.value)}
@@ -216,6 +224,7 @@ const OrderData: React.FC = () => {
             <div className="x2">
               <Input
                 label="Rua"
+                name="street"
                 placeholder="Informe a rua"
                 defaultValue={street}
                 onChange={(e) => setStreet(e.target.value)}
@@ -225,6 +234,7 @@ const OrderData: React.FC = () => {
             <div className="x1">
               <Input
                 label="Número"
+                name="number"
                 placeholder="Informe o número"
                 value={number}
                 onChange={(e) => setNumber(Number(e.target.value))}
@@ -234,12 +244,14 @@ const OrderData: React.FC = () => {
 
           <Input
             label="Complemento"
+            name="complement"
             placeholder="Informe o complemento"
             defaultValue={complement}
             onChange={(e) => setComplement(e.target.value)}
           />
           <Input
             label="Bairro"
+            name="district"
             placeholder="Informe o bairro"
             defaultValue={neighborhood}
             onChange={(e) => setNeighborhood(e.target.value)}
@@ -249,6 +261,7 @@ const OrderData: React.FC = () => {
             <div className="x1">
               <Select
                 label="UF"
+                name="uf"
                 options={[
                   { description: 'Integrar com os Correios' },
                   { description: 'AA' },
@@ -264,6 +277,7 @@ const OrderData: React.FC = () => {
             <div className="x2">
               <Select
                 label="Cidade"
+                name="city"
                 options={[
                   { description: 'Integrar com os Correios' },
                   { description: 'Cidade 1' },
@@ -279,6 +293,7 @@ const OrderData: React.FC = () => {
 
           <Select
             label="País"
+            name="country"
             options={[
               { description: 'Integrar com os Correios' },
               { description: 'País 1' },
@@ -292,6 +307,7 @@ const OrderData: React.FC = () => {
 
           <Textarea
             label="Cômodos / Ambientes"
+            name="installation_environments"
             placeholder="Descreva os cômodos e ambientes pra instalação"
             defaultValue={installationEnvironments}
             onChange={(e) => setInstallationEnvironments(e.target.value)}
@@ -300,6 +316,7 @@ const OrderData: React.FC = () => {
           <h3>Valores e Pagamento</h3>
           <Select
             label="Forma de Pagamento"
+            name="payment_method"
             options={[
               { description: 'A definir os Campos' },
               { description: 'Método 1' },
@@ -312,19 +329,21 @@ const OrderData: React.FC = () => {
           />
           <Input
             label="Valor Bruto"
+            name="gross_value"
             placeholder="Informe o valor bruto"
             value={grossValue}
             onChange={(e) => setGrossValue(Number(e.target.value))}
           />
           <Input
-            label="Valor Líquido"
-            placeholder="Informe o valor líquido"
+            label="Valor em Despesas"
+            name="expenses_value"
+            placeholder="Informe o valor de despesas"
             value={netValue}
             onChange={(e) => setNetValue(Number(e.target.value))}
           />
 
-          <Button name="Salvar" onClick={handleCreateOrder} />
-        </form>
+          <Button name="Salvar" type="submit" />
+        </Form>
       </main>
     </Container>
   );
