@@ -8,7 +8,7 @@ interface IHeaderProps {
   title: string;
 }
 
-const Header: React.FC<IHeaderProps> = ({ title }) => {
+const Header: React.FC<IHeaderProps> = ({ title, children }) => {
   const { user, logout } = useAuth();
 
   const handleLogOut = useCallback(() => {
@@ -22,10 +22,13 @@ const Header: React.FC<IHeaderProps> = ({ title }) => {
 
   return (
     <Container>
-      <button onClick={handleLogOut}>
+      <button onClick={handleLogOut} id="header-user-button">
         <strong><FiUser size={25} color="#FFFFFF" /> {user.name}</strong>
       </button>
       <h1>{title}</h1>
+      <div>
+        {children}
+      </div>
     </Container>
   );
 }

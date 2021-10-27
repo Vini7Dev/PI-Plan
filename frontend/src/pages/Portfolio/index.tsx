@@ -15,6 +15,7 @@ import Input from '../../components/Input';
 import AddImageInput from '../../components/AddImageInput';
 import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
+import SearchBarButton from '../../components/SearchBarButton';
 
 const Portfolio: React.FC = () => {
   const { user } = useAuth();
@@ -37,11 +38,13 @@ const Portfolio: React.FC = () => {
         <div id="nav-logo-area">
           <img src={Logo} alt="Planejados Inteligentes" />
 
-          <Input
-            label="Pesquisar"
-            placeholder="Pesquise por um móvel..."
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Busque por um produto"
             color="white"
-            hsize="small"
+            onClickInSearchButton={() => {
+              //
+            }}
           />
         </div>
 

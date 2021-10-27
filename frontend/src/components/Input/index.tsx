@@ -1,7 +1,7 @@
 import React, { InputHTMLAttributes } from 'react';
 import { Container } from './styles';
 
-interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface IInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
   color?: 'brown' | 'white';
   hsize?: 'normal' | 'small';

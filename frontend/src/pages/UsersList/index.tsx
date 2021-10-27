@@ -4,6 +4,7 @@ import { FiTrash2 } from 'react-icons/fi';
 
 import { Container, Table } from './styles';
 
+import SearchBarButton from '../../components/SearchBarButton';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 
@@ -48,7 +49,15 @@ const UsersList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <Header title="Usuários" />
+        <Header title="Usuários">
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Procure por um usuário"
+            onClickInSearchButton={() => {
+              //
+            }}
+          />
+        </Header>
 
         <div id="register-page-link">
           <Link to="adm-data">

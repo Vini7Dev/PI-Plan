@@ -37,7 +37,7 @@ export const Container = styled.div<IInputProps>`
     padding: ${props => props.hsize === 'normal' ? '30px' : '25px'} 10px;
     font-size: 18px;
 
-    ${props => props.color === 'white' && css`color: #f0f0f0;` };
+    ${props => props.color === 'white' && css`color: #ffffff;` };
   }
 
   ${props => props.color === 'white' && css`

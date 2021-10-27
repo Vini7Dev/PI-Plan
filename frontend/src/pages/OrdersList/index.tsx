@@ -5,6 +5,7 @@ import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
+import SearchBarButton from '../../components/SearchBarButton';
 
 interface IOrderProps {
   id: number;
@@ -47,7 +48,15 @@ const OrdersList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <Header title="Pedidos" />
+        <Header title="Pedidos">
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Procure por um pedido"
+            onClickInSearchButton={() => {
+              //
+            }}
+          />
+        </Header>
 
         <div id="register-page-link">
           <Link to="order-data">

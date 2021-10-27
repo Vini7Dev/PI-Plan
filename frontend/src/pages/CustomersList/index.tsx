@@ -6,6 +6,7 @@ import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
+import SearchBarButton from '../../components/SearchBarButton';
 
 interface IClientProps {
   id: number;
@@ -48,7 +49,15 @@ const CustomersList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <Header title="Clientes" />
+        <Header title="Clientes">
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Procure por um cliente"
+            onClickInSearchButton={() => {
+              //
+            }}
+          />
+        </Header>
 
         <div id="register-page-link">
           <Link to="customer-data">

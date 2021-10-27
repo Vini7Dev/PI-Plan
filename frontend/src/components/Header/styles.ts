@@ -3,24 +3,30 @@ import styled from 'styled-components';
 export const Container = styled.header`
   position: relative;
   width: 100%;
+  margin-bottom: 10px;
 
-  strong {
-    display: flex;
-    align-items: center;
+  button#header-user-button {
+    border: none;
 
     position: absolute;
     top: 0;
     right: 0;
     background-color: #CEAA7B;
     padding: 15px 30px;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 25px;
-    font-weight: 600;
-    color: #FFFFFF;
     border-radius: 30px;
 
-    svg {
-      margin-right: 5px;
+    strong {
+      display: flex;
+      align-items: center;
+
+      font-size: 25px;
+      font-weight: 600;
+      color: #FFFFFF;
+      border-radius: 30px;
+
+      svg {
+        margin-right: 5px;
+      }
     }
   }
 
@@ -28,19 +34,22 @@ export const Container = styled.header`
     font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     color: #60626C;
-    padding: 60px 0 20px;
+    padding: 60px 0 0;
   }
 
   @media (max-width: 768px) {
-    strong {
+    button#header-user-button {
       position: relative;
       display: block;
       padding: 10px 30px;
-      font-size: 18px;
-      text-align: center;
+      width: 100%;
 
-      svg {
-        display: none;
+      strong {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        line-height: 35px;
       }
     }
 

@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import NavigationBar from '../../components/NavigationBar';
+import SearchBarButton from '../../components/SearchBarButton';
 
 interface IAssessmentProps {
   id: string;
@@ -35,7 +36,15 @@ const AssessmentsList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <Header title="Avaliações" />
+        <Header title="Avaliações">
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Procure por uma avaliação"
+            onClickInSearchButton={() => {
+              //
+            }}
+          />
+        </Header>
 
         <div id="notes-calculator">
           <Button name="Calcular Média das Notas Selecionadas" />

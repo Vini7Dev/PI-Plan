@@ -6,6 +6,7 @@ import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
+import SearchBarButton from '../../components/SearchBarButton';
 
 interface IInstallationProps {
   id: number;
@@ -24,7 +25,15 @@ const InstallationsList: React.FC = () => {
       </div>
 
       <main id="table-area">
-        <Header title="Instalações" />
+        <Header title="Instalações">
+          <SearchBarButton
+            label="Buscar"
+            placeholder="Procure por uma instalação"
+            onClickInSearchButton={() => {
+              //
+            }}
+          />
+        </Header>
 
         <div id="register-page-link">
           <Link to="installation-data">
