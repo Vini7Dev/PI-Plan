@@ -16,6 +16,7 @@ const Input: React.FC<IInputProps> = ({
   name,
   color = 'brown',
   hsize = 'normal',
+  hidden,
   ...rest
 }) => {
   // Definindo uma referência ao input para a biblioteca unform
@@ -32,7 +33,7 @@ const Input: React.FC<IInputProps> = ({
   }, [fieldName, registerField]);
 
   return (
-    <Container color={color} hsize={hsize} inError={!!error}>
+    <Container color={color} hsize={hsize} inError={!!error} hidden={hidden}>
       <label htmlFor={label}>{label}</label>
       <input id={label} defaultValue={defaultValue} ref={inputRef} {...rest} />
       <span>{error}</span>
