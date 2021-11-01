@@ -42,7 +42,6 @@ export const Container = styled.div<IContainerProps>`
   margin: 0 5px;
   color: #FFFFFF;
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
 
   svg {
     margin-left: auto;
@@ -52,7 +51,7 @@ export const Container = styled.div<IContainerProps>`
   }
 
   strong {
-    font-size: 30px;
+    font-size: 25px;
   }
 
   span {

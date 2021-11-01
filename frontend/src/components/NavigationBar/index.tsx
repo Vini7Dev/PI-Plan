@@ -41,6 +41,7 @@ const NavigationBar: React.FC<INavigationBarProps> = ({ optionSelected }) => {
         {/** Percorrendo as opções de navegação e renderizando-as */}
         {navigationOptions.map(option => (
           <NavigationButton
+            key={option.id}
             text={option.text}
             toPage={option.toPage}
             id={optionSelected === option.id ? 'nav-link-selected' : undefined}

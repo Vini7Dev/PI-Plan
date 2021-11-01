@@ -21,17 +21,25 @@ export const Container = styled.div`
     padding: 20px 8% 50px;
 
     #scroll-items-area {
-      div button {
-        background-color: #FFFFFF;
-        color: #797D8A;
-        font-size: 50px;
-        box-shadow: none;
+      div {
+        button {
+          background-color: #FFFFFF;
+          color: #797D8A;
+          font-size: 50px;
+          box-shadow: none;
+        }
+
+        #empty-reminders-list {
+          font-size: 30px;
+          text-align: center;
+          color: #797D8A;
+          margin: 30px 0;
+        }
       }
     }
 
     main {
       width: 100%;
-      max-width: 720px;
 
       .space-division{
         display: flex;

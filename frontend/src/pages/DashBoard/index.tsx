@@ -18,6 +18,20 @@ import ModalView from '../../components/ModalView';
 
 import ReminderItem from '../../components/ReminderItem';
 
+interface IReminderProps {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  reminder_type: 'order' | 'installation' | 'contact_alert';
+}
+
+interface IRemindersResponse {
+  contact_alerts: IReminderProps[];
+  orders: IReminderProps[];
+  installations: IReminderProps[];
+}
+
 interface ITaskProps {
   id: string;
   done: boolean;
@@ -28,6 +42,7 @@ interface ITaskProps {
 // Página inicial do site
 const DashBoard: React.FC = () =>{
   const { user } = useAuth();
+  const [reminders, setReminders] = useState<IReminderProps[]>([]);
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [taskId, setTaskId] = useState('');
@@ -121,8 +136,44 @@ const DashBoard: React.FC = () =>{
     }
   }, [handleLoadTasks]);
 
+  // Função para buscar os lembretes do dia
+  const handleLoadReminders = useCallback(async () => {
+    // Recuperando a data de hoje
+    const currentDate = new Date();
+    const day = (currentDate.getDate()).toString().padStart(2, '0');
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = currentDate.getFullYear();
+
+    // Buscando os lembretes da api
+    const { data: remindersList } = await api.get<IRemindersResponse>(`/reminders/${day}-${month}-${year}`);
+
+    // Formatando o retorno da api para uma lista única
+    const remindersFormatedList: IReminderProps[] = [];
+
+    remindersList.contact_alerts.forEach(contact_alert => {
+      const reminderWithCardType = Object.assign(contact_alert, { reminder_type: 'contact_alert' });
+      remindersFormatedList.push(reminderWithCardType);
+    });
+
+    remindersList.orders.forEach(order => {
+      const reminderWithCardType = Object.assign(order, { reminder_type: 'order' });
+      remindersFormatedList.push(reminderWithCardType)
+    });
+
+    remindersList.installations.forEach(installation => {
+      const reminderWithCardType = Object.assign(installation, { reminder_type: 'installation' });
+      remindersFormatedList.push(reminderWithCardType)
+    });
+
+    // Salvando a lista de lembretes no estado
+    setReminders(remindersFormatedList);
+
+    // Buscando as tarefas
+    handleLoadTasks();
+  }, [handleLoadTasks]);
+
   return(
-    <Container onLoad={handleLoadTasks}>
+    <Container onLoad={handleLoadReminders}>
       <div id="navigation-area">
         <NavigationBar optionSelected={0} />
       </div>
@@ -138,27 +189,19 @@ const DashBoard: React.FC = () =>{
             breakPoints={breakPoints}
             disableArrowsOnEnd={false}
           >
-            <ReminderItem
-              id="1"
-              title="Título do Pedido"
-              subtitle="Modelagem"
-              description="Descrição detalhada do pedido..."
-              reminder_type="order"
-            />
-            <ReminderItem
-              id="2"
-              title="Título da Instalação"
-              subtitle="Finalizar em 10/09"
-              description="Descrição detalhada do pedido..."
-              reminder_type="installation"
-            />
-            <ReminderItem
-              id="3"
-              title="Contactar Cliente"
-              subtitle="Contactar em 08/09"
-              description="(99)12345-6789"
-              reminder_type="contact_alert"
-            />
+            {
+              reminders.length > 0
+                ? reminders.map((reminder) => (
+                  <ReminderItem
+                    key={reminder.id}
+                    id={reminder.id}
+                    title={reminder.title}
+                    subtitle={reminder.subtitle}
+                    description={reminder.description}
+                    reminder_type={reminder.reminder_type}
+                  />))
+                : <p id="empty-reminders-list">Sem lembretes...</p>
+            }
           </Carousel>
         </div>
 
