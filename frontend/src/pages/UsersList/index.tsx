@@ -2,6 +2,7 @@ import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 
+import api from '../../services/api';
 import { Container, Table } from './styles';
 
 import SearchBarButton from '../../components/SearchBarButton';
@@ -9,10 +10,12 @@ import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 
 interface IUserProps {
-  id: number;
+  id: string;
   name: string;
   username: string;
-  permission_create_adm: boolean;
+  cellphone?: string;
+  permission_create_adm?: boolean;
+  user_type: 'admin' | 'assembler';
 }
 
 // Página para listagem dos usuários cadastrados
@@ -20,14 +23,33 @@ const UsersList: React.FC = () => {
   const [users, setUsers] = useState<IUserProps[]>([]);
 
   // Função para carregar os usuários cadastrados
-  const handleLoadUsers = useCallback(() => {
-    //
+  const handleLoadUsers = useCallback(async () => {
+    const { data: adminsList } = await api.get<IUserProps[]>('/admins');
+
+    const { data: assemblersList } = await api.get<IUserProps[]>('/assemblers');
+
+    setUsers([...adminsList, ...assemblersList]);
   }, []);
 
   // Função para apagar um usuário
-  const handleDeleteUser = useCallback((id: number) => {
-    //
-  }, []);
+  const handleDeleteUser = useCallback(async (id: string, user_type: 'admin' | 'assembler') => {
+    // Verificando se o usuário realmente deseja apagar o usuário
+    const response = confirm('Você realmente deseja apagar o usuário?');
+
+    if(!response) {
+      return;
+    }
+
+    // Verificando qual o tipo do usuário para apaga-lo
+    if(user_type === 'admin') {
+      await api.delete(`/admins/${id}`);
+    } else {
+      await api.delete(`/assemblers/${id}`);
+    }
+
+    // Recarregando a lista de usuários
+    handleLoadUsers();
+  }, [handleLoadUsers]);
 
   return (
     <Container onLoad={handleLoadUsers}>
@@ -63,55 +85,45 @@ const UsersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-                    <tr>
+              {
+                users.length > 0
+                  ? users.map(user => (
+                    <tr key={user.id}>
                         <td className="td-id td-x2">
-                          <Link to={`/adm-data/${1}`}>
-                            Admin1
+                          <Link to={
+                            `/${user.user_type === 'admin' ? 'adm-data' : 'assembler-data'}/${user.id}`}
+                          >
+                            {user.name}
                           </Link>
                         </td>
                         <td className="text-center td-x2">
-                          <Link to={`/adm-data/${1}`}>
-                            admin1
+                          <Link to={
+                            `/${user.user_type === 'admin' ? 'adm-data' : 'assembler-data'}/${user.id}`}
+                          >
+                            {user.username}
                           </Link>
                         </td>
                         <td className="text-center td-x1">
-                          <Link to={`/adm-data/${1}`}>
+                          <Link to={
+                            `/${user.user_type === 'admin' ? 'adm-data' : 'assembler-data'}/${user.id}`}
+                          >
                             {
-                              typeof true === 'boolean'
+                              user.user_type === 'admin'
                                 ? 'Administrador'
                                 : 'Montador'
                             }
                           </Link>
-                          <button className="ic-remove" onClick={() => handleDeleteUser(1)}>
+                          <button
+                            className="ic-remove"
+                            onClick={() => handleDeleteUser(user.id, user.user_type)}
+                          >
                             <FiTrash2 />
                           </button>
                         </td>
                     </tr>
-
-                    <tr>
-                        <td className="td-id td-x2">
-                          <Link to={`/assembler-data/${1}`}>
-                            Mont1
-                          </Link>
-                        </td>
-                        <td className="text-center td-x2">
-                          <Link to={`/assembler-data/${1}`}>
-                            mont1
-                          </Link>
-                        </td>
-                        <td className="text-center td-x1">
-                          <Link to={`/assembler-data/${1}`}>
-                            {
-                              typeof 0 === 'boolean'
-                                ? 'Administrador'
-                                : 'Montador'
-                            }
-                          </Link>
-                          <button className="ic-remove" onClick={() => handleDeleteUser(1)}>
-                            <FiTrash2 />
-                          </button>
-                        </td>
-                    </tr>
+                  ))
+                  : <tr><td colSpan={3}><p id="empty-users-list">Sem usuários...</p></td></tr>
+              }
             </tbody>
           </Table>
         </div>

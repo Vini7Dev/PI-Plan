@@ -64,6 +64,11 @@ export const Container = styled.div`
     .end-border-r {
       border-radius: 0 30px 30px 0;
     }
+
+    #empty-users-list {
+      font-size: 25px;
+      text-align: center;
+    }
   }
 
   @media (max-width: 768px) {
