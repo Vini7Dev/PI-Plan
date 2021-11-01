@@ -4,6 +4,7 @@ import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
 import api from '../../services/api';
+import { useAuth } from '../../contexts/Authentication';
 import {
   Container, TasksList, AddTaskButton
 } from './styles';
@@ -22,15 +23,17 @@ interface ITaskProps {
   done: boolean;
   title: string;
   description: string;
-  task_date: string;
 }
 
 // Página inicial do site
 const DashBoard: React.FC = () =>{
+  const { user } = useAuth();
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [taskId, setTaskId] = useState('');
-  const [done, setDone] = useState(false);
+  const [taskDone, settaskDone] = useState(false);
+  const [taskTitle, setTaskTitle] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
 
   // Configurando os break points do carrossel de lembretes
   const breakPoints = [
@@ -41,25 +44,26 @@ const DashBoard: React.FC = () =>{
   ];
 
   // Função para apresentar o modal com os dados de uma tarefa
-  const toggleShowPopup = useCallback((id?: string) => {
+  const toggleShowPopup = useCallback(async (id?: string) => {
+    // Alterando a apresentação do popup
     setShowPopup(!showPopup);
 
+    // Caso tenha informado o id da tarefa, buscar os seus respectivos dados do back-end
     if(id) {
-      setTaskId(id);
-      const request = new XMLHttpRequest();
+      // Recuprando os dados da tarefa no back-end
+      const { data: taskData } = await api.get<ITaskProps>(`/todos/${id}`);
 
-      request.open('GET', `http://localhost:8080/tasks/${id}`, true);
-
-      request.onload = function() {
-        const taskData = JSON.parse(this.response);
-
-        const taskDateTime = taskData.task_date.split(/t+/i);
-      }
-
-      request.send();
+      // Salvando os dados da tarefa
+      setTaskId(taskData.id);
+      settaskDone(taskData.done);
+      setTaskTitle(taskData.title);
+      setTaskDescription(taskData.description);
     } else {
+      // Limpando o id e os inputs dos formulários
       setTaskId('');
-      setDone(false);
+      settaskDone(false);
+      setTaskTitle('');
+      setTaskDescription('');
     }
   }, [showPopup]);
 
@@ -67,20 +71,55 @@ const DashBoard: React.FC = () =>{
   const handleLoadTasks = useCallback(async () => {
     const tasksLoaded = await api.get<ITaskProps[]>('/admin-todos');
 
-    console.log(tasksLoaded.data);
-
     setTasks(tasksLoaded.data);
   }, []);
 
   // Função para cadastrar uma nova tarefa
-  const handleSubmitTaskData = useCallback(() => {
-    //
-  },[]);
+  const handleSubmitTaskData = useCallback(async (data) => {
+    // Verificando se o id da tarefa está presente, caso sim, atualizar os seus dados
+    if(taskId) {
+      // Criando o objeto da tarefa sem o id do administrador
+      const taskData = {
+        done: taskDone,
+        title: data.title,
+        description: data.description,
+      };
+
+      // Atualizando os dados da tarefa
+      await api.put(`/todos/${taskId}`, taskData);
+    } else {
+      // Criando o objeto da tarefa com o id do administrador
+      const taskData = {
+        admin_id: user.id,
+        done: taskDone,
+        title: data.title,
+        description: data.description,
+      };
+
+      // Cadastrando uma nova tarefa
+      await api.post('/todos', taskData);
+    }
+
+    // Recarregando a lista de tarefas
+    handleLoadTasks();
+
+    // Fechando o popup
+    toggleShowPopup();
+  },[user, taskId, taskDone, handleLoadTasks, toggleShowPopup]);
 
   // Função para apagar uma tarefa
-  const handleDeleteTask = useCallback((id: string) => {
-    //
-  }, []);
+  const handleDeleteTask = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar a tarefa
+    const response = confirm('Você realmente deseja apagar a terefa?');
+
+    if(response) {
+      // Enviando uma requisição para apagar a tarefa
+      await api.delete(`/todos/${id}`);
+
+      // Atualizando a listagem das tarefas
+      handleLoadTasks();
+    }
+  }, [handleLoadTasks]);
 
   return(
     <Container onLoad={handleLoadTasks}>
@@ -179,32 +218,22 @@ const DashBoard: React.FC = () =>{
               <CheckBox
                 label="Finalizado"
                 name="done"
-                onChange={(e) => setDone(e.target.checked)}
-                checked={done}
+                onChange={(e) => settaskDone(e.target.checked)}
+                checked={taskDone}
               />
 
               <Input
               label="Título"
               name="title"
               placeholder="Digíte o Título"
+              defaultValue={taskTitle}
               />
 
               <Input
               label="Descrição"
               name="description"
               placeholder="Digíte a Descrição"
-              />
-
-              <Input
-              label="Horário"
-              name="time"
-              type="time"
-              />
-
-              <Input
-              label="Data"
-              name="date"
-              type="date"
+              defaultValue={taskDescription}
               />
 
               <Button
