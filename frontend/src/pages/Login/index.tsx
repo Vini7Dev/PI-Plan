@@ -1,6 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useRef } from 'react';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
+import getValidationErrors from '../../utils/validationErrors';
 import { useAuth } from '../../contexts/Authentication';
 import { Container } from './styles';
 
@@ -11,18 +14,36 @@ import Button from '../../components/Button';
 // Página de login do sistema
 const Login: React.FC = () => {
   const { login } = useAuth();
+  const formRef = useRef<FormHandles>(null);
 
   // Função para realizar o login no sistema
   const handleLogin = useCallback(async (data) => {
     try {
+      // Definindo o esquema para a validação do formulário
+      const schema = Yup.object().shape({
+        username: Yup.string().required('O usuário é obrgatório!').max(30, 'Máximo de 30 letrar!'),
+        password: Yup.string().required('A senha é obrigatória!').min(6, 'Mínimo de 6 letras!'),
+      });
+
+      // Validando o formulário
+      await schema.validate(data, { abortEarly: false });
+
       // Executando a função para iniciar a sessão enviando o username e password obtidos no formulário
       await login({
         username: data.username,
         password: data.password,
       });
     } catch(error) {
-      // Caso de erro, informar que as credenciais estão inválidas
-      alert('Credenciais inválidas!');
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(formRef.current) {
+          formRef.current.setErrors(errors);
+        }
+      }
+
+      alert('Falha ao realizar o Login!');
     }
   }, [login]);
 
@@ -39,6 +60,7 @@ const Login: React.FC = () => {
 
           <Form
             onSubmit={handleLogin}
+            ref={formRef}
           >
             <Input
               label="Usuario"

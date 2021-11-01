@@ -3,15 +3,14 @@ import styled, { css } from 'styled-components';
 interface IInputProps {
   color: 'brown' | 'white';
   hsize: 'normal' | 'small';
-  hasError: boolean;
+  inError: boolean;
 }
 
 export const Container = styled.div<IInputProps>`
   position: relative;
   width: 100%;
   height: ${props => props.hsize === 'normal' ? '65px' : '56px'};
-
-  margin: 20px 0;
+  margin: 20px 0 30px;
 
   label {
     position: absolute;
@@ -20,7 +19,7 @@ export const Container = styled.div<IInputProps>`
 
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
-    color: ${props => props.hasError ? '#FF3300' : props.color === 'brown' ? '#ceaa7b' : '#ffffff'};
+    color: ${props => props.inError ? '#FF3300' : props.color === 'brown' ? '#ceaa7b' : '#ffffff'};
     font-weight: bold;
 
     background-color: ${props => props.color === 'brown' ? '#ffffff' : '#b8976b'};
@@ -31,8 +30,8 @@ export const Container = styled.div<IInputProps>`
     height: ${props => props.hsize === 'normal' ? '100%' : '80%'};
     width: 100%;
 
-    border: ${props => props.hasError
-      ? '4px solid #FF3300'
+    border: ${props => props.inError
+      ? '3px solid #FF3300'
       : `2px solid ${props.color === 'brown' ? '#ceaa7b' : '#ffffff'}`
     };
 
@@ -50,6 +49,13 @@ export const Container = styled.div<IInputProps>`
       color: #d9d9d9;
     }
   `}
+
+  span {
+    display: block;
+    margin-top: 2px;
+    text-align: right;
+    color: #FF3300;
+  }
 
   @media (max-width: 768px) {
     width: 100%;

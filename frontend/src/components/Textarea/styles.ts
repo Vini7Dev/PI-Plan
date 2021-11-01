@@ -1,11 +1,14 @@
 import styled from 'styled-components';
 
-export const Container = styled.div`
+interface IContainerProps {
+  inError: boolean;
+}
+
+export const Container = styled.div<IContainerProps>`
   position: relative;
   width: 100%;
   height: 100px;
-
-  margin: 20px 0;
+  margin: 20px 0 30px;
 
   label {
     position: absolute;
@@ -13,7 +16,7 @@ export const Container = styled.div`
     left: 12px;
 
     font-size: 20px;
-    color: #ceaa7b;
+    color: ${props => props.inError ? '#FF3300' : '#ceaa7b'};
     font-weight: bold;
 
     background-color: white;
@@ -26,10 +29,21 @@ export const Container = styled.div`
     width: 100%;
     padding: 15px 10px;
 
-    border: 2px solid #ceaa7b;
+    border: ${props => props.inError
+      ? '3px solid #FF3300'
+      : '2px solid #ceaa7b'
+    };
+
     border-radius: 15px;
 
     font-size: 18px;
+  }
+
+  span {
+    display: block;
+    margin-top: 2px;
+    text-align: right;
+    color: #FF3300;
   }
 
   @media (max-width: 768px) {

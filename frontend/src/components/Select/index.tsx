@@ -11,7 +11,6 @@ interface IInputProps extends InputHTMLAttributes<HTMLSelectElement> {
   label: string;
   name: string;
   options: IOptionProps[];
-  hasError?: boolean;
 }
 
 // Componente de select
@@ -19,7 +18,6 @@ const Select: React.FC<IInputProps> = ({
   label,
   name,
   options,
-  hasError = false,
   ...rest
 }) => {
   // Definindo uma referência ao input para a biblioteca unform
@@ -36,7 +34,7 @@ const Select: React.FC<IInputProps> = ({
   }, [registerField, fieldName]);
 
   return (
-    <Container hasError={hasError}>
+    <Container inError={!!error}>
       <label htmlFor={label}>{label}</label>
       <select id={label} ref={inputRef} defaultValue={defaultValue} {...rest}>
         {options.map(option => (
@@ -48,6 +46,7 @@ const Select: React.FC<IInputProps> = ({
           </option>
         ))}
       </select>
+      <span>{error}</span>
     </Container>
   );
 };
