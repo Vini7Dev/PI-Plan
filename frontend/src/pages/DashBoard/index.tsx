@@ -3,7 +3,10 @@ import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
-import { Container, AddTaskButton } from './styles';
+import api from '../../services/api';
+import {
+  Container, TasksList, AddTaskButton
+} from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
@@ -15,7 +18,7 @@ import ModalView from '../../components/ModalView';
 import ReminderItem from '../../components/ReminderItem';
 
 interface ITaskProps {
-  id: number;
+  id: string;
   done: boolean;
   title: string;
   description: string;
@@ -26,7 +29,7 @@ interface ITaskProps {
 const DashBoard: React.FC = () =>{
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [taskId, setTaskId] = useState(-1);
+  const [taskId, setTaskId] = useState('');
   const [done, setDone] = useState(false);
 
   // Configurando os break points do carrossel de lembretes
@@ -38,7 +41,7 @@ const DashBoard: React.FC = () =>{
   ];
 
   // Função para apresentar o modal com os dados de uma tarefa
-  const toggleShowPopup = useCallback((id?: number) => {
+  const toggleShowPopup = useCallback((id?: string) => {
     setShowPopup(!showPopup);
 
     if(id) {
@@ -55,14 +58,18 @@ const DashBoard: React.FC = () =>{
 
       request.send();
     } else {
-      setTaskId(-1);
+      setTaskId('');
       setDone(false);
     }
   }, [showPopup]);
 
   // Função para buscar as tarefas cadastradas
-  const handleLoadTasks = useCallback(() => {
-    //
+  const handleLoadTasks = useCallback(async () => {
+    const tasksLoaded = await api.get<ITaskProps[]>('/admin-todos');
+
+    console.log(tasksLoaded.data);
+
+    setTasks(tasksLoaded.data);
   }, []);
 
   // Função para cadastrar uma nova tarefa
@@ -71,7 +78,7 @@ const DashBoard: React.FC = () =>{
   },[]);
 
   // Função para apagar uma tarefa
-  const handleDeleteTask = useCallback((id: number) => {
+  const handleDeleteTask = useCallback((id: string) => {
     //
   }, []);
 
@@ -129,41 +136,37 @@ const DashBoard: React.FC = () =>{
               </AddTaskButton>
             </div>
           </div>
-          <div id="tasks-list">
+          <TasksList>
             {
-              tasks.length ?  tasks.map(task => {
-                const dateAndTime = task.task_date.split(/t+/i);
-                const date = dateAndTime[0].replaceAll('-', '/');
-                const time = dateAndTime[1].slice(0, 5);
-
-                const label = `${task.title} | ${date} - ${time}`;
-                return (
+              tasks.length ?  tasks.map(task => (
                   <div className="task-item" key={task.id}>
-                    <CheckBox
-                      id={`${task.id}`}
-                      name="show_popup"
-                      label={label}
-                      color="black"
-                      onClickLabel={() => toggleShowPopup(task.id)}
-                      checked={task.done}
-                      readOnly
-                    >
-                      <p>
-                        {task.description}
-                      </p>
-                    </CheckBox>
+                    <button className="item-data" onClick={() => toggleShowPopup(task.id)}>
+                      <input
+                        type="checkbox"
+                        name={task.id}
+                        checked={task.done}
+                        readOnly
+                      />
+                      <div>
+                        <label htmlFor={task.id}>
+                          {task.title}
+                        </label>
+                        <p className="task-description">
+                          {task.description}
+                        </p>
+                      </div>
+                    </button>
                     <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
                       <FiTrash2 />
                     </button>
                   </div>
-                );
-              }) : (
+                )) : (
                 <div id="empty-list">
                   <h4>Lista vazia...</h4>
                 </div>
               )
             }
-          </div>
+          </TasksList>
         </main>
       </div>
       {

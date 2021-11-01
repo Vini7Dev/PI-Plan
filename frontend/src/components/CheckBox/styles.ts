@@ -23,10 +23,6 @@ export const Container = styled.div<IContainerProps>`
     height: 20px;
   }
 
-  div p {
-    font-family: Arial, Helvetica, sans-serif;
-  }
-
   @media (max-width: 768px) {
     width: 100%;
   }

@@ -47,55 +47,6 @@ export const Container = styled.div`
           width: 70%;
         }
       }
-
-      #tasks-list{
-        width: 100%;
-
-        label{
-          color: #36373D;
-        }
-
-        #empty-list {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 25px;
-
-          h4 {
-            font-family: Arial, Helvetica, sans-serif;
-            font-size: 35px;
-            font-weight: 400;
-          }
-        }
-
-        .task-item {
-          display: flex;
-          align-items: center;
-          justify-content: left;
-          background-color: rgba(0, 0, 0, 0.05);
-          padding: 10px;
-          margin: 5px 0;
-          border-radius: 10px;
-
-          div {
-            margin: 0 !important;
-          }
-
-          .ic-remove {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-
-              margin-left: 10px;
-              padding: 3px;
-              border-radius: 100%;
-              border: 2px solid #CB4242;
-              background-color: #FF5555;
-              color: #FFFFFF;
-              font-size: 18px;
-            }
-        }
-      }
     }
   }
 
@@ -162,6 +113,84 @@ export const Container = styled.div`
           }
         }
       }
+    }
+  }
+`;
+
+export const TasksList = styled.div`
+  #empty-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+
+    h4 {
+      font-size: 35px;
+      font-weight: 400;
+    }
+  }
+
+  .task-item {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 10px;
+
+    .item-data {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      border: none;
+      background: none;
+      text-align: left;
+
+      div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        label {
+          font-size: 22px;
+          font-weight: bold;
+          color: #36373D;
+        }
+
+        p {
+          font-size: 16px;
+        }
+      }
+
+      input {
+        width: 25px;
+        height: 25px;
+        margin-right: 10px;
+      }
+    }
+
+    .ic-remove {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      margin-left: 10px;
+      padding: 5px;
+      border-radius: 100%;
+      border: 2px solid #CB4242;
+      background-color: #FF5555;
+      color: #FFFFFF;
+      font-size: 22px;
+      transition: background-color 200ms;
+
+      &:hover {
+        background-color: #CB4242;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 `;

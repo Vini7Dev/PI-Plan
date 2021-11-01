@@ -10,7 +10,7 @@ interface ICheckBoxProps extends InputHTMLAttributes<HTMLInputElement>{
 
 // Componente de input do tipo checkbox
 const ChechBox: React.FC<ICheckBoxProps> = ({
-  label, color = 'brown', onClickLabel, children, ...rest
+  label, color = 'brown', onClickLabel, ...rest
 }) => {
 
   return(
@@ -18,9 +18,6 @@ const ChechBox: React.FC<ICheckBoxProps> = ({
       {label && <label htmlFor={label} onClick={onClickLabel}>{label}</label>}
 
       <input id={label} type="checkbox" {...rest} />
-      <div>
-        { children }
-      </div>
     </Container>
   );
 };
