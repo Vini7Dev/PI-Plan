@@ -43,28 +43,41 @@ const CustomerData: React.FC = () =>{
   const [sendContactAlert, setSendContactAlert] = useState(false);
 
   // Caso exista o id do cliente na rota, buscar os seus dados no banco de dados
+  const loadUserData = useCallback(async () => {
+    const customerIdFromPath = location.pathname.split('/customer-data/')[1];
+
+    // Caso exista o id, buscando os dados do usuário
+    if(customerIdFromPath) {
+      // Buscando os dados
+      const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+
+      // Salvando os dados do usuário
+      setCustomerData(customerDataResponse);
+      setCustomerId(customerIdFromPath);
+      setSendContactAlert(customerDataResponse.send_contact_alert);
+    } else {
+      setCustomerData({} as ICustomerProps);
+    }
+  }, [location]);
+
   useEffect(() => {
-    const loadUserData = async () => {
-      const customerIdFromPath = location.pathname.split('/customer-data/')[1];
+    loadUserData();
+  }, [location, loadUserData]);
 
-      // Caso exista o id, buscando os dados do usuário
-      if(customerIdFromPath) {
-        // Buscando os dados
-        const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+  // Função para apagar um pedido do cliente
+  const handleDeleteOrder = useCallback(async (order_id: string) => {
+    // Verificando se o usuário realmente deseja apagar o pedido
+    const response = confirm('Você realmente deseja apagar o pedido?');
 
-        console.log(customerDataResponse);
-
-        // Salvando os dados do usuário
-        setCustomerData(customerDataResponse);
-        setCustomerId(customerIdFromPath);
-        setSendContactAlert(customerDataResponse.send_contact_alert);
-      } else {
-        setCustomerData({} as ICustomerProps);
-      }
+    if(!response) {
+      return;
     }
 
+    await api.delete(`/orders/${order_id}`);
+
+    // Recarregando a lista de pedidos
     loadUserData();
-  }, [location]);
+  }, [loadUserData]);
 
   // Função para criar um cliente ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
@@ -91,18 +104,16 @@ const CustomerData: React.FC = () =>{
       await shape.validate(customerDataToRequest, { abortEarly: false });
 
       if (customerId) {
-        // Enviando os dados ao backend
+        // Enviando os dados ao backend para atualizar o cliente
         await api.put(`/customers/${customerId}`, customerDataToRequest);
       } else {
-        // Enviando os dados ao backend
+        // Enviando os dados ao backend para criar um novo cliente
         await api.post('/customers', customerDataToRequest);
       }
 
       // Enviando o usuário para a tela de listagem
       history.push('/customers-list');
     } catch(error) {
-      console.log(error);
-
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
       if(error instanceof Yup.ValidationError){
         const errors = getValidationErrors(error);
@@ -231,13 +242,13 @@ const CustomerData: React.FC = () =>{
                             }()
                           }
                           </Link>
-                          <button className="ic-remove" onClick={() => console.log(1)}>
+                          <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
                             <FiTrash2 />
                           </button>
                         </td>
                       </tr>
                     ))
-                    : null
+                    : <tr><td colSpan={3}><p id="empty-users-list">Sem pedidos...</p></td></tr>
                   }
               </tbody>
             </Table>
