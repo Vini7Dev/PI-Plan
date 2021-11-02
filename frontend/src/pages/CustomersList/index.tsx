@@ -25,16 +25,22 @@ const CustomersList: React.FC = () => {
     const { data: customersList } = await api.get<IClientProps[]>('/customers');
 
     setCustomers(customersList);
-
-    alert('ADD APAGAR CLIENTE!!!!');
-    alert('ADD APAGAR CLIENTE!!!!');
-    alert('ADD APAGAR CLIENTE!!!!');
   }, []);
 
   // Função para apagar um cliente
-  const handleDeleteCustomer = useCallback((id: string) => {
-    //
-  }, []);
+  const handleDeleteCustomer = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar o cliente
+    const response = confirm('Você realmente deseja apagar o cliente?');
+
+    if(!response) {
+      return;
+    }
+
+    await api.delete(`/customers/${id}`);
+
+    // Recarregando a lista de usuários
+    handleLoadCustomers();
+  }, [handleLoadCustomers]);
 
   return (
     <Container onLoad={handleLoadCustomers}>

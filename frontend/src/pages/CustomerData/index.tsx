@@ -102,7 +102,7 @@ const CustomerData: React.FC = () =>{
         }
       }
     }
-  },[]);
+  },[customerId, sendContactAlert, history]);
 
   return(
     <Container>
