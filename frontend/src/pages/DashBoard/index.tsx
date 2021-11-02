@@ -99,8 +99,8 @@ const DashBoard: React.FC = () =>{
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
         done: Yup.boolean().required(),
-        title: Yup.string().max(45, 'Informe no máximo 45 letras!').required(),
-        description: Yup.string().max(100, 'Informe no máximo 100 letras!').required(),
+        title: Yup.string().max(45, 'Informe no máximo 45 letras!').required('O título é obrigatório!'),
+        description: Yup.string().max(100, 'Informe no máximo 100 letras!').required('A descrição é obrigatória!'),
       });
 
       // Criando o objeto da tarefa sem o id do administrador
@@ -111,7 +111,7 @@ const DashBoard: React.FC = () =>{
       };
 
       // Validando o formulário
-      await shape.validate(taskData);
+      await shape.validate(taskData, { abortEarly: false });
 
       // Verificando se o id da tarefa está presente, caso sim, atualizar os seus dados
       if(taskId) {

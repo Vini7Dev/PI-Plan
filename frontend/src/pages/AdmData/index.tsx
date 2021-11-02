@@ -1,6 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
 import api from '../../services/api';
 import { Container } from './styles';
@@ -10,6 +12,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import Header from '../../components/Header';
+import getValidationErrors from '../../utils/validationErrors';
 
 interface IAdminProps {
   id: string;
@@ -23,6 +26,7 @@ interface IAdminProps {
 const AdmData: React.FC = () =>{
   const location = useLocation();
   const history = useHistory();
+  const formRef = useRef<FormHandles>(null);
   const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState<IAdminProps>({} as IAdminProps);
   const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
@@ -51,36 +55,82 @@ const AdmData: React.FC = () =>{
 
   // Função para criar um administrador ou atualizar os seus dados
   const handleSubmitAdmData = useCallback(async (data) => {
-    // Verificando se a confirmação de senha é válida
-    if(data.new_password !== data.confirm_password) {
-      alert('A senha não foi confirmada corretamente!');
+    try {
+      // Verificando se está atualizando os dados ou criando um novo usuário
+      if(userId) {
+        // Verificando se vai atualizar a senha
+        if(data.new_password && data.new_password !== data.confirm_password) {
+          alert('A senha não foi confirmada corretamente!');
 
-      return;
+          return;
+        }
+
+        // Criando o modelo para validação do formulário
+        const shape = Yup.object().shape({
+          name: Yup.string().required('O nome é obrigatório!'),
+          username: Yup.string().required('O usuário é obrigatório!'),
+          new_password: Yup.string(),
+          current_password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha atual é obrigatória!'),
+        });
+
+        // Criando o objeto com os dados da tarefa à atualizar
+        const userDataUpdated = {
+          name: data.name,
+          username: data.username,
+          new_password: data.new_password || undefined,
+          current_password: data.current_password,
+        };
+
+        // Validando os dados
+        await shape.validate(userDataUpdated, { abortEarly: false });
+
+        // Enviando os dados ao backend
+        await api.put(`/admins/${userId}`, userDataUpdated);
+      } else {
+        // Verificando se vai atualizar a senha
+        if(data.password !== data.confirm_password) {
+          alert('A senha não foi confirmada corretamente!');
+
+          return;
+        }
+
+        // Criando o modelo para validação do formulário
+        const shape = Yup.object().shape({
+          name: Yup.string().required('O nome é obrigatório!'),
+          username: Yup.string().required('O usuário é obrigatório!'),
+          password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha é obrigatória!'),
+          permission_create_admin: Yup.boolean().required(),
+        });
+
+        // Criando o objeto com os dados da tarefa à atualizar
+        const userDataToCreate = {
+          name: data.name,
+          username: data.username,
+          password: data.password,
+          permission_create_admin: permissionCreateAdmin,
+        };
+
+        console.log(userDataToCreate);
+
+        // Validando os dados
+        await shape.validate(userDataToCreate, { abortEarly: false });
+
+        // Enviando os dados ao backend
+        await api.post('/admins', userDataToCreate);
+      }
+
+      // Enviando o usuário para a tela de listagem
+      history.push('/users-list')
+    } catch(error) {
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(formRef.current) {
+          formRef.current.setErrors(errors);
+        }
+      }
     }
-
-    // Verificando se está atualizando os dados ou criando um novo usuário
-    if(userId) {
-      const userDataUpdated = {
-        name: data.name,
-        username: data.username,
-        new_password: data.new_password || undefined,
-        current_password: data.current_password,
-      };
-
-      await api.put(`/admins/${userId}`, userDataUpdated);
-    } else {
-      const userDataToCreate = {
-        name: data.name,
-        username: data.username,
-        password: data.new_password,
-        permission_create_admin: permissionCreateAdmin,
-      };
-
-      await api.post('/admins', userDataToCreate);
-    }
-
-    // Enviando o usuário para a tela de listagem
-    history.push('/users-list')
   },[userId, permissionCreateAdmin, history]);
 
   return(
@@ -92,7 +142,7 @@ const AdmData: React.FC = () =>{
       <main id="form-area">
         <Header title="Cadastro de Administrador" />
 
-        <Form onSubmit={handleSubmitAdmData}>
+        <Form onSubmit={handleSubmitAdmData} ref={formRef}>
           <div id="user-type-buttons-area">
             <div className="user-type-button">
               <Button name="Administrador" color="brown" />
@@ -129,7 +179,7 @@ const AdmData: React.FC = () =>{
 
           <Input
           label={userId ? 'Nova Senha' : 'Senha'}
-          name="new_password"
+          name={userId ? 'new_password': 'password'}
           placeholder={userId ? 'Digíte a Nova Senha' : 'Digíte a Senha'}
           type="password"
           />
