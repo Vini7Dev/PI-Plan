@@ -68,7 +68,7 @@ const AdmData: React.FC = () =>{
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
           name: Yup.string().required('O nome é obrigatório!'),
-          username: Yup.string().required('O usuário é obrigatório!'),
+          username: Yup.string().max(30, 'Informe no máximo 30 letras!').required('O usuário é obrigatório!'),
           new_password: Yup.string(),
           current_password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha atual é obrigatória!'),
         });
@@ -87,7 +87,7 @@ const AdmData: React.FC = () =>{
         // Enviando os dados ao backend
         await api.put(`/admins/${userId}`, userDataUpdated);
       } else {
-        // Verificando se vai atualizar a senha
+        // Verificando se a confirmação de senha está correta
         if(data.password !== data.confirm_password) {
           alert('A senha não foi confirmada corretamente!');
 
@@ -97,20 +97,18 @@ const AdmData: React.FC = () =>{
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
           name: Yup.string().required('O nome é obrigatório!'),
-          username: Yup.string().required('O usuário é obrigatório!'),
+          username: Yup.string().max(30, 'Informe no máximo 30 letras!').required('O usuário é obrigatório!'),
           password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha é obrigatória!'),
           permission_create_admin: Yup.boolean().required(),
         });
 
-        // Criando o objeto com os dados da tarefa à atualizar
+        // Criando o objeto com os dados do usuário à atualizar
         const userDataToCreate = {
           name: data.name,
           username: data.username,
           password: data.password,
           permission_create_admin: permissionCreateAdmin,
         };
-
-        console.log(userDataToCreate);
 
         // Validando os dados
         await shape.validate(userDataToCreate, { abortEarly: false });
@@ -120,7 +118,7 @@ const AdmData: React.FC = () =>{
       }
 
       // Enviando o usuário para a tela de listagem
-      history.push('/users-list')
+      history.push('/users-list');
     } catch(error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
       if(error instanceof Yup.ValidationError){
