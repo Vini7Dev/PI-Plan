@@ -36,7 +36,24 @@ const CustomerData: React.FC = () =>{
 
   // Caso exista o id do cliente na rota, buscar os seus dados no banco de dados
   useEffect(() => {
-    const customerIdFromPath = location.pathname.split('/client-data/')[1];
+    const loadUserData = async () => {
+      const customerIdFromPath = location.pathname.split('/customer-data/')[1];
+
+      // Caso exista o id, buscando os dados do usuário
+      if(customerIdFromPath) {
+        // Buscando os dados
+        const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+
+        // Salvando os dados do usuário
+        setCustomerData(customerDataResponse);
+        setCustomerId(customerIdFromPath);
+        setSendContactAlert(customerDataResponse.send_contact_alert);
+      } else {
+        setCustomerData({} as ICustomerProps);
+      }
+    }
+
+    loadUserData();
   }, [location]);
 
   // Função para criar um cliente ou atualizar os seus dados
