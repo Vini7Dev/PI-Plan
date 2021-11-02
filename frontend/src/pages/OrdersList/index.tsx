@@ -46,12 +46,6 @@ const OrdersList: React.FC = () => {
           />
         </Header>
 
-        <div id="register-page-link">
-          <Link to="order-data">
-            Cadastrar
-          </Link>
-        </div>
-
         <div id="table-border">
           <Table>
             <thead>

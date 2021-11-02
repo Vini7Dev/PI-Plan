@@ -37,12 +37,6 @@ const InstallationsList: React.FC = () => {
           />
         </Header>
 
-        <div id="register-page-link">
-          <Link to="installation-data">
-            Cadastrar
-          </Link>
-        </div>
-
         <div id="table-border">
           <Table>
             <thead>

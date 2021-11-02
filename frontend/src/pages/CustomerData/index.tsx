@@ -186,6 +186,7 @@ const CustomerData: React.FC = () =>{
                 name="Adicionar"
                 color="green"
                 size="small"
+                onClick={() => history.push(`/order-data?customer_id=${customerId}`)}
               />
             </div>
 

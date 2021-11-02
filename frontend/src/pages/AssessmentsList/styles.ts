@@ -18,27 +18,7 @@ export const Container = styled.div`
     }
 
     #notes-calculator {
-      width: 100%;
-      height: 45px;
-      margin-bottom: 50px;
-
-      a {
-        display: block;
-        height: 100%;
-        width: 100%;
-
-        border: none;
-        border-radius: 30px;
-
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 43px;
-        text-align: center;
-        text-decoration: none;
-        font-size: 28px;
-
-        background-color: #91d2a1;
-        color: #ffffff;
-      }
+      margin-bottom: 20px;
     }
 
     #table-border {
