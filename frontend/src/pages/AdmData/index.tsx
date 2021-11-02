@@ -12,7 +12,7 @@ import Input from '../../components/Input';
 import Button from '../../components/Button';
 import CheckBox from '../../components/CheckBox';
 import Header from '../../components/Header';
-import getValidationErrors from '../../utils/validationErrors';
+import getValidationErrors from '../../utils/getValidationErrors';
 
 interface IAdminProps {
   id: string;
@@ -73,7 +73,7 @@ const AdmData: React.FC = () =>{
           current_password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha atual é obrigatória!'),
         });
 
-        // Criando o objeto com os dados da tarefa à atualizar
+        // Criando o objeto com os dados do administrador à atualizar
         const userDataUpdated = {
           name: data.name,
           username: data.username,

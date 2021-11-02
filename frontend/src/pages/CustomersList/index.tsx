@@ -25,6 +25,10 @@ const CustomersList: React.FC = () => {
     const { data: customersList } = await api.get<IClientProps[]>('/customers');
 
     setCustomers(customersList);
+
+    alert('ADD APAGAR CLIENTE!!!!');
+    alert('ADD APAGAR CLIENTE!!!!');
+    alert('ADD APAGAR CLIENTE!!!!');
   }, []);
 
   // Função para apagar um cliente

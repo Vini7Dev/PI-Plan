@@ -5,7 +5,7 @@ import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
 import api from '../../services/api';
-import getValidationErrors from '../../utils/validationErrors';
+import getValidationErrors from '../../utils/getValidationErrors';
 import { Container } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';

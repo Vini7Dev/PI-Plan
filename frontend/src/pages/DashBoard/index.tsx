@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import api from '../../services/api';
 import { useAuth } from '../../contexts/Authentication';
-import getValidationErrors from '../../utils/validationErrors';
+import getValidationErrors from '../../utils/getValidationErrors';
 import {
   Container, TasksList, AddTaskButton
 } from './styles';
