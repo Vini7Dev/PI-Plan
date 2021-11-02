@@ -2,6 +2,7 @@ import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 
+import api from '../../services/api';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -9,7 +10,7 @@ import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
 
 interface IClientProps {
-  id: number;
+  id: string;
   name: string;
   cellphone: string;
   document?: string;
@@ -17,20 +18,22 @@ interface IClientProps {
 
 // Página de listagem dos clientes
 const CustomersList: React.FC = () => {
-  const [clients, setClients] = useState<IClientProps[]>([]);
+  const [customers, setCustomers] = useState<IClientProps[]>([]);
 
   // Função para carregar os clientes cadastrados
-  const handleLoadClients = useCallback(() => {
-    //
+  const handleLoadCustomers = useCallback(async () => {
+    const { data: customersList } = await api.get<IClientProps[]>('/customers');
+
+    setCustomers(customersList);
   }, []);
 
   // Função para apagar um cliente
-  const handleDeleteClient = useCallback((id: number) => {
+  const handleDeleteCustomer = useCallback((id: string) => {
     //
   }, []);
 
   return (
-    <Container onLoad={handleLoadClients}>
+    <Container onLoad={handleLoadCustomers}>
       <div id="navigation-area">
         <NavigationBar optionSelected={2} />
       </div>
@@ -63,51 +66,34 @@ const CustomersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-                  <tr key={1}>
-                    <td className="text-left td-id td-x2">
-                      <Link to={`/client-data/${1}`}>
-                        Fulano de Tal
-                      </Link>
-                    </td>
+              {
+                customers.length > 0
+                  ? customers.map(customer => (
+                    <tr key={customer.id}>
+                      <td className="text-left td-id td-x2">
+                        <Link to={`/customer-data/${customer.id}`}>
+                          { customer.name }
+                        </Link>
+                      </td>
 
-                    <td className="td-x1 text-center">
-                      <Link to={`/client-data/${1}`}>
-                        123.456.789-00
-                      </Link>
-                    </td>
+                      <td className="td-x1 text-center">
+                        <Link to={`/customer-data/${customer.id}`}>
+                          { customer.document || 'Vazio...' }
+                        </Link>
+                      </td>
 
-                    <td className="text-right td-x1">
-                      <Link to={`/client-data/${1}`}>
-                        (16) 91234-5678
-                      </Link>
-                      <button className="ic-remove" onClick={() => handleDeleteClient(1)}>
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
-
-                  <tr key={2}>
-                    <td className="text-left td-id td-x2">
-                      <Link to={`/client-data/${2}`}>
-                        Ciclano de Lat
-                      </Link>
-                    </td>
-
-                    <td className="td-x1 text-center">
-                      <Link to={`/client-data/${2}`}>
-                        987.654.321-00
-                      </Link>
-                    </td>
-
-                    <td className="text-right td-x1">
-                      <Link to={`/client-data/${2}`}>
-                        (16) 99999-9999
-                      </Link>
-                      <button className="ic-remove" onClick={() => handleDeleteClient(2)}>
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
+                      <td className="text-right td-x1">
+                        <Link to={`/customer-data/${customer.id}`}>
+                          { customer.cellphone }
+                        </Link>
+                        <button className="ic-remove" onClick={() => handleDeleteCustomer(customer.id)}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                  : null
+              }
             </tbody>
           </Table>
         </div>

@@ -80,8 +80,6 @@ const AssemblerData: React.FC = () =>{
           current_password: data.current_password,
         };
 
-        console.log(userDataToUpdate);
-
         // Validando os dados
         await shape.validate(userDataToUpdate, { abortEarly: false });
 
