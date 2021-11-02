@@ -23,6 +23,14 @@ interface ICustomerProps{
   phone: string;
   document?: string;
   next_contact_date: string;
+  orders: ICustomerOrderProps[];
+}
+
+interface ICustomerOrderProps {
+  id: string;
+  title: string;
+  current_status: number;
+  current_proccess: number;
 }
 
 // Página para criar um cliente ou apresentar os seus dados
@@ -43,6 +51,8 @@ const CustomerData: React.FC = () =>{
       if(customerIdFromPath) {
         // Buscando os dados
         const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+
+        console.log(customerDataResponse);
 
         // Salvando os dados do usuário
         setCustomerData(customerDataResponse);
@@ -177,43 +187,58 @@ const CustomerData: React.FC = () =>{
                 </tr>
               </thead>
               <tbody>
-                    <tr key={1}>
-                      <td className="text-center td-id td-x1">
-                        <Link to={`/order-data/${1}`}>
-                          <span
-                            className="ic ic-inprogress"
-                          >IC</span>
-                        </Link>
-                      </td>
-                      <td className="text-left td-x3">
-                        <Link to={`/order-data/${1}`}>
-                          Armário de Cozinha
-                        </Link>
+                {
+                  customerData.orders && customerData.orders.length > 0
+                    ? customerData.orders.map(order => (
+                      <tr key={order.id}>
+                        <td className="text-center td-id td-x1">
+                          <Link to={`/order-data/${order.id}`}>
+                            <span
+                              className={`ic ${
+                                (function() {
+                                  switch(order.current_status) {
+                                    case 0: return 'ic-inprogress';
+                                    case 1: return 'ic-completed';
+                                    case 2: return 'ic-canceled';
+                                    default: return 'ic-canceled';
+                                  }
+                                })()
+                              }`}
+                            >IC</span>
+                          </Link>
                         </td>
-                      <td className="text-center td-x2">
-                      <Link to={`/order-data/${1}`}>
-                        {
-                          function () {
-                            switch(1 - 0) {
-                              case(1):
-                                return 'Iniciando';
-                              case(2):
-                                return 'Pedido na Fábrica'
-                              case(3):
-                                return 'Instalando'
-                              case(4):
-                                return 'Reunião com os Montadores'
-                              default:
-                                return 'Não Encontrado';
-                            }
-                          }()
-                        }
-                        </Link>
-                        <button className="ic-remove" onClick={() => console.log(1)}>
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
+                        <td className="text-left td-x3">
+                          <Link to={`/order-data/${order.id}`}>
+                            { order.title }
+                          </Link>
+                          </td>
+                        <td className="text-center td-x2">
+                        <Link to={`/order-data/${order.id}`}>
+                          {
+                            function () {
+                              switch(order.current_proccess) {
+                                case(1):
+                                  return 'Iniciando';
+                                case(2):
+                                  return 'Pedido na Fábrica'
+                                case(3):
+                                  return 'Instalando'
+                                case(4):
+                                  return 'Reunião com os Montadores'
+                                default:
+                                  return 'Não Encontrado';
+                              }
+                            }()
+                          }
+                          </Link>
+                          <button className="ic-remove" onClick={() => console.log(1)}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                    : null
+                  }
               </tbody>
             </Table>
           </div>

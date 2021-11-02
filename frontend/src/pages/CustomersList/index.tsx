@@ -102,7 +102,7 @@ const CustomersList: React.FC = () => {
                       </td>
                     </tr>
                   ))
-                  : null
+                  : <tr><td colSpan={3}><p id="empty-users-list">Sem clientes...</p></td></tr>
               }
             </tbody>
           </Table>
