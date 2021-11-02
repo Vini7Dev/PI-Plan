@@ -1,10 +1,13 @@
-import React, { useState , useCallback } from 'react';
+import React, { useState , useCallback, useRef } from 'react';
 import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
 import api from '../../services/api';
 import { useAuth } from '../../contexts/Authentication';
+import getValidationErrors from '../../utils/validationErrors';
 import {
   Container, TasksList, AddTaskButton
 } from './styles';
@@ -42,9 +45,10 @@ interface ITaskProps {
 // Página inicial do site
 const DashBoard: React.FC = () =>{
   const { user } = useAuth();
+  const formRef = useRef<FormHandles>(null);
+  const [showPopup, setShowPopup] = useState(false);
   const [reminders, setReminders] = useState<IReminderProps[]>([]);
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
-  const [showPopup, setShowPopup] = useState(false);
   const [taskId, setTaskId] = useState('');
   const [taskDone, settaskDone] = useState(false);
   const [taskTitle, setTaskTitle] = useState('');
@@ -91,8 +95,14 @@ const DashBoard: React.FC = () =>{
 
   // Função para cadastrar uma nova tarefa
   const handleSubmitTaskData = useCallback(async (data) => {
-    // Verificando se o id da tarefa está presente, caso sim, atualizar os seus dados
-    if(taskId) {
+    try {
+      // Criando o modelo para validação do formulário
+      const shape = Yup.object().shape({
+        done: Yup.boolean().required(),
+        title: Yup.string().max(45, 'Informe no máximo 45 letras!').required(),
+        description: Yup.string().max(100, 'Informe no máximo 100 letras!').required(),
+      });
+
       // Criando o objeto da tarefa sem o id do administrador
       const taskData = {
         done: taskDone,
@@ -100,26 +110,36 @@ const DashBoard: React.FC = () =>{
         description: data.description,
       };
 
-      // Atualizando os dados da tarefa
-      await api.put(`/todos/${taskId}`, taskData);
-    } else {
-      // Criando o objeto da tarefa com o id do administrador
-      const taskData = {
-        admin_id: user.id,
-        done: taskDone,
-        title: data.title,
-        description: data.description,
-      };
+      // Validando o formulário
+      await shape.validate(taskData);
 
-      // Cadastrando uma nova tarefa
-      await api.post('/todos', taskData);
+      // Verificando se o id da tarefa está presente, caso sim, atualizar os seus dados
+      if(taskId) {
+          // Atualizando os dados da tarefa
+          await api.put(`/todos/${taskId}`, taskData);
+      } else {
+        // Adicionando o atributo admin_id nos dados da tarefa
+        Object.assign(taskData, { admin_id: user.id });
+
+        // Cadastrando a nova tarefa
+        await api.post('/todos', taskData);
+      }
+
+      // Recarregando a lista de tarefas
+      handleLoadTasks();
+
+      // Fechando o popup
+      toggleShowPopup();
+    } catch(error) {
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(formRef.current) {
+          formRef.current.setErrors(errors);
+        }
+      }
     }
-
-    // Recarregando a lista de tarefas
-    handleLoadTasks();
-
-    // Fechando o popup
-    toggleShowPopup();
   },[user, taskId, taskDone, handleLoadTasks, toggleShowPopup]);
 
   // Função para apagar uma tarefa
@@ -257,7 +277,10 @@ const DashBoard: React.FC = () =>{
             isOpen={showPopup}
             title="Adicionar Tarefa"
           >
-            <Form onSubmit={handleSubmitTaskData}>
+            <Form
+              ref={formRef}
+              onSubmit={handleSubmitTaskData}
+            >
               <CheckBox
                 label="Finalizado"
                 name="done"
