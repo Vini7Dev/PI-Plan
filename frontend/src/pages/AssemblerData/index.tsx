@@ -31,9 +31,23 @@ const AssemblerData: React.FC = () =>{
 
   // Caso exista o id do montador na rota, buscar os seus dados no banco de dados
   useEffect(() => {
-    const userIdFromLocation = location.pathname.split('/assembler-data/')[1];
+    const loadUserData = async () => {
+      const userIdFromPath = location.pathname.split('/assembler-data/')[1];
 
-    setUserId(userIdFromLocation);
+      // Caso exista o id, buscando os dados do usuário
+      if(userIdFromPath) {
+        // Buscando os dados
+        const { data: userDataResponse } = await api.get<IAssemblerProps>(`/assemblers/${userIdFromPath}`);
+
+        // Salvando os dados do usuário
+        setUserData(userDataResponse);
+        setUserId(userIdFromPath);
+      } else {
+        setUserData({} as IAssemblerProps);
+      }
+    }
+
+    loadUserData();
   }, [location]);
 
   // Função para criar um montador ou atualizar os seus dados
@@ -41,7 +55,38 @@ const AssemblerData: React.FC = () =>{
     try {
       // Verificando se está atualizando os dados ou criando um novo usuário
       if(userId) {
-        //
+        // Verificando se vai atualizar a senha
+        if(data.new_password && data.new_password !== data.confirm_password) {
+          alert('A senha não foi confirmada corretamente!');
+
+          return;
+        }
+
+        // Criando o modelo para validação do formulário
+        const shape = Yup.object().shape({
+          name: Yup.string().required('O nome é obrigatório!'),
+          cellphone: Yup.string().max(15, 'Informe no máximo os 15 números!').required('O telefone é obrigatório!'),
+          username: Yup.string().max(30, 'Informe no máximo 30 letras!').required('O usuário é obrigatório!'),
+          new_password: Yup.string(),
+          current_password: Yup.string().min(6, 'Informe no mínimo 6 letras!').required('A senha atual é obrigatória!'),
+        });
+
+        // Criando o objeto com os dados do usuário à atualizar
+        const userDataToUpdate = {
+          name: data.name,
+          cellphone: data.cellphone,
+          username: data.username,
+          new_password: data.new_password || undefined,
+          current_password: data.current_password,
+        };
+
+        console.log(userDataToUpdate);
+
+        // Validando os dados
+        await shape.validate(userDataToUpdate, { abortEarly: false });
+
+        // Enviando os dados ao backend
+        await api.put(`/assemblers/${userId}`, userDataToUpdate);
       } else {
         // Verificando se a confirmação de senha está correta
         if(data.password !== data.confirm_password) {
