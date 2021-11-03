@@ -42,6 +42,16 @@ export const Container = styled.div`
           margin-bottom: -20px;
         }
       }
+
+      #change-progress-buttons {
+        display: flex;
+        flex-direction: row;
+        margin: -20px 0 30px;
+
+        div {
+          flex: 0.5;
+        }
+      }
     }
   }
 
