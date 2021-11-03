@@ -29,9 +29,20 @@ const OrdersList: React.FC = () => {
   }, []);
 
   // Apagando um pedido
-  const handleDeleteOrder = useCallback((id: string) => {
-    //
-  }, []);
+  const handleDeleteOrder = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar o pedido
+    const response = confirm('Você realmente deseja apagar o pedido?');
+
+    if(!response) {
+      return;
+    }
+
+    // Enviando a requisição para apagar o pedido
+    await api.delete(`/orders/${id}`);
+
+    // Recarregando a lista de pedidos
+    handleLoadOrders();
+  }, [handleLoadOrders]);
 
   return (
     <Container onLoad={handleLoadOrders}>
