@@ -1,6 +1,8 @@
 import React, { useState , useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi'
+
+import api from '../../services/api';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -8,9 +10,10 @@ import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
 
 interface IOrderProps {
-  id: number;
-  actual_status: number;
-  actual_process: number;
+  id: string;
+  customer_id: string;
+  current_status: number;
+  current_proccess: number;
   title: string;
 }
 
@@ -19,12 +22,14 @@ const OrdersList: React.FC = () => {
   const [orders, setOrders] = useState<IOrderProps[]>([]);
 
   // Buscando os pedidos cadastrados
-  const handleLoadOrders = useCallback(() => {
-    //
+  const handleLoadOrders = useCallback(async () => {
+    const { data: ordersList } = await api.get<IOrderProps[]>('/orders');
+
+    setOrders(ordersList);
   }, []);
 
   // Apagando um pedido
-  const handleDeleteOrder = useCallback((id: number) => {
+  const handleDeleteOrder = useCallback((id: string) => {
     //
   }, []);
 
@@ -56,43 +61,58 @@ const OrdersList: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-                  <tr key={1}>
-                    <td className="text-center td-id td-x1">
-                      <Link to={`/order-data/${1}`}>
-                        <span
-                          className="ic ic-inprogress"
-                        >IC</span>
-                      </Link>
-                    </td>
-                    <td className="text-left td-x3">
-                      <Link to={`/order-data/${1}`}>
-                        Armário de Cozinha
-                      </Link>
+              {
+                orders.length > 0
+                  ? orders.map(order => (
+                    <tr key={order.id}>
+                      <td className="text-center td-id td-x1">
+                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                          <span
+                            className={`ic ${
+                              (function() {
+                                switch(order.current_status) {
+                                  case 0: return 'ic-inprogress';
+                                  case 1: return 'ic-completed';
+                                  case 2: return 'ic-canceled';
+                                  default: return 'ic-canceled';
+                                }
+                              })()
+                            }`}
+                          >IC</span>
+                        </Link>
                       </td>
-                    <td className="text-center td-x2">
-                    <Link to={`/order-data/${1}`}>
-                      {
-                        function () {
-                          switch(1 - 0) {
-                            case(1):
-                              return 'Iniciando';
-                            case(2):
-                              return 'Pedido na Fábrica'
-                            case(3):
-                              return 'Instalando'
-                            case(4):
-                              return 'Reunião com os Montadores'
-                            default:
-                              return 'Não Encontrado';
-                          }
-                        }()
-                      }
-                      </Link>
-                      <button className="ic-remove" onClick={() => handleDeleteOrder(1)}>
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
+                      <td className="text-left td-x3">
+                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                          {order.title}
+                        </Link>
+                        </td>
+                      <td className="text-center td-x2">
+                      <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                        {
+                          function () {
+                            switch(order.current_proccess) {
+                              case(1):
+                                return 'Iniciando';
+                              case(2):
+                                return 'Pedido na Fábrica'
+                              case(3):
+                                return 'Instalando'
+                              case(4):
+                                return 'Reunião com os Montadores'
+                              default:
+                                return 'Não Encontrado';
+                            }
+                          }()
+                        }
+                        </Link>
+                        <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                  : <tr><td colSpan={3}><p id="empty-users-list">Sem pedidos...</p></td></tr>
+              }
             </tbody>
           </Table>
         </div>
