@@ -1,13 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
+import { FiTrash2 } from 'react-icons/fi';
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
-import { Container } from './styles';
+import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
@@ -28,6 +29,13 @@ interface IOrderProps {
     uf: string;
     country: string;
   },
+  installation: {
+    id: string;
+    current_status: number;
+    start_date: string;
+    end_date?: string;
+    completion_forecast?: string;
+  }
   id?: string;
   customer_id: string;
   current_status: number;
@@ -189,215 +197,289 @@ const OrderData: React.FC = () => {
     }
   }, [currentProccess]);
 
+  // Função para redirecionar para a tela de cadastro da instalação
+  const handleGoToRegisterInstallation = useCallback(() => {
+    history.push(`/installation-data?order_id=${orderId}`);
+  }, [orderId, history]);
+
   return (
     <Container>
       <div id="navigation-area">
         <NavigationBar optionSelected={3} />
       </div>
 
-      <main id="form-area">
-        <Header title="Cadastro de Pedido" />
+      <div id="content-area">
+        <main id="form-area">
+          <Header title="Cadastro de Pedido" />
 
-        <Form onSubmit={handleSubmitForm} ref={formRef}>
-          <StatusButton
-            buttonText="Cancelar Pedido"
-            buttonColor="red"
-            status="Em Andamento"
-          />
-
-          <Select
-            label="Processo Atual"
-            name="current_proccess"
-            options={[
-              { value: 0, description: 'Iniciando' },
-              { value: 1, description: 'Visita Inicial' },
-              { value: 2, description: 'Modelagem do Móvel' },
-              { value: 3, description: 'Reunião com o Cliente' },
-              { value: 4, description: 'Pedido na Fábrica' },
-              { value: 5, description: 'Instalando' },
-              { value: 6, description: 'Reunião com os Montadores' },
-            ]}
-            value={currentProccess}
-            onChange={(e) => setCurrentProccess(Number(e.target.value))}
-          />
-
-          <div id="change-progress-buttons">
-            <Button
-              name="Voltar"
-              size="small"
-              onClick={handleToGoBackOnCurrentProcess}
+          <Form onSubmit={handleSubmitForm} ref={formRef}>
+            <StatusButton
+              buttonText="Cancelar Pedido"
+              buttonColor="red"
+              status="Em Andamento"
             />
-            <div id='change-progress-buttons-divisor' />
-            <Button
-              name="Avançar"
-              color="brown"
-              size="small"
-              onClick={handleToGoForewardOnCurrentProcess}
+
+            <Select
+              label="Processo Atual"
+              name="current_proccess"
+              options={[
+                { value: 0, description: 'Iniciando' },
+                { value: 1, description: 'Visita Inicial' },
+                { value: 2, description: 'Modelagem do Móvel' },
+                { value: 3, description: 'Reunião com o Cliente' },
+                { value: 4, description: 'Pedido na Fábrica' },
+                { value: 5, description: 'Instalando' },
+                { value: 6, description: 'Reunião com os Montadores' },
+              ]}
+              value={currentProccess}
+              onChange={(e) => setCurrentProccess(Number(e.target.value))}
             />
+
+            <div id="change-progress-buttons">
+              <Button
+                name="Voltar"
+                size="small"
+                onClick={handleToGoBackOnCurrentProcess}
+              />
+              <div id='change-progress-buttons-divisor' />
+              <Button
+                name="Avançar"
+                color="brown"
+                size="small"
+                onClick={handleToGoForewardOnCurrentProcess}
+              />
+            </div>
+
+            <Input
+              label="Título"
+              name="title"
+              placeholder="Informe o título do pedido"
+              defaultValue={orderData.title}
+            />
+
+            <Textarea
+              label="Descrição"
+              name="description"
+              placeholder="Informe a descrição do pedido"
+              defaultValue={orderData.description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+
+            <Input
+              label="Data de Início"
+              name="start_date"
+              placeholder="Informe a data de início"
+              type="date"
+              defaultValue={orderData.start_date}
+            />
+
+            <Input
+              label="Data de Finalização"
+              name="end_date"
+              placeholder="Informe a data de finalização"
+              type="date"
+              defaultValue={orderData.end_date}
+            />
+
+            <Input
+              label="Data de Entrega do Móvel"
+              name="furniture_delivery_forecast"
+              placeholder="Informe a data de entrega do móvel"
+              type="date"
+              defaultValue={orderData.furniture_delivery_forecast}
+            />
+
+            <h2>Endereço</h2>
+            <Input
+              label="CEP"
+              name="address.cep"
+              placeholder="Informe o CEP"
+              defaultValue={orderData.address.cep}
+            />
+
+            <div className="space-division">
+              <div className="x2">
+                <Input
+                  label="Rua"
+                  name="address.street"
+                  placeholder="Informe a rua"
+                  defaultValue={orderData.address.street}
+                />
+              </div>
+              <div className="x-divisor" />
+              <div className="x1">
+                <Input
+                  label="Número"
+                  name="address.number"
+                  placeholder="Informe o número"
+                  defaultValue={orderData.address.number}
+                />
+              </div>
+            </div>
+
+            <Input
+              label="Complemento"
+              name="address.complement"
+              placeholder="Informe o complemento"
+              defaultValue={orderData.address.complement}
+            />
+
+            <Input
+              label="Bairro"
+              name="address.district"
+              placeholder="Informe o bairro"
+              defaultValue={orderData.address.district}
+            />
+
+            <div className="space-division">
+              <div className="x1">
+                <Select
+                  label="UF"
+                  name="address.uf"
+                  options={[
+                    { description: 'Integrar com os Correios' },
+                    { description: 'AA' },
+                    { description: 'BB' },
+                    { description: 'CC' },
+                    { description: 'DD' },
+                  ]}
+                  value={selectedUF}
+                  onChange={(e) => setSelectedUF(e.target.value)}
+                />
+              </div>
+              <div className="x-divisor" />
+              <div className="x2">
+                <Select
+                  label="Cidade"
+                  name="address.city"
+                  options={[
+                    { description: 'Integrar com os Correios' },
+                    { description: 'Cidade 1' },
+                    { description: 'Cidade 2' },
+                    { description: 'Cidade 3' },
+                    { description: 'Cidade 4' },
+                  ]}
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <Select
+              label="País"
+              name="address.country"
+              options={[
+                { description: 'Integrar com os Correios' },
+                { description: 'País 1' },
+                { description: 'País 2' },
+                { description: 'País 3' },
+                { description: 'País 4' },
+              ]}
+              value={selectedCountry}
+              onChange={(e) => setSelectedCountry(e.target.value)}
+            />
+
+            <Textarea
+              label="Cômodos / Ambientes"
+              name="installation_environments"
+              placeholder="Descreva os cômodos e ambientes pra instalação"
+              defaultValue={orderData.installation_environments}
+              onChange={(e) => setInstallationEnvironments(e.target.value)}
+            />
+
+            <h3>Valores e Pagamento</h3>
+            <Input
+              label="Forma de pagamento"
+              name="payment_method"
+              placeholder="Informe a forma de pagamento"
+              defaultValue={orderData.payment_method}
+            />
+
+            <Input
+              label="Valor Bruto"
+              name="gross_value"
+              placeholder="Informe o valor bruto"
+              defaultValue={orderData.gross_value}
+            />
+
+            <Input
+              label="Valor em Despesas"
+              name="expenses_value"
+              placeholder="Informe o valor de despesas"
+              defaultValue={orderData.expenses_value}
+            />
+
+            <Button name="Salvar" type="submit" />
+          </Form>
+        </main>
+
+        <section>
+          <div id="table-border">
+            <div id="table-title-area">
+              <h3>Instalação</h3>
+            </div>
+
+            <Table>
+              <thead>
+                <tr>
+                  <th className="start-border-r td-x1">Status</th>
+                  <th className="text-center td-x2">Início</th>
+                  <th className="end-border-r td-x2">Finalização</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  orderData.installation
+                    ? (
+                      <tr>
+                        <td className="text-center td-id td-x1">
+                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
+                            <span
+                              className={`ic ${
+                                (function() {
+                                  switch(1 - 0) {
+                                    case 0: return 'ic-inprogress';
+                                    case 1: return 'ic-completed';
+                                    case 2: return 'ic-canceled';
+                                    default: return 'ic-canceled';
+                                  }
+                                })()
+                              }`}
+                            >IC</span>
+                          </Link>
+                        </td>
+                        <td className="text-center td-x3">
+                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
+                            20/05/2021
+                          </Link>
+                          </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
+                              22/05/2021
+                          </Link>
+                          <button className="ic-remove" onClick={() => console.log('1')}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                    : <tr><td colSpan={3} id="empty-installation-data">
+                        <Button
+                          name="Cadastrar Instalação"
+                          size="small"
+                          onClick={
+                            orderId
+                            ? handleGoToRegisterInstallation
+                            : () => alert('Pedido não cadastrado!')
+                          }
+                        />
+                      </td></tr>
+                }
+              </tbody>
+            </Table>
           </div>
-
-          <Input
-            label="Título"
-            name="title"
-            placeholder="Informe o título do pedido"
-            defaultValue={orderData.title}
-          />
-
-          <Textarea
-            label="Descrição"
-            name="description"
-            placeholder="Informe a descrição do pedido"
-            defaultValue={orderData.description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-
-          <Input
-            label="Data de Início"
-            name="start_date"
-            placeholder="Informe a data de início"
-            type="date"
-            defaultValue={orderData.start_date}
-          />
-
-          <Input
-            label="Data de Finalização"
-            name="end_date"
-            placeholder="Informe a data de finalização"
-            type="date"
-            defaultValue={orderData.end_date}
-          />
-
-          <Input
-            label="Data de Entrega do Móvel"
-            name="furniture_delivery_forecast"
-            placeholder="Informe a data de entrega do móvel"
-            type="date"
-            defaultValue={orderData.furniture_delivery_forecast}
-          />
-
-          <h2>Endereço</h2>
-          <Input
-            label="CEP"
-            name="address.cep"
-            placeholder="Informe o CEP"
-            defaultValue={orderData.address.cep}
-          />
-
-          <div className="space-division">
-            <div className="x2">
-              <Input
-                label="Rua"
-                name="address.street"
-                placeholder="Informe a rua"
-                defaultValue={orderData.address.street}
-              />
-            </div>
-            <div className="x-divisor" />
-            <div className="x1">
-              <Input
-                label="Número"
-                name="address.number"
-                placeholder="Informe o número"
-                defaultValue={orderData.address.number}
-              />
-            </div>
-          </div>
-
-          <Input
-            label="Complemento"
-            name="address.complement"
-            placeholder="Informe o complemento"
-            defaultValue={orderData.address.complement}
-          />
-
-          <Input
-            label="Bairro"
-            name="address.district"
-            placeholder="Informe o bairro"
-            defaultValue={orderData.address.district}
-          />
-
-          <div className="space-division">
-            <div className="x1">
-              <Select
-                label="UF"
-                name="address.uf"
-                options={[
-                  { description: 'Integrar com os Correios' },
-                  { description: 'AA' },
-                  { description: 'BB' },
-                  { description: 'CC' },
-                  { description: 'DD' },
-                ]}
-                value={selectedUF}
-                onChange={(e) => setSelectedUF(e.target.value)}
-              />
-            </div>
-            <div className="x-divisor" />
-            <div className="x2">
-              <Select
-                label="Cidade"
-                name="address.city"
-                options={[
-                  { description: 'Integrar com os Correios' },
-                  { description: 'Cidade 1' },
-                  { description: 'Cidade 2' },
-                  { description: 'Cidade 3' },
-                  { description: 'Cidade 4' },
-                ]}
-                value={selectedCity}
-                onChange={(e) => setSelectedCity(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <Select
-            label="País"
-            name="address.country"
-            options={[
-              { description: 'Integrar com os Correios' },
-              { description: 'País 1' },
-              { description: 'País 2' },
-              { description: 'País 3' },
-              { description: 'País 4' },
-            ]}
-            value={selectedCountry}
-            onChange={(e) => setSelectedCountry(e.target.value)}
-          />
-
-          <Textarea
-            label="Cômodos / Ambientes"
-            name="installation_environments"
-            placeholder="Descreva os cômodos e ambientes pra instalação"
-            defaultValue={orderData.installation_environments}
-            onChange={(e) => setInstallationEnvironments(e.target.value)}
-          />
-
-          <h3>Valores e Pagamento</h3>
-          <Input
-            label="Forma de pagamento"
-            name="payment_method"
-            placeholder="Informe a forma de pagamento"
-            defaultValue={orderData.payment_method}
-          />
-
-          <Input
-            label="Valor Bruto"
-            name="gross_value"
-            placeholder="Informe o valor bruto"
-            defaultValue={orderData.gross_value}
-          />
-
-          <Input
-            label="Valor em Despesas"
-            name="expenses_value"
-            placeholder="Informe o valor de despesas"
-            defaultValue={orderData.expenses_value}
-          />
-
-          <Button name="Salvar" type="submit" />
-        </Form>
-      </main>
+        </section>
+      </div>
     </Container>
   );
 };

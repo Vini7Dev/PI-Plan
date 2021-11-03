@@ -95,7 +95,6 @@ export const Container = styled.div`
 
       form{
         width: 100%;
-        max-width: 720px;
 
         .space-division{
           display: flex;
@@ -228,7 +227,7 @@ export const Table = styled.table`
     border-radius: 0 30px 30px 0;
   }
 
-  #empty-users-list {
+  #empty-orders-list {
     font-size: 25px;
     text-align: center;
   }

@@ -186,7 +186,11 @@ const CustomerData: React.FC = () =>{
                 name="Adicionar"
                 color="green"
                 size="small"
-                onClick={() => customerId && history.push(`/order-data?customer_id=${customerId}`)}
+                onClick={
+                  () => customerId
+                    ? history.push(`/order-data?customer_id=${customerId}`)
+                    : alert('Cliente não cadastrado!')
+                }
               />
             </div>
 
@@ -249,7 +253,7 @@ const CustomerData: React.FC = () =>{
                         </td>
                       </tr>
                     ))
-                    : <tr><td colSpan={3}><p id="empty-users-list">Sem pedidos...</p></td></tr>
+                    : <tr><td colSpan={3}><p id="empty-orders-list">Sem pedidos...</p></td></tr>
                   }
               </tbody>
             </Table>
