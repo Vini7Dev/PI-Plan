@@ -172,6 +172,23 @@ const OrderData: React.FC = () => {
     }
   }, [customerId, orderId, currentStatus, currentProccess, description, installationEnvironments, history]);
 
+  // Função para voltar um passo do processo do pedido
+  const handleToGoBackOnCurrentProcess = useCallback(() => {
+    // Verificando se não está no primeiro passo
+    if(currentProccess > 0) {
+      setCurrentProccess(currentProccess - 1);
+    }
+  }, [currentProccess]);
+
+  // Função para avançar um processo do pedido
+  const handleToGoForewardOnCurrentProcess = useCallback(() => {
+    // Verificando se não está no último passo
+    if(currentProccess < 6) {
+      alert('ATUALIZAR O NÚMERO DO ÚLTIMO PASSO');
+      setCurrentProccess(currentProccess + 1);
+    }
+  }, [currentProccess]);
+
   return (
     <Container>
       <div id="navigation-area">
@@ -192,13 +209,13 @@ const OrderData: React.FC = () => {
             label="Processo Atual"
             name="current_proccess"
             options={[
-              { value: 1, description: 'Iniciando' },
-              { value: 2, description: 'Visita Inicial' },
-              { value: 3, description: 'Modelagem do Móvel' },
-              { value: 4, description: 'Reunião com o Cliente' },
-              { value: 5, description: 'Pedido na Fábrica' },
-              { value: 6, description: 'Instalando' },
-              { value: 7, description: 'Reunião com os Montadores' },
+              { value: 0, description: 'Iniciando' },
+              { value: 1, description: 'Visita Inicial' },
+              { value: 2, description: 'Modelagem do Móvel' },
+              { value: 3, description: 'Reunião com o Cliente' },
+              { value: 4, description: 'Pedido na Fábrica' },
+              { value: 5, description: 'Instalando' },
+              { value: 6, description: 'Reunião com os Montadores' },
             ]}
             value={currentProccess}
             onChange={(e) => setCurrentProccess(Number(e.target.value))}
@@ -208,12 +225,14 @@ const OrderData: React.FC = () => {
             <Button
               name="Voltar"
               size="small"
+              onClick={handleToGoBackOnCurrentProcess}
             />
             <div id='change-progress-buttons-divisor' />
             <Button
               name="Avançar"
               color="brown"
               size="small"
+              onClick={handleToGoForewardOnCurrentProcess}
             />
           </div>
 
