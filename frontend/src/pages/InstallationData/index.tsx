@@ -43,115 +43,117 @@ const InstallationData: React.FC = () => {
         <NavigationBar optionSelected={4} />
       </div>
 
-      <main id="form-area">
-        <Header title="Cadastro de Instalação" />
+      <div id="content-area">
+        <main id="form-area">
+          <Header title="Cadastro de Instalação" />
 
-        <Form onSubmit={() => {
-          //
-        }}>
-          <StatusButton
-            buttonText="Finalizar Instalação"
-            buttonColor="green"
-            status="Em Andamento"
-          />
-
-          <Input
-            autoFocus
-            label="Data de Início"
-            name="start_date"
-            placeholder="Informe a data de início"
-            type="date"
-          />
-
-          <Input
-            label="Previsão da Finalização"
-            name="completion_forecast"
-            placeholder="Informe a data prevista para a finalização"
-            type="date"
-          />
-
-          <Input
-            label="Data de Finalização"
-            name="end_date"
-            placeholder="Informe a data de finalização"
-            type="date"
-          />
-
-          <Input
-            label="Valor da Instalação"
-            name="price"
-            placeholder="R$ 0,00"
-            type="date"
-          />
-
-          <h2>Montadores</h2>
-
-          <AddAssemblersArea>
-            <div>
-              <div className="space-division">
-                <div className="x2">
-                  <div className="assembler-info-div">
-                    <span>Montador</span>
-                    <p>Nome do Montador</p>
-
-                    <button className="remove-assembler-btn" type="button">
-                      <FiX size={25} />
-                    </button>
-                  </div>
-                </div>
-                <div className="x-divisor" />
-                <div className="x1">
-                  <div className="assembler-info-div">
-                  <span>Comissão</span>
-                  <p className="text-center">10%</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <Button
-              name="Adicionar Montador"
-              color="brown"
-              onClick={toggleShowPopup}
+          <Form onSubmit={() => {
+            //
+          }}>
+            <StatusButton
+              buttonText="Finalizar Instalação"
+              buttonColor="green"
+              status="Em Andamento"
             />
-          </AddAssemblersArea>
 
-          <AssessmentArea>
-            <h3>Avaliação</h3>
+            <Input
+              autoFocus
+              label="Data de Início"
+              name="start_date"
+              placeholder="Informe a data de início"
+              type="date"
+            />
 
-            <div id="assessment-content">
-              <div id="assessment-table">
-                <div className="assessment-row">
-                  <span className="tltr-border-radius">Houve atrazo?</span>
-                  <p className="tr-border-radius">Não</p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota de Limpeza e Finalização</span>
-                  <p>10</p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota de Acabamento</span>
-                  <p>10</p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota do Cliente</span>
-                  <p>10</p>
-                </div>
-                <div className="assessment-row">
-                  <span className="bltr-border-radius">Nota da Gerência</span>
-                  <p className="br-border-radius">10</p>
+            <Input
+              label="Previsão da Finalização"
+              name="completion_forecast"
+              placeholder="Informe a data prevista para a finalização"
+              type="date"
+            />
+
+            <Input
+              label="Data de Finalização"
+              name="end_date"
+              placeholder="Informe a data de finalização"
+              type="date"
+            />
+
+            <Input
+              label="Valor da Instalação"
+              name="price"
+              placeholder="R$ 0,00"
+              type="date"
+            />
+
+            <h2>Montadores</h2>
+
+            <AddAssemblersArea>
+              <div>
+                <div className="space-division">
+                  <div className="x2">
+                    <div className="assembler-info-div">
+                      <span>Montador</span>
+                      <p>Nome do Montador</p>
+
+                      <button className="remove-assembler-btn" type="button">
+                        <FiX size={25} />
+                      </button>
+                    </div>
+                  </div>
+                  <div className="x-divisor" />
+                  <div className="x1">
+                    <div className="assembler-info-div">
+                    <span>Comissão</span>
+                    <p className="text-center">10%</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div id="comments">
-                <span>Comentários</span>
-                <p>Alguns comentários sobre a instalação feito pela gerência...</p>
-              </div>
-            </div>
-          </AssessmentArea>
 
-          <Button name="Salvar" type="submit" />
-        </Form>
-      </main>
+              <Button
+                name="Adicionar Montador"
+                color="brown"
+                onClick={toggleShowPopup}
+              />
+            </AddAssemblersArea>
+
+            <AssessmentArea>
+              <h3>Avaliação</h3>
+
+              <div id="assessment-content">
+                <div id="assessment-table">
+                  <div className="assessment-row">
+                    <span className="tltr-border-radius">Houve atrazo?</span>
+                    <p className="tr-border-radius">Não</p>
+                  </div>
+                  <div className="assessment-row">
+                    <span>Nota de Limpeza e Finalização</span>
+                    <p>10</p>
+                  </div>
+                  <div className="assessment-row">
+                    <span>Nota de Acabamento</span>
+                    <p>10</p>
+                  </div>
+                  <div className="assessment-row">
+                    <span>Nota do Cliente</span>
+                    <p>10</p>
+                  </div>
+                  <div className="assessment-row">
+                    <span className="bltr-border-radius">Nota da Gerência</span>
+                    <p className="br-border-radius">10</p>
+                  </div>
+                </div>
+                <div id="comments">
+                  <span>Comentários</span>
+                  <p>Alguns comentários sobre a instalação feito pela gerência...</p>
+                </div>
+              </div>
+            </AssessmentArea>
+
+            <Button name="Salvar" type="submit" />
+          </Form>
+        </main>
+      </div>
       {
         showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
           <ModalContent>

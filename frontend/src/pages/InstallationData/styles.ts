@@ -16,29 +16,31 @@ export const Container = styled.div`
     flex: 0.5;
   }
 
-  #form-area {
+  #content-area {
     flex: 2;
     padding: 20px 8% 50px;
 
-    form {
-      width: 100%;
+    #form-area {
+      form {
+        width: 100%;
 
-      .space-division{
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
+        .space-division{
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-between;
 
-        .x1 {
-          flex: 0.2;
-        }
+          .x1 {
+            flex: 0.2;
+          }
 
-        .x2 {
-          flex: 0.8;
-        }
+          .x2 {
+            flex: 0.8;
+          }
 
-        .x-divisor {
-          width: 15px;
-          margin-bottom: -20px;
+          .x-divisor {
+            width: 15px;
+            margin-bottom: -20px;
+          }
         }
       }
     }
