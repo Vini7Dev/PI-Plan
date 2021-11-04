@@ -31,6 +31,8 @@ app.use(celebrateErrors());
 
 // Tratando os erros que ocorrerem na aplicação
 app.use((error: Error | AppError, request: Request, response: Response, next: NextFunction) => {
+  console.log(error);
+
   if (error instanceof AppError) {
     return response.status(error.code).json({ error: error.message });
   }
