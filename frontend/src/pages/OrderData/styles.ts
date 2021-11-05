@@ -178,11 +178,7 @@ export const Table = styled.table`
   }
 
   .td-x2 {
-    width: 15%;
-  }
-
-  .td-x3 {
-    width: 80%;
+    width: 47.25%;
   }
 
   .text-left {

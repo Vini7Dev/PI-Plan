@@ -52,6 +52,7 @@ export const Container = styled.div<IContainerProps>`
 
   strong {
     font-size: 25px;
+    min-height: 60px;
   }
 
   span {

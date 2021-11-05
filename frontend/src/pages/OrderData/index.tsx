@@ -424,7 +424,7 @@ const OrderData: React.FC = () => {
                 <tr>
                   <th className="start-border-r td-x1">Status</th>
                   <th className="text-center td-x2">Início</th>
-                  <th className="end-border-r td-x2">Finalização</th>
+                  <th className="end-border-r td-x2">Finalização (Previsão)</th>
                 </tr>
               </thead>
               <tbody>
@@ -448,14 +448,14 @@ const OrderData: React.FC = () => {
                             >IC</span>
                           </Link>
                         </td>
-                        <td className="text-center td-x3">
+                        <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
-                            20/05/2021
+                            {orderData.installation.start_date}
                           </Link>
                           </td>
                         <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
-                              22/05/2021
+                            {orderData.installation.end_date || orderData.installation.completion_forecast}
                           </Link>
                           <button className="ic-remove" onClick={() => console.log('1')}>
                             <FiTrash2 />

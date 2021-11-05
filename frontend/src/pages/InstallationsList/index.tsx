@@ -43,7 +43,7 @@ const InstallationsList: React.FC = () => {
               <tr>
                 <th className="start-border-r td-x1">Status</th>
                 <th className="text-left td-x3">Título</th>
-                <th className="end-border-r td-x2">Data de Finalização ou de Previsão</th>
+                <th className="end-border-r td-x2">Data de Finalização</th>
               </tr>
             </thead>
             <tbody>
