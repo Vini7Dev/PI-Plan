@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
+import { FiTrash2 } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
 
-import { FiTrash2 } from 'react-icons/fi';
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
@@ -450,12 +450,12 @@ const OrderData: React.FC = () => {
                         </td>
                         <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
-                            {orderData.installation.start_date}
+                            {parseDateStringToBrFormat(orderData.installation.start_date)}
                           </Link>
                           </td>
                         <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
-                            {orderData.installation.end_date || orderData.installation.completion_forecast}
+                            {parseDateStringToBrFormat(orderData.installation.end_date || orderData.installation.completion_forecast)}
                           </Link>
                           <button className="ic-remove" onClick={() => console.log('1')}>
                             <FiTrash2 />
