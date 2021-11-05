@@ -1,8 +1,11 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FiX } from 'react-icons/fi';
+import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import * as Yup from 'yup';
 
 import api from '../../services/api';
+import getValidationErrors from '../../utils/getValidationErrors';
 import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
@@ -49,6 +52,8 @@ interface IInstallationProps {
 
 // Página para criar uma instalação ou apresentar os seus dados
 const InstallationData: React.FC = () => {
+  const popupFormRef = useRef<FormHandles>(null);
+  const formRef = useRef<FormHandles>(null);
   const [showPopup, setShowPopup] = useState(false);
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
   const [assemblersInstallation, setAssemblersInstallation] = useState<IAssemblerInstallation[]>([]);
@@ -102,25 +107,48 @@ const InstallationData: React.FC = () => {
   }, [showPopup, handleLoadAssemblers]);
 
   // Função para adicionar um montador na instalação
-  const handleAddAssembler = useCallback((data) => {
-    // Separando o id e o nome do montador
-    const [assembler_id, name] = data.assembler.split(' ');
+  const handleAddAssembler = useCallback(async (data) => {
+    try {
+      // Separando o id e o nome do montador
+      const [assembler_id, name] = data.assembler.split(' ');
 
-    // Criando o objeto do montador + sua comissão
-    const assemblerInstallationObject: IAssemblerInstallation = {
-      assembler_id,
-      commission_percentage: data.commission_percentage,
-      assembler: {
-        id: assembler_id,
-        name,
+      // Criando o objeto de validação do formulário
+      const shape = Yup.object().shape({
+        assembler_id: Yup.string().uuid('Montador inválido!').required('O montador é obrigatório!'),
+        commission_percentage: Yup.number().min(0, 'Informe no mínimo 0!').required('A comissão é obrigatória!'),
+      });
+
+      // Validando o formulário
+      await shape.validate({
+        assembler_id,
+        commission_percentage: data.commission_percentage,
+      });
+
+      // Criando o objeto do montador + sua comissão
+      const assemblerInstallationObject: IAssemblerInstallation = {
+        assembler_id,
+        commission_percentage: data.commission_percentage,
+        assembler: {
+          id: assembler_id,
+          name,
+        }
+      }
+
+      // Adicionando o montador na lista
+      setAssemblersInstallation([...assemblersInstallation, assemblerInstallationObject]);
+
+      // Fechando o popup
+      toggleShowPopup();
+    } catch(error) {
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(popupFormRef.current) {
+          popupFormRef.current.setErrors(errors);
+        }
       }
     }
-
-    // Adicionando o montador na lista
-    setAssemblersInstallation([...assemblersInstallation, assemblerInstallationObject]);
-
-    // Fechando o popup
-    toggleShowPopup();
   }, [assemblersInstallation, toggleShowPopup]);
 
   // Função para remover um montador da instalação
@@ -148,7 +176,7 @@ const InstallationData: React.FC = () => {
         <main id="form-area">
           <Header title="Cadastro de Instalação" />
 
-          <Form onSubmit={() => {
+          <Form ref={formRef} onSubmit={() => {
             //
           }}>
             <StatusButton
@@ -273,11 +301,15 @@ const InstallationData: React.FC = () => {
                 <div id="lost-amount-and-comments">
                   <div>
                     <span>Valor em Prejuízo</span>
-                    <p>{installationData.assessment &&installationData.assessment.loss_amount}</p>
+                    <p className="text-right">
+                      {installationData.assessment &&installationData.assessment.loss_amount}
+                    </p>
                   </div>
                   <div>
                     <span>Comentários</span>
-                    <p>{installationData.assessment &&installationData.assessment.comment}</p>
+                    <p>
+                      {installationData.assessment &&installationData.assessment.comment}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -290,7 +322,7 @@ const InstallationData: React.FC = () => {
       {
         showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
           <ModalContent>
-            <Form onSubmit={handleAddAssembler}>
+            <Form onSubmit={handleAddAssembler} ref={popupFormRef}>
               <div className="space-division">
                 <div className="x2">
                   <Select
@@ -310,7 +342,8 @@ const InstallationData: React.FC = () => {
                   <Input
                     label="Comissão"
                     name="commission_percentage"
-                    placeholder="10%"
+                    placeholder="--%"
+                    style={{ textAlign: 'center' }}
                   />
                 </div>
               </div>

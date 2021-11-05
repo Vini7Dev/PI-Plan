@@ -194,13 +194,8 @@ export const AssessmentArea = styled.section`
 
     #lost-amount-and-comments {
       padding: 15px;
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
 
       div {
-        width: 45%;
-
         span {
           display: block;
           margin: 15px 0 12px 0;
@@ -214,24 +209,16 @@ export const AssessmentArea = styled.section`
         }
 
         p {
-          padding: 15px;
+          padding: 15px 25px;
           font-size: 18px;
           color: #60626C;
           background-color: #FFFFFF;
           border: 2px solid #CEAA7B;
           border-radius: 30px;
         }
-      }
-    }
-  }
 
-  @media (max-width: 768px) {
-    #assessment-content {
-      #lost-amount-and-comments {
-        flex-wrap: wrap;
-
-        div {
-          width: 100%;
+        .text-right {
+          text-align: right;
         }
       }
     }
