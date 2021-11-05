@@ -14,13 +14,17 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ModalView from '../../components/ModalView';
+import parseBrDateStringToDate from '../../utils/parseBrDateStringToDate';
+
+interface IAssembler {
+  id: string;
+  name: string;
+}
 
 interface IAssemblerInstallation {
   assembler_id: string;
   commission_percentage: number;
-  assembler: {
-    name: string;
-  }
+  assembler: IAssembler;
 }
 
 interface IAssessmentProps {
@@ -47,6 +51,8 @@ interface IInstallationProps {
 const InstallationData: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
+  const [assemblersInstallation, setAssemblersInstallation] = useState<IAssemblerInstallation[]>([]);
+  const [assemblersList, setAssemblersList] = useState<IAssembler[]>([]);
   const [installationId, setInstallationId] = useState('');
   const [orderId, setOrderId] = useState('');
 
@@ -59,13 +65,13 @@ const InstallationData: React.FC = () => {
       if(installationIdFromPath) {
         const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
 
-        console.log(installationDataResponse);
-
         setInstallationData(installationDataResponse as IInstallationProps);
+        setAssemblersInstallation(installationDataResponse.assemblers_installation);
         setInstallationId(installationIdFromPath);
         setOrderId(orderIdFromPath);
       } else {
         setInstallationData({} as IInstallationProps);
+        setAssemblersInstallation([]);
         setInstallationId('');
         setOrderId('');
       }
@@ -74,10 +80,63 @@ const InstallationData: React.FC = () => {
     loadInstallationData();
   }, []);
 
+  // Função para carregar os montadores cadastrados na aplicação
+  const handleLoadAssemblers = useCallback(async () => {
+    const { data: assemblersListResponse } = await api.get<IAssembler[]>('/assemblers');
+
+    const assemblersListWithoutAssemblersInUse = assemblersListResponse.filter(assembler => {
+      return assemblersInstallation.findIndex(asmb => asmb.assembler_id === assembler.id) === -1;
+    });
+
+    setAssemblersList(assemblersListWithoutAssemblersInUse);
+  }, [assemblersInstallation]);
+
   // Função para mostrar ou esconder o modal para adicionar montador
   const toggleShowPopup = useCallback(() => {
+    // Caso tenha aberto o popup, carregar os montadores cadastrados
+    if(!showPopup) {
+      handleLoadAssemblers();
+    }
+
     setShowPopup(!showPopup);
-  }, [showPopup]);
+  }, [showPopup, handleLoadAssemblers]);
+
+  // Função para adicionar um montador na instalação
+  const handleAddAssembler = useCallback((data) => {
+    // Separando o id e o nome do montador
+    const [assembler_id, name] = data.assembler.split(' ');
+
+    // Criando o objeto do montador + sua comissão
+    const assemblerInstallationObject: IAssemblerInstallation = {
+      assembler_id,
+      commission_percentage: data.commission_percentage,
+      assembler: {
+        id: assembler_id,
+        name,
+      }
+    }
+
+    // Adicionando o montador na lista
+    setAssemblersInstallation([...assemblersInstallation, assemblerInstallationObject]);
+
+    // Fechando o popup
+    toggleShowPopup();
+  }, [assemblersInstallation, toggleShowPopup]);
+
+  // Função para remover um montador da instalação
+  const handleRemoveAssembler = useCallback((index: number) => {
+    // Verificando se existe o index do montador na lista
+    if(!assemblersInstallation[index]) {
+      return;
+    }
+
+    // Removendo o montador e atualizando a lista
+    const [...assemblersInstallationUpdated] = assemblersInstallation;
+
+    assemblersInstallationUpdated.splice(index, 1);
+
+    setAssemblersInstallation(assemblersInstallationUpdated);
+  }, [assemblersInstallation]);
 
   return (
     <Container>
@@ -135,8 +194,8 @@ const InstallationData: React.FC = () => {
 
             <AddAssemblersArea>
               {
-                installationData.assemblers_installation && installationData.assemblers_installation.length > 0
-                  ? (installationData.assemblers_installation.map(assemblerInstallation => (
+                assemblersInstallation.length > 0
+                  ? (assemblersInstallation.map((assemblerInstallation, index) => (
                     <div key={assemblerInstallation.assembler_id}>
                       <div className="space-division">
                         <div className="x2">
@@ -144,7 +203,11 @@ const InstallationData: React.FC = () => {
                             <span>Montador</span>
                             <p>{assemblerInstallation.assembler && assemblerInstallation.assembler.name}</p>
 
-                            <button className="remove-assembler-btn" type="button">
+                            <button
+                              className="remove-assembler-btn"
+                              type="button"
+                              onClick={() => handleRemoveAssembler(index)}
+                            >
                               <FiX size={25} />
                             </button>
                           </div>
@@ -176,28 +239,46 @@ const InstallationData: React.FC = () => {
                 <div id="assessment-table">
                   <div className="assessment-row">
                     <span className="tltr-border-radius">Houve atrazo?</span>
-                    <p className="tr-border-radius">Não</p>
+                    <p className="tr-border-radius">{
+                      installationData.end_date
+                      && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
+                        ? 'Sim' : 'Não'
+                    }</p>
                   </div>
                   <div className="assessment-row">
                     <span>Nota de Limpeza e Finalização</span>
-                    <p>{installationData.assessment &&installationData.assessment.cleaning_note}</p>
+                    <p>
+                      {installationData.assessment &&installationData.assessment.cleaning_note}
+                    </p>
                   </div>
                   <div className="assessment-row">
                     <span>Nota de Acabamento</span>
-                    <p>{installationData.assessment &&installationData.assessment.finish_note}</p>
+                    <p>
+                      {installationData.assessment &&installationData.assessment.finish_note}
+                    </p>
                   </div>
                   <div className="assessment-row">
                     <span>Nota do Cliente</span>
-                    <p>{installationData.assessment &&installationData.assessment.customer_note}</p>
+                    <p>
+                      {installationData.assessment &&installationData.assessment.customer_note}
+                    </p>
                   </div>
                   <div className="assessment-row">
                     <span className="bltr-border-radius">Nota da Gerência</span>
-                    <p className="br-border-radius">{installationData.assessment &&installationData.assessment.manager_note}</p>
+                    <p className="br-border-radius">
+                      {installationData.assessment &&installationData.assessment.manager_note}
+                    </p>
                   </div>
                 </div>
-                <div id="comments">
-                  <span>Comentários</span>
-                  <p>{installationData.assessment &&installationData.assessment.comment}</p>
+                <div id="lost-amount-and-comments">
+                  <div>
+                    <span>Valor em Prejuízo</span>
+                    <p>{installationData.assessment &&installationData.assessment.loss_amount}</p>
+                  </div>
+                  <div>
+                    <span>Comentários</span>
+                    <p>{installationData.assessment &&installationData.assessment.comment}</p>
+                  </div>
                 </div>
               </div>
             </AssessmentArea>
@@ -209,17 +290,19 @@ const InstallationData: React.FC = () => {
       {
         showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
           <ModalContent>
-            <Form onSubmit={toggleShowPopup}>
+            <Form onSubmit={handleAddAssembler}>
               <div className="space-division">
                 <div className="x2">
                   <Select
                     label="Montador"
-                    name="assembler_id"
-                    options={[
-                      { value: 1, description: 'Fulano' },
-                      { value: 2, description: 'Ciclano' },
-                      { value: 3, description: 'Beltano' },
-                    ]}
+                    name="assembler"
+                    options={
+                      assemblersList.length > 0
+                      ? assemblersList.map(assembler => (
+                        { value: `${assembler.id} ${assembler.name}`, description: assembler.name }
+                      ))
+                      : [{ value: 'invalid' , description: 'Nenhum montador encontrado...' }]
+                    }
                   />
                 </div>
                 <div className="x-divisor" />
@@ -231,7 +314,7 @@ const InstallationData: React.FC = () => {
                   />
                 </div>
               </div>
-              <Button name="Adicionar" />
+              <Button name="Adicionar" type="submit" />
 
               <div className="modal-space-divisor" />
 
@@ -239,7 +322,8 @@ const InstallationData: React.FC = () => {
                 name="Fechar"
                 color="white"
                 size="small"
-                type="submit"
+                type="button"
+                onClick={toggleShowPopup}
               />
             </Form>
           </ModalContent>

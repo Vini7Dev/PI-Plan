@@ -192,26 +192,47 @@ export const AssessmentArea = styled.section`
       }
     }
 
-    #comments {
-      span {
-        display: block;
-        margin: 15px 0 12px 0;
-        width: 100%;
+    #lost-amount-and-comments {
+      padding: 15px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
 
-        font-size: 35px;
-        font-style: italic;
-        font-weight: 600;
-        text-align: center;
-        color: #FFFFFF;
+      div {
+        width: 45%;
+
+        span {
+          display: block;
+          margin: 15px 0 12px 0;
+          width: 100%;
+
+          font-size: 35px;
+          font-style: italic;
+          font-weight: 600;
+          text-align: center;
+          color: #FFFFFF;
+        }
+
+        p {
+          padding: 15px;
+          font-size: 18px;
+          color: #60626C;
+          background-color: #FFFFFF;
+          border: 2px solid #CEAA7B;
+          border-radius: 30px;
+        }
       }
+    }
+  }
 
-      p {
-        padding: 15px;
-        font-size: 18px;
-        color: #60626C;
-        background-color: #FFFFFF;
-        border: 2px solid #CEAA7B;
-        border-radius: 30px;
+  @media (max-width: 768px) {
+    #assessment-content {
+      #lost-amount-and-comments {
+        flex-wrap: wrap;
+
+        div {
+          width: 100%;
+        }
       }
     }
   }
