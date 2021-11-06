@@ -31,6 +31,22 @@ const InstallationsList: React.FC = () => {
     setInstallations(installationsList);
   }, []);
 
+  // Função para apagar uma instalação
+  const handleDeleteInstallation = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar a instalação
+    const response = confirm('Você realmente deseja apagar a instalação?');
+
+    if(!response) {
+      return;
+    }
+
+    // Enviando a requisição para apagar o pedido
+    await api.delete(`/installations/${id}`);
+
+    // Recarregando a lista de pedidos
+    handleLoadInstallations();
+  }, [handleLoadInstallations]);
+
   return (
     <Container onLoad={handleLoadInstallations}>
       <div id="navigation-area">
@@ -81,7 +97,10 @@ const InstallationsList: React.FC = () => {
                       <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
                       { parseDateStringToBrFormat(installation.end_date || installation.completion_forecast) }
                         </Link>
-                        <button className="ic-remove">
+                        <button
+                          className="ic-remove"
+                          onClick={() => handleDeleteInstallation(installation.id)}
+                        >
                           <FiTrash2 />
                         </button>
                       </td>
