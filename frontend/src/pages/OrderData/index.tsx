@@ -17,7 +17,6 @@ import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
-import InstallationData from '../InstallationData';
 
 interface IOrderProps {
   address: {
