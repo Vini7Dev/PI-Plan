@@ -33,11 +33,27 @@ interface IAssessmentProps {
 const AssessmentsList: React.FC = () => {
   const [assessments, setAssessments] = useState<IAssessmentProps[]>([]);
 
+  // Função para carregar as avaliações
   const handleLoadAssesments = useCallback(async () => {
     const { data: assessmentsList } = await api.get<IAssessmentProps[]>('/assessments');
 
     setAssessments(assessmentsList);
   }, []);
+
+  // Função para apagar uma avaliação
+  const handleDeleteAssessment = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar a avaliação
+    const response = confirm('Você realmente deseja apagar a avaliação?');
+
+    if(!response) {
+      return;
+    }
+
+    await api.delete(`/assessments/${id}`);
+
+    // Recarregando a lista das avaliações
+    handleLoadAssesments();
+  }, [handleLoadAssesments]);
 
   return (
     <Container onLoad={handleLoadAssesments}>
@@ -90,7 +106,10 @@ const AssessmentsList: React.FC = () => {
                           { (cleaning_note + finish_note + customer_note + manager_note) / 4 }
                         </span>
                       </Link>
-                      <button className="ic-remove">
+                      <button
+                        className="ic-remove"
+                        onClick={() => handleDeleteAssessment(id)}
+                      >
                         <FiTrash2 />
                       </button>
                     </td>
