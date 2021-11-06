@@ -94,6 +94,7 @@ export const Table = styled.table`
 
       a {
         text-decoration: none;
+        color: inherit;
       }
 
       div {
