@@ -243,7 +243,6 @@ const InstallationData: React.FC = () => {
     try {
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
-        installation_id: Yup.string().uuid('Id da instalação inválido').required('Instalação não encontrada!'),
         cleaning_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
         finish_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
         customer_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
@@ -252,16 +251,19 @@ const InstallationData: React.FC = () => {
         comment: Yup.string().default(''),
       });
 
-      // Dados da avaliação para validar
-      const assessmentData = Object.assign(data, {
-        installation_id: installationId,
-      })
-
       // Validando o formulário
-      await shape.validate(assessmentData, { abortEarly: false });
+      await shape.validate(data, { abortEarly: false });
 
-      // Enviando os dados ao backend
-      await api.post(`/assessments`, assessmentData);
+      // Enviando os dados ao backend para criar / atualizar a avaliação
+      if(installationData.assessment) {
+        await api.put(`/assessments/${installationData.assessment.id}`, data);
+      } else {
+        Object.assign(data, {
+          installation_id: installationId,
+        })
+
+        await api.post(`/assessments`, data);
+      }
 
       // Recarregando os dados do pedido
       loadInstallationData();
@@ -278,7 +280,22 @@ const InstallationData: React.FC = () => {
         }
       }
     }
-  }, [installationId, loadInstallationData, toggleShowPopup]);
+  }, [installationData, installationId, loadInstallationData, toggleShowPopup]);
+
+  // Função para apagar a avaliação da instalação
+  const handleDeleteAssessment = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar a avaliação
+    const response = confirm('Você realmente deseja apagar a avaliação?');
+
+    if(!response) {
+      return;
+    }
+
+    await api.delete(`/assessments/${id}`);
+
+    // Recarregando os dados da instalação
+    loadInstallationData();
+  }, [loadInstallationData]);
 
   return (
     <Container>
@@ -383,13 +400,13 @@ const InstallationData: React.FC = () => {
                 <div id="assessment-actions-buttons">
                   <button
                     className="action-button edit-button"
-                    onClick={() => console.log(installationData.assessment.id)}
+                    onClick={() => toggleShowPopup('edit_assessment')}
                   >
                     <FiEdit />
                   </button>
                   <button
                     className="action-button delete-button"
-                    onClick={() => console.log(installationData.assessment.id)}
+                    onClick={() => handleDeleteAssessment(installationData.assessment.id)}
                   >
                     <FiTrash2 />
                   </button>
@@ -511,6 +528,9 @@ const InstallationData: React.FC = () => {
                         type="number"
                         min={0}
                         max={10}
+                        defaultValue={
+                          installationData.assessment ? installationData.assessment.cleaning_note : 0
+                        }
                         style={{ textAlign: 'center' }}
                       />
                       <Input
@@ -520,6 +540,9 @@ const InstallationData: React.FC = () => {
                         type="number"
                         min={0}
                         max={10}
+                        defaultValue={
+                          installationData.assessment ? installationData.assessment.customer_note : 0
+                        }
                         style={{ textAlign: 'center' }}
                       />
                     </div>
@@ -530,6 +553,9 @@ const InstallationData: React.FC = () => {
                         name="finish_note"
                         placeholder="0-10"
                         type="number"
+                        defaultValue={
+                          installationData.assessment ? installationData.assessment.finish_note : 0
+                        }
                         style={{ textAlign: 'center' }}
                       />
                       <Input
@@ -537,6 +563,9 @@ const InstallationData: React.FC = () => {
                         name="manager_note"
                         placeholder="0-10"
                         type="number"
+                        defaultValue={
+                          installationData.assessment ? installationData.assessment.manager_note : 0
+                        }
                         style={{ textAlign: 'center' }}
                       />
                     </div>
@@ -545,12 +574,18 @@ const InstallationData: React.FC = () => {
                       label="Prejuízo na Obra"
                       name="loss_amount"
                       placeholder="R$0,00"
+                      defaultValue={
+                        installationData.assessment ? installationData.assessment.loss_amount : 0
+                      }
                     />
 
                     <Input
                       label="Comentários"
                       name="comment"
                       placeholder="Deixe algum comentário sobre a instalação..."
+                      defaultValue={
+                        installationData.assessment ? installationData.assessment.comment : ''
+                      }
                     />
                 </div>
               }
