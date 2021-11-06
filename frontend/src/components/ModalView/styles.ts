@@ -10,7 +10,6 @@ export const Container = styled.div`
 
   h3 {
     font-size: 40px;
-    font-family: Arial, Helvetica, sans-serif;
     font-style: italic;
     color: #60626C;
   }

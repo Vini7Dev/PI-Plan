@@ -16,6 +16,7 @@ import {
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
+import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -58,6 +59,7 @@ const InstallationData: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
   const [showPopup, setShowPopup] = useState(false);
+  const [modalContentType, setModalContentType] = useState('add_assembler');
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
   const [assemblersInstallation, setAssemblersInstallation] = useState<IAssemblerInstallation[]>([]);
   const [assemblersList, setAssemblersList] = useState<IAssembler[]>([]);
@@ -165,7 +167,10 @@ const InstallationData: React.FC = () => {
   }, [assemblersInstallation]);
 
   // Função para mostrar ou esconder o modal para adicionar montador
-  const toggleShowPopup = useCallback(() => {
+  const toggleShowPopup = useCallback((modalContentTypeShow: string) => {
+    // Definindo o tipo do conteúdo presente no modal
+    setModalContentType(modalContentTypeShow);
+
     // Caso tenha aberto o popup, carregar os montadores cadastrados
     if(!showPopup) {
       handleLoadAssemblers();
@@ -206,7 +211,7 @@ const InstallationData: React.FC = () => {
       setAssemblersInstallation([...assemblersInstallation, assemblerInstallationObject]);
 
       // Fechando o popup
-      toggleShowPopup();
+      toggleShowPopup('');
     } catch(error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
       if(error instanceof Yup.ValidationError){
@@ -233,6 +238,12 @@ const InstallationData: React.FC = () => {
 
     setAssemblersInstallation(assemblersInstallationUpdated);
   }, [assemblersInstallation]);
+
+  // Função para cadastrar a avaliação
+  const handleSubmitAssessment = useCallback(async (data) => {
+    // Fechando o popup
+    toggleShowPopup('');
+  }, [toggleShowPopup]);
 
   return (
     <Container>
@@ -322,7 +333,7 @@ const InstallationData: React.FC = () => {
               <Button
                 name="Adicionar Montador"
                 color="brown"
-                onClick={toggleShowPopup}
+                onClick={() => toggleShowPopup('add_assembler')}
               />
             </AddAssemblersArea>
 
@@ -332,88 +343,165 @@ const InstallationData: React.FC = () => {
           <AssessmentArea>
             <h3>Avaliação</h3>
 
-            <div id="assessment-content">
-              <div id="assessment-table">
-                <div className="assessment-row">
-                  <span className="tltr-border-radius">Houve atrazo?</span>
-                  <p className="tr-border-radius">{
-                    installationData.end_date
-                    && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
-                      ? 'Sim' : 'Não'
-                  }</p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota de Limpeza e Finalização</span>
-                  <p>
-                    {installationData.assessment &&installationData.assessment.cleaning_note}
-                  </p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota de Acabamento</span>
-                  <p>
-                    {installationData.assessment &&installationData.assessment.finish_note}
-                  </p>
-                </div>
-                <div className="assessment-row">
-                  <span>Nota do Cliente</span>
-                  <p>
-                    {installationData.assessment &&installationData.assessment.customer_note}
-                  </p>
-                </div>
-                <div className="assessment-row">
-                  <span className="bltr-border-radius">Nota da Gerência</span>
-                  <p className="br-border-radius">
-                    {installationData.assessment &&installationData.assessment.manager_note}
-                  </p>
-                </div>
-              </div>
-              <div id="lost-amount-and-comments">
-                <div>
-                  <span>Valor em Prejuízo</span>
-                  <p className="text-right">
-                    {installationData.assessment &&installationData.assessment.loss_amount}
-                  </p>
-                </div>
-                <div>
-                  <span>Comentários</span>
-                  <p>
-                    {installationData.assessment &&installationData.assessment.comment}
-                  </p>
-                </div>
-              </div>
-            </div>
+            {
+              installationData.assessment
+                ? (<div id="assessment-content">
+                  <div id="assessment-table">
+                    <div className="assessment-row">
+                      <span className="tltr-border-radius">Houve atrazo?</span>
+                      <p className="tr-border-radius">{
+                        installationData.end_date
+                        && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
+                          ? 'Sim' : 'Não'
+                      }</p>
+                    </div>
+                    <div className="assessment-row">
+                      <span>Nota de Limpeza e Finalização</span>
+                      <p>
+                        {installationData.assessment &&installationData.assessment.cleaning_note}
+                      </p>
+                    </div>
+                    <div className="assessment-row">
+                      <span>Nota de Acabamento</span>
+                      <p>
+                        {installationData.assessment &&installationData.assessment.finish_note}
+                      </p>
+                    </div>
+                    <div className="assessment-row">
+                      <span>Nota do Cliente</span>
+                      <p>
+                        {installationData.assessment &&installationData.assessment.customer_note}
+                      </p>
+                    </div>
+                    <div className="assessment-row">
+                      <span className="bltr-border-radius">Nota da Gerência</span>
+                      <p className="br-border-radius">
+                        {installationData.assessment &&installationData.assessment.manager_note}
+                      </p>
+                    </div>
+                  </div>
+                  <div id="lost-amount-and-comments">
+                    <div>
+                      <span>Valor em Prejuízo</span>
+                      <p className="text-right">
+                        {installationData.assessment &&installationData.assessment.loss_amount}
+                      </p>
+                    </div>
+                    <div>
+                      <span>Comentários</span>
+                      <p>
+                        {installationData.assessment &&installationData.assessment.comment}
+                      </p>
+                    </div>
+                  </div>
+                </div>)
+                : <Button
+                  name="Cadastrar Avaliação"
+                  size="small"
+                  onClick={
+                    () => installationId
+                      ? toggleShowPopup('add_assessment')
+                      : alert('Instalação não cadastrada!')
+                  }
+                />
+            }
           </AssessmentArea>
         </main>
       </div>
       {
         showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
           <ModalContent>
-            <Form onSubmit={handleAddAssembler} ref={popupFormRef}>
-              <div className="space-division">
-                <div className="x2">
-                  <Select
-                    label="Montador"
-                    name="assembler"
-                    options={
-                      assemblersList.length > 0
-                      ? assemblersList.map(assembler => (
-                        { value: `${assembler.id} ${assembler.name}`, description: assembler.name }
-                      ))
-                      : [{ value: 'invalid' , description: 'Nenhum montador encontrado...' }]
-                    }
-                  />
+            <Form
+              onSubmit={modalContentType === 'add_assembler'
+                ? handleAddAssembler
+                : handleSubmitAssessment
+              }
+              ref={popupFormRef}
+            >
+              {
+                modalContentType === 'add_assembler'
+                ? <div className="space-division">
+                  <div className="x2">
+                    <Select
+                      label="Montador"
+                      name="assembler"
+                      options={
+                        assemblersList.length > 0
+                        ? assemblersList.map(assembler => (
+                          { value: `${assembler.id} ${assembler.name}`, description: assembler.name }
+                        ))
+                        : [{ value: 'invalid' , description: 'Nenhum montador encontrado...' }]
+                      }
+                    />
+                  </div>
+                  <div className="x-divisor" />
+                  <div className="x1">
+                    <Input
+                      label="Comissão"
+                      name="commission_percentage"
+                      placeholder="--%"
+                      type="number"
+                      min={0}
+                      style={{ textAlign: 'center' }}
+                    />
+                  </div>
                 </div>
-                <div className="x-divisor" />
-                <div className="x1">
-                  <Input
-                    label="Comissão"
-                    name="commission_percentage"
-                    placeholder="--%"
-                    style={{ textAlign: 'center' }}
-                  />
+                : <div>
+                  <h4>Notas</h4>
+                  <div className="space-division">
+                    <div className="x2">
+                      <Input
+                        label="Limpeza/Finalização"
+                        name="cleaning_note"
+                        placeholder="0-10"
+                        type="number"
+                        min={0}
+                        max={10}
+                        style={{ textAlign: 'center' }}
+                      />
+                      <Input
+                        label="Cliente"
+                        name="customer_note"
+                        placeholder="0-10"
+                        type="number"
+                        min={0}
+                        max={10}
+                        style={{ textAlign: 'center' }}
+                      />
+                    </div>
+                    <div className="x-divisor" />
+                    <div className="x2">
+                      <Input
+                        label="Acabamento"
+                        name="finish_note"
+                        placeholder="0-10"
+                        type="number"
+                        style={{ textAlign: 'center' }}
+                      />
+                      <Input
+                        label="Gerência"
+                        name="manager_note"
+                        placeholder="0-10"
+                        type="number"
+                        style={{ textAlign: 'center' }}
+                      />
+                    </div>
+                  </div>
+                    <Input
+                      label="Prejuízo na Obra"
+                      name="loss_amount"
+                      placeholder="R$10,00"
+                    />
+
+                    <Textarea
+                      label="Comentários"
+                      name="comment"
+                      placeholder="Deixe algum comentário sobre a instalação..."
+                    />
                 </div>
-              </div>
-              <Button name="Adicionar" type="submit" />
+              }
+
+              <Button name={modalContentType === 'add_assembler' ? 'Adicionar' : 'Salvar'} type="submit" />
 
               <div className="modal-space-divisor" />
 
@@ -422,7 +510,7 @@ const InstallationData: React.FC = () => {
                 color="white"
                 size="small"
                 type="button"
-                onClick={toggleShowPopup}
+                onClick={() => toggleShowPopup('')}
               />
             </Form>
           </ModalContent>

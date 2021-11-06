@@ -224,6 +224,12 @@ export const AssessmentArea = styled.section`
       }
     }
   }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    border: none;
+    padding: 0;
+  }
 `;
 
 export const ModalContent = styled.section`
@@ -244,5 +250,10 @@ export const ModalContent = styled.section`
       width: 15px;
       margin-bottom: -20px;
     }
+  }
+
+  h4 {
+    font-size: 25px;
+    color: #60626C;
   }
 `;
