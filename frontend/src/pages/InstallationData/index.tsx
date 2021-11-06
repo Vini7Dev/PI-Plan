@@ -570,23 +570,23 @@ const InstallationData: React.FC = () => {
                       />
                     </div>
                   </div>
-                    <Input
-                      label="Prejuízo na Obra"
-                      name="loss_amount"
-                      placeholder="R$0,00"
-                      defaultValue={
-                        installationData.assessment ? installationData.assessment.loss_amount : 0
-                      }
-                    />
+                  <Input
+                    label="Prejuízo na Obra"
+                    name="loss_amount"
+                    placeholder="R$0,00"
+                    defaultValue={
+                      installationData.assessment ? installationData.assessment.loss_amount : 0
+                    }
+                  />
 
-                    <Input
-                      label="Comentários"
-                      name="comment"
-                      placeholder="Deixe algum comentário sobre a instalação..."
-                      defaultValue={
-                        installationData.assessment ? installationData.assessment.comment : ''
-                      }
-                    />
+                  <Input
+                    label="Comentários"
+                    name="comment"
+                    placeholder="Deixe algum comentário sobre a instalação..."
+                    defaultValue={
+                      installationData.assessment ? installationData.assessment.comment : ''
+                    }
+                  />
                 </div>
               }
 

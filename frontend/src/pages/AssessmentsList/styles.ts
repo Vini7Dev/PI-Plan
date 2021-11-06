@@ -183,3 +183,20 @@ export const Table = styled.table`
     text-align: center;
   }
 `;
+
+export const ModalContent = styled.section`
+  .space-division{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    .x2 {
+      flex: 0.8;
+    }
+
+    .x-divisor {
+      width: 15px;
+      margin-bottom: -20px;
+    }
+  }
+`;
