@@ -60,6 +60,9 @@ export const AuthProvider: React.FC = ({ children }) => {
       password,
     });
 
+    // Salvando o token de autenticação no cabeçalho da requisição e retornando os dados para a variável
+    api.defaults.headers.common.authorization = `Bearer ${response.data.token}`;
+
     // Salvando os dados obtidos dentro do local storage
     localStorage.setItem('@PI-Plan:token', response.data.token);
     localStorage.setItem('@PI-Plan:user', JSON.stringify(response.data.user));
@@ -78,6 +81,9 @@ export const AuthProvider: React.FC = ({ children }) => {
     // Apagando os dados salvos no local storage
     localStorage.removeItem('@PI-Plan:token');
     localStorage.removeItem('@PI-Plan:user');
+
+    // Apagando o token da requisição
+    api.defaults.headers.common.authorization = '';
 
     // Limpando a variável "data"
     setData({} as ISectionData);
