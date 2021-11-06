@@ -29,15 +29,25 @@ interface IAssessmentProps {
   installation: IInstallationProps;
 }
 
+interface IAssessmentSelect {
+  assessment: IAssessmentProps;
+  selected: boolean;
+}
+
 // Página de listagem das avaliações
 const AssessmentsList: React.FC = () => {
-  const [assessments, setAssessments] = useState<IAssessmentProps[]>([]);
+  const [assessments, setAssessments] = useState<IAssessmentSelect[]>([]);
 
   // Função para carregar as avaliações
   const handleLoadAssesments = useCallback(async () => {
     const { data: assessmentsList } = await api.get<IAssessmentProps[]>('/assessments');
 
-    setAssessments(assessmentsList);
+    const assessmentsListWithSelectBox = assessmentsList.map(assessment => ({
+      assessment,
+      selected: false,
+    }));
+
+    setAssessments(assessmentsListWithSelectBox);
   }, []);
 
   // Função para apagar uma avaliação
@@ -90,31 +100,33 @@ const AssessmentsList: React.FC = () => {
             </thead>
             <tbody>
               {
-                assessments.map(({ id, installation, cleaning_note, finish_note, customer_note, manager_note }) => (
-                  <tr key={id}>
-                    <td className="text-center td-id td-x1">
-                      <CheckBox name="markup" className="checkbox" />
-                    </td>
-                    <td className="text-left td-x3">
-                      <Link to={`/installation-data/${installation.id}`}>
-                        {installation.order.title}
-                      </Link>
-                    </td>
-                    <td className="text-center td-x2">
-                      <Link to={`/installation-data/${installation.id}`}>
-                        <span>
-                          { (cleaning_note + finish_note + customer_note + manager_note) / 4 }
-                        </span>
-                      </Link>
-                      <button
-                        className="ic-remove"
-                        onClick={() => handleDeleteAssessment(id)}
-                      >
-                        <FiTrash2 />
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                assessments.length > 0
+                  ? assessments.map(({ selected, assessment }) => (
+                    <tr key={assessment.id}>
+                      <td className="text-center td-id td-x1">
+                        <CheckBox name="markup" className="checkbox" defaultChecked={selected} />
+                      </td>
+                      <td className="text-left td-x3">
+                        <Link to={`/installation-data/${assessment.installation.id}`}>
+                          {assessment.installation.order.title}
+                        </Link>
+                      </td>
+                      <td className="text-center td-x2">
+                        <Link to={`/installation-data/${assessment.installation.id}`}>
+                          <span>
+                            { (assessment.cleaning_note + assessment.finish_note + assessment.customer_note + assessment.manager_note) / 4 }
+                          </span>
+                        </Link>
+                        <button
+                          className="ic-remove"
+                          onClick={() => handleDeleteAssessment(assessment.id)}
+                        >
+                          <FiTrash2 />
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                  : <tr><td colSpan={3}><p id="empty-assessments-list">Sem avaliações...</p></td></tr>
               }
             </tbody>
           </Table>
