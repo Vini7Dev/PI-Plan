@@ -8,9 +8,8 @@ import ensureAdmin from '../../../shared/http/middlewares/ensureAdmin';
 // Instanciando as rotas do modelo pedido
 const orderRoutes = Router();
 
-// Aplicando os middlewares nas rotas abaixo
+// Aplicando o middleware de autenticação nas rotas abaixo
 orderRoutes.use(ensureAuthenticated);
-orderRoutes.use(ensureAdmin);
 
 // Instanciando o controller de pedido
 const ordersController = new OrdersController();
@@ -35,6 +34,9 @@ orderRoutes.get(
   }),
   ordersController.get,
 );
+
+// Aplicando o middleware para verificar se o usuário é administrador nas rotas abaixo
+orderRoutes.use(ensureAdmin);
 
 orderRoutes.post(
   '/',
