@@ -74,7 +74,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     response.data.user.user_type === 'admin'
       ? history.push('/dashboard')
       : history.push('/orders-list');
-  }, []);
+  }, [history]);
 
   // Função para desconectar o usuário do sistema
   const logout = useCallback(() => {

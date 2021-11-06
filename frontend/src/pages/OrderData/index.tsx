@@ -450,14 +450,7 @@ const OrderData: React.FC = () => {
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             <span
                               className={`ic ${
-                                (function() {
-                                  switch(1 - 0) {
-                                    case 0: return 'ic-inprogress';
-                                    case 1: return 'ic-completed';
-                                    case 2: return 'ic-canceled';
-                                    default: return 'ic-canceled';
-                                  }
-                                })()
+                                orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
                               }`}
                             >IC</span>
                           </Link>

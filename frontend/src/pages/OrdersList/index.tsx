@@ -122,7 +122,7 @@ const OrdersList: React.FC = () => {
                       </td>
                     </tr>
                   ))
-                  : <tr><td colSpan={3}><p id="empty-users-list">Sem pedidos...</p></td></tr>
+                  : <tr><td colSpan={3}><p id="empty-orders-list">Sem pedidos...</p></td></tr>
               }
             </tbody>
           </Table>

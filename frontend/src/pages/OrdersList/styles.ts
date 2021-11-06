@@ -155,7 +155,7 @@ export const Table = styled.table`
     border-radius: 0 30px 30px 0;
   }
 
-  #empty-users-list {
+  #empty-orders-list {
     font-size: 25px;
     text-align: center;
   }
