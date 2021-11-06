@@ -17,6 +17,7 @@ import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
+import InstallationData from '../InstallationData';
 
 interface IOrderProps {
   address: {
@@ -68,36 +69,36 @@ const OrderData: React.FC = () => {
   const [installationEnvironments, setInstallationEnvironments] = useState('');
 
   // Caso exista o id do pedido na rota, buscar os seus dados no banco de dados
-  useEffect(() => {
-    const loadOrderData = async () => {
-      const orderIdFromPath = location.pathname.split('/order-data/')[1];
-      const customerIdFromPath = location.search.split('=')[1];
+  const loadOrderData = useCallback(async () => {
+    const orderIdFromPath = location.pathname.split('/order-data/')[1];
+    const customerIdFromPath = location.search.split('=')[1];
 
-      if(orderIdFromPath) {
-        const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
+    if(orderIdFromPath) {
+      const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
 
-        setOrderData(orderDataResponse);
-        setOrderId(orderIdFromPath);
-        setCurrentStatus(orderDataResponse.current_status);
-        setCurrentProccess(orderDataResponse.current_proccess);
-        setSelectedUF(orderDataResponse.address.uf);
-        setSelectedCity(orderDataResponse.address.city);
-        setSelectedCountry(orderDataResponse.address.country);
-      } else {
-        setOrderData({ address: {} } as IOrderProps);
-        setOrderId('');
-        setCurrentStatus(0);
-        setCurrentProccess(0);
-        setSelectedUF('');
-        setSelectedCity('');
-        setSelectedCountry('');
-      }
-
-      setCustomerId(customerIdFromPath);
+      setOrderData(orderDataResponse);
+      setOrderId(orderIdFromPath);
+      setCurrentStatus(orderDataResponse.current_status);
+      setCurrentProccess(orderDataResponse.current_proccess);
+      setSelectedUF(orderDataResponse.address.uf);
+      setSelectedCity(orderDataResponse.address.city);
+      setSelectedCountry(orderDataResponse.address.country);
+    } else {
+      setOrderData({ address: {} } as IOrderProps);
+      setOrderId('');
+      setCurrentStatus(0);
+      setCurrentProccess(0);
+      setSelectedUF('');
+      setSelectedCity('');
+      setSelectedCountry('');
     }
 
-    loadOrderData();
+    setCustomerId(customerIdFromPath);
   }, [location]);
+
+  useEffect(() => {
+    loadOrderData();
+  }, [loadOrderData]);
 
   // Função para criar um pedido ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
@@ -201,6 +202,20 @@ const OrderData: React.FC = () => {
   const handleGoToRegisterInstallation = useCallback(() => {
     history.push(`/installation-data?order_id=${orderId}`);
   }, [orderId, history]);
+
+  // Função para apagar a instalação
+  const handleDeleteInstallation = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar a instalação
+    const response = confirm('Você realmente deseja apagar a instalação?');
+
+    if(!response) {
+      return;
+    }
+
+    await api.delete(`/installations/${id}`);
+
+    loadOrderData();
+  }, [loadOrderData]);
 
   return (
     <Container>
@@ -457,7 +472,10 @@ const OrderData: React.FC = () => {
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             {parseDateStringToBrFormat(orderData.installation.end_date || orderData.installation.completion_forecast)}
                           </Link>
-                          <button className="ic-remove" onClick={() => console.log('1')}>
+                          <button
+                            className="ic-remove"
+                            onClick={() => handleDeleteInstallation(orderData.installation.id)}
+                          >
                             <FiTrash2 />
                           </button>
                         </td>
