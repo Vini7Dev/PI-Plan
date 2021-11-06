@@ -16,7 +16,6 @@ import {
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
-import Textarea from '../../components/Textarea';
 import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
@@ -67,28 +66,28 @@ const InstallationData: React.FC = () => {
   const [orderId, setOrderId] = useState('');
 
   // Caso exista o id da instalação na rota, buscar os seus dados no banco de dados
-  useEffect(() => {
-    const loadInstallationData = async () => {
-      const installationIdFromPath = location.pathname.split('/installation-data/')[1];
-      const orderIdFromPath = location.search.split('=')[1];
+  const loadInstallationData = useCallback(async () => {
+    const installationIdFromPath = location.pathname.split('/installation-data/')[1];
+    const orderIdFromPath = location.search.split('=')[1];
 
-      if(installationIdFromPath) {
-        const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
+    if(installationIdFromPath) {
+      const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
 
-        setInstallationData(installationDataResponse as IInstallationProps);
-        setAssemblersInstallation(installationDataResponse.assemblers_installation);
-        setInstallationId(installationIdFromPath);
-      } else {
-        setInstallationData({} as IInstallationProps);
-        setAssemblersInstallation([]);
-        setInstallationId('');
-      }
-
-      setOrderId(orderIdFromPath);
+      setInstallationData(installationDataResponse as IInstallationProps);
+      setAssemblersInstallation(installationDataResponse.assemblers_installation);
+      setInstallationId(installationIdFromPath);
+    } else {
+      setInstallationData({} as IInstallationProps);
+      setAssemblersInstallation([]);
+      setInstallationId('');
     }
 
-    loadInstallationData();
+    setOrderId(orderIdFromPath);
   }, []);
+
+  useEffect(() => {
+    loadInstallationData();
+  }, [loadInstallationData]);
 
   // Função para cadastrar uma nova instalação ou para atualizar os dados de uma já existente
   const handleSubmitForm = useCallback(async (data) => {
@@ -241,9 +240,45 @@ const InstallationData: React.FC = () => {
 
   // Função para cadastrar a avaliação
   const handleSubmitAssessment = useCallback(async (data) => {
-    // Fechando o popup
-    toggleShowPopup('');
-  }, [toggleShowPopup]);
+    try {
+      // Criando o modelo para validação do formulário
+      const shape = Yup.object().shape({
+        installation_id: Yup.string().uuid('Id da instalação inválido').required('Instalação não encontrada!'),
+        cleaning_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
+        finish_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
+        customer_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
+        manager_note: Yup.number().min(0, 'Mínimo de 0!').max(10, 'Máximo de 10!').required('A nota é obrigatória!'),
+        loss_amount: Yup.number().min(0, 'Mínimo de 0!').required('O valor do prejuízo é obrigatório!'),
+        comment: Yup.string().default(''),
+      });
+
+      // Dados da avaliação para validar
+      const assessmentData = Object.assign(data, {
+        installation_id: installationId,
+      })
+
+      // Validando o formulário
+      await shape.validate(assessmentData, { abortEarly: false });
+
+      // Enviando os dados ao backend
+      await api.post(`/assessments`, assessmentData);
+
+      // Recarregando os dados do pedido
+      loadInstallationData();
+
+      // Fechando o popup
+      toggleShowPopup('');
+    } catch (error) {
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(popupFormRef.current) {
+          popupFormRef.current.setErrors(errors);
+        }
+      }
+    }
+  }, [installationId, loadInstallationData, toggleShowPopup]);
 
   return (
     <Container>
@@ -490,10 +525,10 @@ const InstallationData: React.FC = () => {
                     <Input
                       label="Prejuízo na Obra"
                       name="loss_amount"
-                      placeholder="R$10,00"
+                      placeholder="R$0,00"
                     />
 
-                    <Textarea
+                    <Input
                       label="Comentários"
                       name="comment"
                       placeholder="Deixe algum comentário sobre a instalação..."
