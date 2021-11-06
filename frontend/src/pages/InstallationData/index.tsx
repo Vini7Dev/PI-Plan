@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { FiX } from 'react-icons/fi';
+import { FiEdit, FiTrash2, FiX } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import * as Yup from 'yup';
@@ -376,7 +376,26 @@ const InstallationData: React.FC = () => {
           </Form>
 
           <AssessmentArea>
-            <h3>Avaliação</h3>
+            <div id="assessment-title-area">
+              <h3>Avaliação</h3>
+
+              { installationData.assessment &&
+                <div id="assessment-actions-buttons">
+                  <button
+                    className="action-button edit-button"
+                    onClick={() => console.log(installationData.assessment.id)}
+                  >
+                    <FiEdit />
+                  </button>
+                  <button
+                    className="action-button delete-button"
+                    onClick={() => console.log(installationData.assessment.id)}
+                  >
+                    <FiTrash2 />
+                  </button>
+                </div>
+              }
+            </div>
 
             {
               installationData.assessment

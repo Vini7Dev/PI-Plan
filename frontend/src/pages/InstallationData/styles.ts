@@ -134,6 +134,41 @@ export const AssessmentArea = styled.section`
   padding: 20px;
   margin-top: 40px;
 
+  #assessment-title-area {
+    display: flex;
+    justify-content: space-around;
+
+    #assessment-actions-buttons {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      .action-button {
+        width: 58px;
+        height: 58px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        border-radius: 100%;
+        color: #FFFFFF;
+        font-size: 28px;
+        margin: -10px 10px 15px;
+      }
+
+      .edit-button {
+        border: 2px solid #5B16B5;
+        background-color: #895EC1;
+      }
+
+      .delete-button {
+        border: 2px solid #CB4242;
+        background-color: #FF5555;
+      }
+    }
+  }
+
   .tltr-border-radius {
     border-radius: 28px 30px 0 0 !important;
   }
