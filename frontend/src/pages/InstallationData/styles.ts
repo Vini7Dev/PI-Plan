@@ -132,6 +132,7 @@ export const AssessmentArea = styled.section`
   border: 2px solid #CEAA7B;
   border-radius: 30px;
   padding: 20px;
+  margin-top: 40px;
 
   .tltr-border-radius {
     border-radius: 28px 30px 0 0 !important;

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FiX } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
@@ -6,6 +7,8 @@ import * as Yup from 'yup';
 
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
+import parseBrDateStringToDate from '../../utils/parseBrDateStringToDate';
+import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
@@ -17,7 +20,6 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ModalView from '../../components/ModalView';
-import parseBrDateStringToDate from '../../utils/parseBrDateStringToDate';
 
 interface IAssembler {
   id: string;
@@ -54,6 +56,7 @@ interface IInstallationProps {
 const InstallationData: React.FC = () => {
   const popupFormRef = useRef<FormHandles>(null);
   const formRef = useRef<FormHandles>(null);
+  const history = useHistory();
   const [showPopup, setShowPopup] = useState(false);
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
   const [assemblersInstallation, setAssemblersInstallation] = useState<IAssemblerInstallation[]>([]);
@@ -73,17 +76,82 @@ const InstallationData: React.FC = () => {
         setInstallationData(installationDataResponse as IInstallationProps);
         setAssemblersInstallation(installationDataResponse.assemblers_installation);
         setInstallationId(installationIdFromPath);
-        setOrderId(orderIdFromPath);
       } else {
         setInstallationData({} as IInstallationProps);
         setAssemblersInstallation([]);
         setInstallationId('');
-        setOrderId('');
       }
+
+      setOrderId(orderIdFromPath);
     }
 
     loadInstallationData();
   }, []);
+
+  // Função para cadastrar uma nova instalação ou para atualizar os dados de uma já existente
+  const handleSubmitForm = useCallback(async (data) => {
+    try {
+      // Confirmando se foram adicionados montadores
+      if(assemblersInstallation.length === 0) {
+        alert('Adicione pelo menos um montador!');
+
+        return;
+      }
+
+      // Criando o modelo para validação do formulário
+      const shape = Yup.object().shape({
+        start_date: Yup.string().length(10, 'Informe uma data válida!').required('A data de início é obrigatória!'),
+        end_date: Yup.string().length(10, 'Informe uma data válida!'),
+        completion_forecast: Yup.string().length(10, 'Informe uma data válida!').required('A previsão de finalização é obrigatória!'),
+        price: Yup.number().required('Informe o valor pago pela instalação!'),
+        assemblers_installation: Yup.array().min(1, 'Informe ao mínimo um montador!').of(
+          Yup.object().shape({
+            assembler_id: Yup.string().uuid('Informe um uuid válido!').required('O id do montador é obrigatório!'),
+            commission_percentage: Yup.number().min(0, 'Informe no mínimo 0% de comissão!'),
+          }),
+        ),
+      });
+
+      // Criando o objeto com os dados da instalação
+      const installationDataToRequest = {
+        start_date: parseDateStringToBrFormat(data.start_date),
+        end_date: parseDateStringToBrFormat(data.end_date) || undefined,
+        completion_forecast: parseDateStringToBrFormat(data.completion_forecast),
+        price: Number(data.price),
+        assemblers_installation: assemblersInstallation.map(({ assembler_id, commission_percentage }) => ({
+          assembler_id,
+          commission_percentage: Number(commission_percentage),
+        })),
+      }
+
+      // Validando o formulário
+      await shape.validate(installationDataToRequest, { abortEarly: false });
+
+      // Cadastrando ou atualizando os dados
+      if(installationId) {
+        // Atualizando os dados da instalação
+        await api.put(`/installations/${installationId}`, installationDataToRequest);
+      } else {
+        // Adicionando o id do pedido
+        Object.assign(installationDataToRequest, { order_id: orderId });
+
+        // Cadastrando uma nova instalação
+        await api.post('/installations', installationDataToRequest);
+      }
+
+      // Navegando para a tela de listagem das instalações
+      history.push('/installations-list');
+    } catch(error) {
+      // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
+      if(error instanceof Yup.ValidationError){
+        const errors = getValidationErrors(error);
+
+        if(formRef.current) {
+          formRef.current.setErrors(errors);
+        }
+      }
+    }
+  }, [assemblersInstallation, installationId, orderId, history]);
 
   // Função para carregar os montadores cadastrados na aplicação
   const handleLoadAssemblers = useCallback(async () => {
@@ -122,7 +190,7 @@ const InstallationData: React.FC = () => {
       await shape.validate({
         assembler_id,
         commission_percentage: data.commission_percentage,
-      });
+      }, { abortEarly: false });
 
       // Criando o objeto do montador + sua comissão
       const assemblerInstallationObject: IAssemblerInstallation = {
@@ -176,9 +244,7 @@ const InstallationData: React.FC = () => {
         <main id="form-area">
           <Header title="Cadastro de Instalação" />
 
-          <Form ref={formRef} onSubmit={() => {
-            //
-          }}>
+          <Form ref={formRef} onSubmit={handleSubmitForm}>
             <StatusButton
               buttonText="Finalizar Instalação"
               buttonColor="green"
@@ -260,63 +326,63 @@ const InstallationData: React.FC = () => {
               />
             </AddAssemblersArea>
 
-            <AssessmentArea>
-              <h3>Avaliação</h3>
-
-              <div id="assessment-content">
-                <div id="assessment-table">
-                  <div className="assessment-row">
-                    <span className="tltr-border-radius">Houve atrazo?</span>
-                    <p className="tr-border-radius">{
-                      installationData.end_date
-                      && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
-                        ? 'Sim' : 'Não'
-                    }</p>
-                  </div>
-                  <div className="assessment-row">
-                    <span>Nota de Limpeza e Finalização</span>
-                    <p>
-                      {installationData.assessment &&installationData.assessment.cleaning_note}
-                    </p>
-                  </div>
-                  <div className="assessment-row">
-                    <span>Nota de Acabamento</span>
-                    <p>
-                      {installationData.assessment &&installationData.assessment.finish_note}
-                    </p>
-                  </div>
-                  <div className="assessment-row">
-                    <span>Nota do Cliente</span>
-                    <p>
-                      {installationData.assessment &&installationData.assessment.customer_note}
-                    </p>
-                  </div>
-                  <div className="assessment-row">
-                    <span className="bltr-border-radius">Nota da Gerência</span>
-                    <p className="br-border-radius">
-                      {installationData.assessment &&installationData.assessment.manager_note}
-                    </p>
-                  </div>
-                </div>
-                <div id="lost-amount-and-comments">
-                  <div>
-                    <span>Valor em Prejuízo</span>
-                    <p className="text-right">
-                      {installationData.assessment &&installationData.assessment.loss_amount}
-                    </p>
-                  </div>
-                  <div>
-                    <span>Comentários</span>
-                    <p>
-                      {installationData.assessment &&installationData.assessment.comment}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </AssessmentArea>
-
             <Button name="Salvar" type="submit" />
           </Form>
+
+          <AssessmentArea>
+            <h3>Avaliação</h3>
+
+            <div id="assessment-content">
+              <div id="assessment-table">
+                <div className="assessment-row">
+                  <span className="tltr-border-radius">Houve atrazo?</span>
+                  <p className="tr-border-radius">{
+                    installationData.end_date
+                    && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
+                      ? 'Sim' : 'Não'
+                  }</p>
+                </div>
+                <div className="assessment-row">
+                  <span>Nota de Limpeza e Finalização</span>
+                  <p>
+                    {installationData.assessment &&installationData.assessment.cleaning_note}
+                  </p>
+                </div>
+                <div className="assessment-row">
+                  <span>Nota de Acabamento</span>
+                  <p>
+                    {installationData.assessment &&installationData.assessment.finish_note}
+                  </p>
+                </div>
+                <div className="assessment-row">
+                  <span>Nota do Cliente</span>
+                  <p>
+                    {installationData.assessment &&installationData.assessment.customer_note}
+                  </p>
+                </div>
+                <div className="assessment-row">
+                  <span className="bltr-border-radius">Nota da Gerência</span>
+                  <p className="br-border-radius">
+                    {installationData.assessment &&installationData.assessment.manager_note}
+                  </p>
+                </div>
+              </div>
+              <div id="lost-amount-and-comments">
+                <div>
+                  <span>Valor em Prejuízo</span>
+                  <p className="text-right">
+                    {installationData.assessment &&installationData.assessment.loss_amount}
+                  </p>
+                </div>
+                <div>
+                  <span>Comentários</span>
+                  <p>
+                    {installationData.assessment &&installationData.assessment.comment}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AssessmentArea>
         </main>
       </div>
       {
