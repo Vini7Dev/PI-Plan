@@ -4,7 +4,7 @@ class DateProvider implements IDateProvider {
   // Transformando datas no formato 'DD-MM-AAAA'
   public parseStringDate(stringDate: string): Date {
     // Dividindo o texto pela '-'
-    const [stringDay, stringMonth, stringYear] = stringDate.split('/');
+    const [stringYear, stringMonth, stringDay] = stringDate.split('-');
 
     // Transformando em número
     const day = Number(stringDay);
