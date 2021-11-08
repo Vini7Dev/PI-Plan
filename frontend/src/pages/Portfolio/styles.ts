@@ -2,11 +2,7 @@ import styled from 'styled-components';
 
 import Banner from '../../assets/images/Portfolio_Banner.png';
 
-interface IContainerProps {
-  isAuthenticated: boolean;
-}
-
-export const Container = styled.div<IContainerProps>`
+export const Container = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;

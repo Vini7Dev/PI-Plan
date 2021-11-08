@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
-import { number } from 'yup/lib/locale';
 import api from '../../services/api';
 import { Container, Table, ModalContent } from './styles';
 
