@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 
-import Example1 from '../../assets/images/Examples/Example_1.png';
-
 interface IContainerProps {
+  adminAuthenticated: boolean;
   imageUrl: string;
 }
 
@@ -20,7 +19,7 @@ export const Container = styled.button<IContainerProps>`
   background-position: center;
   background-size: cover;
 
-  button {
+  .item-button {
     width: 275px;
     height: 220px;
     border: none;
@@ -55,5 +54,22 @@ export const Container = styled.button<IContainerProps>`
         font-size: 16px;
       }
     }
+  }
+
+  .remove-item-button {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 5px;
+    border-radius: 100%;
+    border: 2px solid #CB4242;
+    background-color: #FF5555;
+    color: #FFFFFF;
+    font-size: 25px;
   }
 `;

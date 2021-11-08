@@ -11,8 +11,8 @@ interface IAddImageProps {
 
 // Componente de input para adicionar imagem
 const AddImageInput: React.FC<IAddImageProps> = ({
-  setSelectedImage,
   defaultFileURL,
+  setSelectedImage,
 }) => {
   const [previewURL, setPreviewURL] = useState('');
 

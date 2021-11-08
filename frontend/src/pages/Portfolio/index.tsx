@@ -58,8 +58,6 @@ const Portfolio: React.FC = () => {
   const handleLoadPortfolioItems = useCallback(async () => {
     const { data: portfolioItemsList } = await api.get<IPortfolioItemData[]>('/portfolio-items');
 
-    console.log(portfolioItemsList);
-
     setPortfolioItems(portfolioItemsList);
   }, []);
 
@@ -153,6 +151,22 @@ const Portfolio: React.FC = () => {
     }
   }, [toggleShowModal]);
 
+  // Apagar um item do portfólio
+  const handleDeleteItem = useCallback(async (id: string) => {
+    // Verificando se o usuário realmente deseja apagar o item
+    const response = confirm('Você realmente deseja apagar o item?');
+
+    if(!response) {
+      return;
+    }
+
+    // Enviando a requisição para apagar o item
+    await api.delete(`/portfolio-items/${id}`);
+
+    // Recarregando a lista de itens do portfólio
+    handleLoadPortfolioItems();
+  }, [handleLoadPortfolioItems]);
+
   return (
     <Container onLoad={handleLoadPortfolioItems}>
       <nav>
@@ -224,9 +238,8 @@ const Portfolio: React.FC = () => {
                 title={portfolioItem.title}
                 description={portfolioItem.description}
                 imageUrl={`http://localhost:3333/files/${portfolioItem.image_reference}`}
-                onClickToEdit={() => {
-                  handleGetItemDataToEdit(portfolioItem.id);
-                }}
+                onClickToEdit={handleGetItemDataToEdit}
+                onClickToDelete={handleDeleteItem}
               />
             ))
           : null

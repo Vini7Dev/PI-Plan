@@ -1,4 +1,5 @@
 import React from 'react';
+import { FiTrash2 } from 'react-icons/fi';
 
 import { Container } from './styles';
 
@@ -7,7 +8,9 @@ interface IPortfolioItemProps {
   title: string;
   description: string;
   imageUrl: string;
+  adminAuthenticated?: boolean;
   onClickToEdit(id: string): void;
+  onClickToDelete(id: string): void;
 }
 
 // Componente para apresentar um item cadastrado no portfólio
@@ -16,15 +19,20 @@ const PortfolioItem: React.FC<IPortfolioItemProps> = ({
   title,
   description,
   imageUrl,
+  adminAuthenticated = false,
   onClickToEdit,
+  onClickToDelete,
 }) => {
   return (
-    <Container imageUrl={imageUrl}>
-      <button onClick={() => onClickToEdit(id)}>
+    <Container imageUrl={imageUrl} adminAuthenticated={adminAuthenticated}>
+      <button className="item-button" onClick={() => onClickToEdit(id)}>
         <div className="portfolio-item-content">
           <strong>{title}</strong>
           <p>{description}</p>
         </div>
+      </button>
+      <button className="remove-item-button" onClick={() => onClickToDelete(id)}>
+        <FiTrash2 />
       </button>
     </Container>
   );
