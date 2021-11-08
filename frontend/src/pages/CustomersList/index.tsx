@@ -12,20 +12,23 @@ import SearchBarButton from '../../components/SearchBarButton';
 interface IClientProps {
   id: string;
   name: string;
-  cellphone: string;
+  phone: string;
   document?: string;
 }
 
 // Página de listagem dos clientes
 const CustomersList: React.FC = () => {
   const [customers, setCustomers] = useState<IClientProps[]>([]);
+  const [searchString, setSearchString] = useState('');
 
   // Função para carregar os clientes cadastrados
   const handleLoadCustomers = useCallback(async () => {
-    const { data: customersList } = await api.get<IClientProps[]>('/customers');
+    const { data: customersList } = await api.get<IClientProps[]>(`/customers${
+      searchString ? `?search_string=${searchString}` : ''
+    }`);
 
     setCustomers(customersList);
-  }, []);
+  }, [searchString]);
 
   // Função para apagar um cliente
   const handleDeleteCustomer = useCallback(async (id: string) => {
@@ -50,13 +53,13 @@ const CustomersList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Clientes">
-          <SearchBarButton
+        <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por um cliente"
-            onClickInSearchButton={() => {
-              //
-            }}
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            onClickInSearchButton={handleLoadCustomers}
           />
         </Header>
 
@@ -94,7 +97,7 @@ const CustomersList: React.FC = () => {
 
                       <td className="text-right td-x1">
                         <Link to={`/customer-data/${customer.id}`}>
-                          { customer.cellphone }
+                          { customer.phone }
                         </Link>
                         <button className="ic-remove" onClick={() => handleDeleteCustomer(customer.id)}>
                           <FiTrash2 />

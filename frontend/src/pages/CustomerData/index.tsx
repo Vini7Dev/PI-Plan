@@ -7,7 +7,6 @@ import * as Yup from 'yup';
 
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
-import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -97,7 +96,7 @@ const CustomerData: React.FC = () =>{
         name: data.name,
         phone: data.phone,
         document: data.document || undefined,
-        next_contact_date: parseDateStringToBrFormat(data.next_contact_date),
+        next_contact_date: data.next_contact_date,
       };
 
       // Validando os dados

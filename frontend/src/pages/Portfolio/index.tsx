@@ -26,7 +26,7 @@ interface IPortfolioItemData {
   id: string;
   title: string;
   description: string;
-  image: File;
+  image_reference: string;
 }
 
 // Página para listagem dos itens salvos no portfólio
@@ -35,7 +35,10 @@ const Portfolio: React.FC = () => {
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [selectedItemId, setSelectedItemId] = useState('');
+  const [editItemId, setEditItemId] = useState('');
+  const [editTitle, setEditTitle] = useState('');
+  const [editDescription, setEditDescription] = useState('');
+  const [editFileURL, setEditFileURL] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [portfolioItems, setPortfolioItems] = useState<IPortfolioItemData[]>([]);
 
@@ -53,8 +56,6 @@ const Portfolio: React.FC = () => {
 
   // Carregando os itens cadastrados no portfólio
   const handleLoadPortfolioItems = useCallback(async () => {
-    console.log('OK');
-
     const { data: portfolioItemsList } = await api.get<IPortfolioItemData[]>('/portfolio-items');
 
     console.log(portfolioItemsList);
@@ -62,11 +63,26 @@ const Portfolio: React.FC = () => {
     setPortfolioItems(portfolioItemsList);
   }, []);
 
+  // Mostrar ou esconder o item do portfólio
+  const toggleShowModal = useCallback(() => {
+    // Verificando se está fechando o modal
+    if(modalIsOpen) {
+      // Limpando os dados padrão
+      setEditItemId('');
+      setEditTitle('');
+      setEditDescription('');
+      setEditFileURL('');
+    }
+
+    // Alterando o estado atual do modal
+    setModalIsOpen(!modalIsOpen);
+  }, [modalIsOpen]);
+
   // Cadastrando/Editando um item no portfólio
   const handleSubmitPortfolioItem = useCallback(async (data) => {
     try {
       // Verificando se a imagem foi adicionada
-      if(!selectedImage) {
+      if(!selectedImage && !editFileURL) {
         alert('Adicione uma imagem!');
 
         return;
@@ -85,11 +101,13 @@ const Portfolio: React.FC = () => {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
-      formData.append('image', selectedImage);
+      if(selectedImage) {
+        formData.append('image', selectedImage);
+      }
 
-      if(selectedItemId) {
+      if(editItemId) {
         // Atualizando o item no portfólio
-        await api.post(`/portfolio-items/${selectedItemId}`, formData);
+        await api.put(`/portfolio-items/${editItemId}`, formData);
       } else {
         // Cadastrando o item no portfólio
         await api.post('/portfolio-items', formData);
@@ -98,8 +116,14 @@ const Portfolio: React.FC = () => {
       // Recarregando a listagem dos itens cadastrados no portfólio
       handleLoadPortfolioItems();
 
+      // Limpando os dados padrão
+      setEditItemId('');
+      setEditTitle('');
+      setEditDescription('');
+      setEditFileURL('');
+
       // Fechando o popup
-      setModalIsOpen(false);
+      toggleShowModal();
     } catch(error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
       if(error instanceof Yup.ValidationError){
@@ -110,7 +134,24 @@ const Portfolio: React.FC = () => {
         }
       }
     }
-  }, [selectedItemId, selectedImage, setModalIsOpen, handleLoadPortfolioItems]);
+  }, [editItemId, selectedImage, editFileURL, toggleShowModal, handleLoadPortfolioItems]);
+
+  // Quando selecionar um item para editar
+  const handleGetItemDataToEdit = useCallback(async (id: string) => {
+    // Buscando o item cadastrado
+    const { data: portfolioItemData } = await api.get<IPortfolioItemData>(`/portfolio-items/${id}`);
+
+    if(portfolioItemData) {
+      // Caso tenha encontrado o item, salvando os seus dados
+      setEditItemId(portfolioItemData.id);
+      setEditTitle(portfolioItemData.title);
+      setEditDescription(portfolioItemData.description);
+      setEditFileURL(`http://localhost:3333/files/${portfolioItemData.image_reference}`);
+
+      // Abrindo o popup para atualizar o item
+      toggleShowModal();
+    }
+  }, [toggleShowModal]);
 
   return (
     <Container onLoad={handleLoadPortfolioItems}>
@@ -137,7 +178,7 @@ const Portfolio: React.FC = () => {
                   name="Adicionar item"
                   size="small"
                   color="white"
-                  onClick={() => setModalIsOpen(true)}
+                  onClick={toggleShowModal}
                 />
 
                 <div className="nav-btn-divisor" />
@@ -178,10 +219,14 @@ const Portfolio: React.FC = () => {
           portfolioItems.length > 0
             ? portfolioItems.map(portfolioItem => (
               <PortfolioItem
-                key={portfolioItem.id}
                 id={portfolioItem.id}
+                key={portfolioItem.id}
                 title={portfolioItem.title}
                 description={portfolioItem.description}
+                imageUrl={`http://localhost:3333/files/${portfolioItem.image_reference}`}
+                onClickToEdit={() => {
+                  handleGetItemDataToEdit(portfolioItem.id);
+                }}
               />
             ))
           : null
@@ -197,15 +242,20 @@ const Portfolio: React.FC = () => {
             label="Título"
             name="title"
             placeholder="Informe o título do móvel"
+            defaultValue={editTitle}
           />
 
           <Input
             label="Descrição"
             name="description"
             placeholder="Descreva o móvel"
+            defaultValue={editDescription}
           />
 
-          <AddImageInput />
+          <AddImageInput
+            setSelectedImage={setSelectedImage}
+            defaultFileURL={editFileURL}
+          />
 
           <Button
             name="Adicionar"
@@ -216,7 +266,7 @@ const Portfolio: React.FC = () => {
 
           <Button
             name="Fechar"
-            onClick={() => setModalIsOpen(false)}
+            onClick={toggleShowModal}
             color="white"
             size="small"
           />

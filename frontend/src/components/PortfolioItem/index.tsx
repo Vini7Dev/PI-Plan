@@ -5,7 +5,9 @@ import { Container } from './styles';
 interface IPortfolioItemProps {
   id: string;
   title: string;
-  description?: string;
+  description: string;
+  imageUrl: string;
+  onClickToEdit(id: string): void;
 }
 
 // Componente para apresentar um item cadastrado no portfólio
@@ -13,10 +15,12 @@ const PortfolioItem: React.FC<IPortfolioItemProps> = ({
   id,
   title,
   description,
+  imageUrl,
+  onClickToEdit,
 }) => {
   return (
-    <Container>
-      <button>
+    <Container imageUrl={imageUrl}>
+      <button onClick={() => onClickToEdit(id)}>
         <div className="portfolio-item-content">
           <strong>{title}</strong>
           <p>{description}</p>

@@ -2,7 +2,11 @@ import styled from 'styled-components';
 
 import Example1 from '../../assets/images/Examples/Example_1.png';
 
-export const Container = styled.button`
+interface IContainerProps {
+  imageUrl: string;
+}
+
+export const Container = styled.button<IContainerProps>`
   position: relative;
   width: 100%;
   max-width: 275px;
@@ -11,7 +15,10 @@ export const Container = styled.button`
   margin: 20px 20px;
   border: none;
   border-radius: 15px;
-  background: url(${Example1}) no-repeat center center;
+  background-image: url(${props => props.imageUrl});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
 
   button {
     width: 275px;

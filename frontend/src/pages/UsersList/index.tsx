@@ -21,15 +21,24 @@ interface IUserProps {
 // Página para listagem dos usuários cadastrados
 const UsersList: React.FC = () => {
   const [users, setUsers] = useState<IUserProps[]>([]);
+  const [searchString, setSearchString] = useState('');
 
   // Função para carregar os usuários cadastrados
   const handleLoadUsers = useCallback(async () => {
-    const { data: adminsList } = await api.get<IUserProps[]>('/admins');
+    if(searchString) {
+      const { data: userList } = await api.get<IUserProps[]>(`/users?search_string=${searchString}`);
 
-    const { data: assemblersList } = await api.get<IUserProps[]>('/assemblers');
+      setUsers(userList);
 
-    setUsers([...adminsList, ...assemblersList]);
-  }, []);
+      setSearchString('');
+    } else {
+      const { data: adminsList } = await api.get<IUserProps[]>('/admins');
+
+      const { data: assemblersList } = await api.get<IUserProps[]>('/assemblers');
+
+      setUsers([...adminsList, ...assemblersList]);
+    }
+  }, [searchString]);
 
   // Função para apagar um usuário
   const handleDeleteUser = useCallback(async (id: string, user_type: 'admin' | 'assembler') => {
@@ -63,9 +72,9 @@ const UsersList: React.FC = () => {
             label="Buscar"
             name="search_string"
             placeholder="Procure por um usuário"
-            onClickInSearchButton={() => {
-              //
-            }}
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            onClickInSearchButton={handleLoadUsers}
           />
         </Header>
 

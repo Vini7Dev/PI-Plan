@@ -23,13 +23,16 @@ interface IInstallationProps {
 // Página para listagem das intalações
 const InstallationsList: React.FC = () => {
   const [installations, setInstallations] = useState<IInstallationProps[]>([]);
+  const [searchString, setSearchString] = useState('');
 
   // Função para carregar as instalações cadastradas
   const handleLoadInstallations = useCallback(async () => {
-    const { data: installationsList } = await api.get<IInstallationProps[]>('/installations');
+    const { data: installationsList } = await api.get<IInstallationProps[]>(`/installations${
+      searchString ? `?search_string=${searchString}` : ''
+    }`);
 
     setInstallations(installationsList);
-  }, []);
+  }, [searchString]);
 
   // Função para apagar uma instalação
   const handleDeleteInstallation = useCallback(async (id: string) => {
@@ -55,13 +58,13 @@ const InstallationsList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Instalações">
-          <SearchBarButton
+        <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por uma instalação"
-            onClickInSearchButton={() => {
-              //
-            }}
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            onClickInSearchButton={handleLoadInstallations}
           />
         </Header>
 
