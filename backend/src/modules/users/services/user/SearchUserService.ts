@@ -14,7 +14,7 @@ class SearchUserService {
     private assemblersRepository: IAssemblersRepository,
   ) {}
 
-  public async execute(search_string: string): Promise<User[]> {
+  public async execute(search_string = ''): Promise<User[]> {
     // Pesquisando os usuários administradores e montadores
     const filteredAdmins = await this.adminsRepository.findBySearchParameter(search_string);
 

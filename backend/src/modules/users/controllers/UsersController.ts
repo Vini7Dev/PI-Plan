@@ -4,8 +4,8 @@ import SearchUserService from '../services/user/SearchUserService';
 
 class UsersController {
   public async get(request: Request, response: Response): Promise<Response> {
-    // Recuperando o parâmetro de pesquisa do corpo da requisição
-    const { search_string } = request.body;
+    // Recuperando o parâmetro de pesquisa nos querry params
+    const { search_string } = request.query as { search_string?: string };
 
     // Instanciando o serviço para busca
     const searchUserService = container.resolve(SearchUserService);
