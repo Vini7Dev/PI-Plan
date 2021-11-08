@@ -36,6 +36,11 @@ const Portfolio: React.FC = () => {
       : history.push('/orders-list');
   }, [history, user]);
 
+  // Função para cadastrar/atualizar um item do portfólio
+  const handleSubmitPortfolioItem = useCallback(async (data) => {
+    //
+  }, []);
+
   return (
     <Container isAuthenticated>
       <nav>
@@ -163,7 +168,11 @@ const Portfolio: React.FC = () => {
             placeholder="Descreva o móvel"
           />
 
-          <AddImageInput />
+          <AddImageInput
+            setSelectedImage={() => {
+              //
+            }}
+          />
 
           <Button
             name="Adicionar"
