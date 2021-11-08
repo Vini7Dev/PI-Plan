@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 import { FiLayers, FiSettings, FiMail } from 'react-icons/fi';
 
 import { Container } from './styles';
@@ -15,9 +16,29 @@ interface IReminderItemProps {
 const ReminderItem: React.FC<IReminderItemProps> = ({
   id, title, subtitle, description, reminder_type,
 }) => {
+  const history = useHistory();
+
+  // Navegando para a página do lembrete
+  const handleNavigateToReminderPage = useCallback(() => {
+    switch(reminder_type) {
+      case 'order':
+        history.push(`/order-data/${id}`);
+        break;
+      case 'installation':
+        history.push(`/installation-data/${id}`);
+        break;
+      case 'contact_alert':
+        history.push(`/customer-data/${id}`);
+        break;
+      default:
+        alert('Lembrete inválido!');
+    }
+  }, [id, reminder_type, history]);
+
   return (
     <Container
       reminder_type={reminder_type}
+      onClick={handleNavigateToReminderPage}
     >
       {
         (function() {

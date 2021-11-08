@@ -4,7 +4,7 @@ interface IContainerProps {
   reminder_type: 'contact_alert' | 'order' | 'installation';
 }
 
-export const Container = styled.div<IContainerProps>`
+export const Container = styled.button<IContainerProps>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -22,7 +22,7 @@ export const Container = styled.div<IContainerProps>`
       default:
         return '#CEAA7B';
     }
-  }};
+  }} !important;
 
   border: 5px solid ${props => {
     switch(props.reminder_type) {
@@ -40,7 +40,7 @@ export const Container = styled.div<IContainerProps>`
   border-radius: 30px;
   padding: 10px;
   margin: 0 5px;
-  color: #FFFFFF;
+  color: #FFFFFF !important;
   text-align: center;
 
   svg {
