@@ -115,9 +115,9 @@ const InstallationData: React.FC = () => {
 
       // Criando o objeto com os dados da instalação
       const installationDataToRequest = {
-        start_date: parseDateStringToBrFormat(data.start_date),
-        end_date: parseDateStringToBrFormat(data.end_date) || undefined,
-        completion_forecast: parseDateStringToBrFormat(data.completion_forecast),
+        start_date: data.start_date,
+        end_date: data.end_date || undefined,
+        completion_forecast: data.completion_forecast,
         price: Number(data.price),
         assemblers_installation: assemblersInstallation.map(({ assembler_id, commission_percentage }) => ({
           assembler_id,

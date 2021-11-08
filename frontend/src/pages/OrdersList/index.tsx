@@ -20,13 +20,16 @@ interface IOrderProps {
 // Página de listagem dos pedidos
 const OrdersList: React.FC = () => {
   const [orders, setOrders] = useState<IOrderProps[]>([]);
+  const [searchString, setSearchString] = useState('');
 
   // Buscando os pedidos cadastrados
   const handleLoadOrders = useCallback(async () => {
-    const { data: ordersList } = await api.get<IOrderProps[]>('/orders');
+    const { data: ordersList } = await api.get<IOrderProps[]>(`/orders${
+      searchString ? `?search_string=${searchString}` : ''
+    }`);
 
     setOrders(ordersList);
-  }, []);
+  }, [searchString]);
 
   // Apagando um pedido
   const handleDeleteOrder = useCallback(async (id: string) => {
@@ -56,9 +59,9 @@ const OrdersList: React.FC = () => {
             label="Buscar"
             name="search_string"
             placeholder="Procure por um pedido"
-            onClickInSearchButton={() => {
-              //
-            }}
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            onClickInSearchButton={handleLoadOrders}
           />
         </Header>
 
@@ -102,13 +105,13 @@ const OrdersList: React.FC = () => {
                         {
                           function () {
                             switch(order.current_proccess) {
-                              case(1):
+                              case(0):
                                 return 'Iniciando';
-                              case(2):
+                              case(1):
                                 return 'Pedido na Fábrica'
-                              case(3):
+                              case(2):
                                 return 'Instalando'
-                              case(4):
+                              case(3):
                                 return 'Reunião com os Montadores'
                               default:
                                 return 'Não Encontrado';

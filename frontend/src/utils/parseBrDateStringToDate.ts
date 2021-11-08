@@ -5,6 +5,7 @@ const parseBrDateStringToDate = (dateString: string): Date => {
   const dayNumber = Number(day);
   const monthNumber = Number(month);
   const yearNumber = Number(year);
+
   return new Date(yearNumber, monthNumber - 1, dayNumber);
 }
 

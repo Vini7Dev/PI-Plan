@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { Form } from '@unform/web';
 
-import { number } from 'yup/lib/locale';
 import api from '../../services/api';
 import { Container, Table, ModalContent } from './styles';
 
@@ -50,6 +49,7 @@ interface ITotOfNotesForAVG {
 // Página de listagem das avaliações
 const AssessmentsList: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
+  const [searchString, setSearchString] = useState('');
   const [assessments, setAssessments] = useState<IAssessmentSelect[]>([]);
   const [totOfNotesForAVG, setTotOfNotesForAVG] = useState<ITotOfNotesForAVG>({} as ITotOfNotesForAVG);
 
@@ -60,7 +60,9 @@ const AssessmentsList: React.FC = () => {
 
   // Função para carregar as avaliações
   const handleLoadAssesments = useCallback(async () => {
-    const { data: assessmentsList } = await api.get<IAssessmentProps[]>('/assessments');
+    const { data: assessmentsList } = await api.get<IAssessmentProps[]>(`/assessments${
+      searchString ? `?search_string=${searchString}` : ''
+    }`);
 
     const assessmentsListWithSelectBox = assessmentsList.map(assessment => ({
       assessment,
@@ -68,7 +70,7 @@ const AssessmentsList: React.FC = () => {
     }));
 
     setAssessments(assessmentsListWithSelectBox);
-  }, []);
+  }, [searchString]);
 
   // Função para apagar uma avaliação
   const handleDeleteAssessment = useCallback(async (id: string) => {
@@ -140,13 +142,13 @@ const AssessmentsList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Avaliações">
-          <SearchBarButton
+        <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por uma avaliação"
-            onClickInSearchButton={() => {
-              //
-            }}
+            value={searchString}
+            onChange={(e) => setSearchString(e.target.value)}
+            onClickInSearchButton={handleLoadAssesments}
           />
         </Header>
 

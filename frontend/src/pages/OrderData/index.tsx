@@ -60,7 +60,6 @@ const OrderData: React.FC = () => {
   const [orderId, setOrderId] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [currentProccess, setCurrentProccess] = useState(0);
-  const [currentStatus, setCurrentStatus] = useState(0);
   const [selectedUF, setSelectedUF] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
@@ -77,19 +76,21 @@ const OrderData: React.FC = () => {
 
       setOrderData(orderDataResponse);
       setOrderId(orderIdFromPath);
-      setCurrentStatus(orderDataResponse.current_status);
       setCurrentProccess(orderDataResponse.current_proccess);
       setSelectedUF(orderDataResponse.address.uf);
       setSelectedCity(orderDataResponse.address.city);
       setSelectedCountry(orderDataResponse.address.country);
+      setDescription(orderDataResponse.description);
+      setInstallationEnvironments(orderDataResponse.installation_environments);
     } else {
       setOrderData({ address: {} } as IOrderProps);
       setOrderId('');
-      setCurrentStatus(0);
       setCurrentProccess(0);
       setSelectedUF('');
       setSelectedCity('');
       setSelectedCountry('');
+      setDescription('');
+      setInstallationEnvironments('');
     }
 
     setCustomerId(customerIdFromPath);
@@ -139,14 +140,14 @@ const OrderData: React.FC = () => {
           uf: data.address.uf,
           country: data.address.country,
         },
-        current_status: currentStatus,
+        current_status: data.end_date ? 1 : 0,
         current_proccess: currentProccess,
         title: data.title,
         description,
         installation_environments: installationEnvironments,
-        start_date: parseDateStringToBrFormat(data.start_date),
-        end_date: parseDateStringToBrFormat(data.end_date),
-        furniture_delivery_forecast: parseDateStringToBrFormat(data.furniture_delivery_forecast),
+        start_date: data.start_date,
+        end_date: data.end_date || undefined,
+        furniture_delivery_forecast: data.furniture_delivery_forecast,
         payment_method: data.payment_method,
         gross_value: Number(data.gross_value),
         expenses_value: Number(data.expenses_value),
@@ -178,7 +179,7 @@ const OrderData: React.FC = () => {
         }
       }
     }
-  }, [customerId, orderId, currentStatus, currentProccess, description, installationEnvironments, history]);
+  }, [customerId, orderId, currentProccess, description, installationEnvironments, history]);
 
   // Função para voltar um passo do processo do pedido
   const handleToGoBackOnCurrentProcess = useCallback(() => {
