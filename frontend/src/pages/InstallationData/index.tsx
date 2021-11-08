@@ -8,7 +8,6 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseBrDateStringToDate from '../../utils/parseBrDateStringToDate';
-import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
