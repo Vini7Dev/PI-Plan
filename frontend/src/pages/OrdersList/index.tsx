@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi'
 
 import api from '../../services/api';
+import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -101,23 +102,10 @@ const OrdersList: React.FC = () => {
                         </Link>
                         </td>
                       <td className="text-center td-x2">
-                      <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
-                        {
-                          function () {
-                            switch(order.current_proccess) {
-                              case(0):
-                                return 'Iniciando';
-                              case(1):
-                                return 'Pedido na Fábrica'
-                              case(2):
-                                return 'Instalando'
-                              case(3):
-                                return 'Reunião com os Montadores'
-                              default:
-                                return 'Não Encontrado';
-                            }
-                          }()
-                        }
+                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                          {
+                            getOrderProcessArray()[order.current_proccess]
+                          }
                         </Link>
                         <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
                           <FiTrash2 />

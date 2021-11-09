@@ -7,6 +7,7 @@ import * as Yup from 'yup';
 
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
+import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -230,20 +231,7 @@ const CustomerData: React.FC = () =>{
                         <td className="text-center td-x2">
                         <Link to={`/order-data/${order.id}`}>
                           {
-                            function () {
-                              switch(order.current_proccess) {
-                                case(1):
-                                  return 'Iniciando';
-                                case(2):
-                                  return 'Pedido na Fábrica'
-                                case(3):
-                                  return 'Instalando'
-                                case(4):
-                                  return 'Reunião com os Montadores'
-                                default:
-                                  return 'Não Encontrado';
-                              }
-                            }()
+                            getOrderProcessArray()[order.current_proccess]
                           }
                           </Link>
                           <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>

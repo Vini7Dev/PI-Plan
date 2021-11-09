@@ -8,6 +8,7 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
+import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -192,8 +193,7 @@ const OrderData: React.FC = () => {
   // Função para avançar um processo do pedido
   const handleToGoForewardOnCurrentProcess = useCallback(() => {
     // Verificando se não está no último passo
-    if(currentProccess < 6) {
-      alert('ATUALIZAR O NÚMERO DO ÚLTIMO PASSO');
+    if(currentProccess < getOrderProcessArray().length - 1) {
       setCurrentProccess(currentProccess + 1);
     }
   }, [currentProccess]);
@@ -237,15 +237,9 @@ const OrderData: React.FC = () => {
             <Select
               label="Processo Atual"
               name="current_proccess"
-              options={[
-                { value: 0, description: 'Iniciando' },
-                { value: 1, description: 'Visita Inicial' },
-                { value: 2, description: 'Modelagem do Móvel' },
-                { value: 3, description: 'Reunião com o Cliente' },
-                { value: 4, description: 'Pedido na Fábrica' },
-                { value: 5, description: 'Instalando' },
-                { value: 6, description: 'Reunião com os Montadores' },
-              ]}
+              options={getOrderProcessArray().map((process, index) => ({
+                value: index, description: process,
+              }))}
               value={currentProccess}
               onChange={(e) => setCurrentProccess(Number(e.target.value))}
             />
