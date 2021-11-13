@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { FiLayers, FiSettings, FiMail } from 'react-icons/fi';
 
 import { Container } from './styles';
+import getOrderProcessArray from '../../utils/getOrderProcessArray';
+import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 
 interface IReminderItemProps {
   id: string;
@@ -55,7 +57,13 @@ const ReminderItem: React.FC<IReminderItemProps> = ({
         })()
       }
       <strong>{title}</strong>
-      <span>{subtitle}</span>
+      <span>
+        {
+          reminder_type === 'order'
+            ? getOrderProcessArray()[Number(subtitle)]
+            : parseDateStringToBrFormat(subtitle)
+        }
+      </span>
       <p>{description}</p>
     </Container>
   );
