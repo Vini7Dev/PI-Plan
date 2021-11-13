@@ -346,11 +346,9 @@ const OrderData: React.FC = () => {
                   label="UF"
                   name="address.uf"
                   options={[
-                    { description: 'Integrar com os Correios' },
-                    { description: 'AA' },
-                    { description: 'BB' },
-                    { description: 'CC' },
-                    { description: 'DD' },
+                    { description: 'SP' },
+                    { description: 'MG' },
+                    { description: 'RS' },
                   ]}
                   value={selectedUF}
                   onChange={(e) => setSelectedUF(e.target.value)}
@@ -362,11 +360,8 @@ const OrderData: React.FC = () => {
                   label="Cidade"
                   name="address.city"
                   options={[
-                    { description: 'Integrar com os Correios' },
-                    { description: 'Cidade 1' },
-                    { description: 'Cidade 2' },
-                    { description: 'Cidade 3' },
-                    { description: 'Cidade 4' },
+                    { description: 'Franca' },
+                    { description: 'Integrar com a API dos correios...' },
                   ]}
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
@@ -378,11 +373,8 @@ const OrderData: React.FC = () => {
               label="País"
               name="address.country"
               options={[
-                { description: 'Integrar com os Correios' },
-                { description: 'País 1' },
-                { description: 'País 2' },
-                { description: 'País 3' },
-                { description: 'País 4' },
+                { description: 'Brasil' },
+                { description: 'Outro' },
               ]}
               value={selectedCountry}
               onChange={(e) => setSelectedCountry(e.target.value)}
