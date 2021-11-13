@@ -24,16 +24,19 @@ const PortfolioItem: React.FC<IPortfolioItemProps> = ({
   onClickToDelete,
 }) => {
   return (
-    <Container imageUrl={imageUrl} adminAuthenticated={adminAuthenticated}>
+    <Container imageUrl={imageUrl}>
       <button className="item-button" onClick={() => onClickToEdit(id)}>
         <div className="portfolio-item-content">
           <strong>{title}</strong>
           <p>{description}</p>
         </div>
       </button>
-      <button className="remove-item-button" onClick={() => onClickToDelete(id)}>
-        <FiTrash2 />
-      </button>
+      {
+        adminAuthenticated &&
+          <button className="remove-item-button" onClick={() => onClickToDelete(id)}>
+            <FiTrash2 />
+          </button>
+      }
     </Container>
   );
 };

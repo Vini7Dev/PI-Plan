@@ -20,7 +20,6 @@ import Input from '../../components/Input';
 import AddImageInput from '../../components/AddImageInput';
 import Button from '../../components/Button';
 import PortfolioItem from '../../components/PortfolioItem';
-import SearchBarButton from '../../components/SearchBarButton';
 
 interface IPortfolioItemData {
   id: string;
@@ -172,16 +171,6 @@ const Portfolio: React.FC = () => {
       <nav>
         <div id="nav-logo-area">
           <img src={Logo} alt="Planejados Inteligentes" />
-
-          <SearchBarButton
-            label="Buscar"
-            name="search_string"
-            placeholder="Busque por um produto"
-            color="white"
-            onClickInSearchButton={() => {
-              //
-            }}
-          />
         </div>
 
         <div id="nav-button">
@@ -238,8 +227,9 @@ const Portfolio: React.FC = () => {
                 title={portfolioItem.title}
                 description={portfolioItem.description}
                 imageUrl={`http://localhost:3333/files/${portfolioItem.image_reference}`}
-                onClickToEdit={handleGetItemDataToEdit}
-                onClickToDelete={handleDeleteItem}
+                onClickToEdit={user && user.user_type === 'admin' ? handleGetItemDataToEdit : () => {/**/}}
+                onClickToDelete={user && user.user_type === 'admin' ? handleDeleteItem : () => {/**/}}
+                adminAuthenticated={user && user.user_type === 'admin'}
               />
             ))
           : null

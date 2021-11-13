@@ -99,8 +99,7 @@ export const Container = styled.div`
 
 export const BannerImageArea = styled.div`
   width: 100%;
-  height: 100%;
-  min-height: 480px;
+  height: 480px;
   display: flex;
   justify-content: space-between;
   align-items: center;

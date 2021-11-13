@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
 interface IContainerProps {
-  adminAuthenticated: boolean;
   imageUrl: string;
 }
 
