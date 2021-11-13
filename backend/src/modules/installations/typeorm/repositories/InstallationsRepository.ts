@@ -47,7 +47,13 @@ class InstallationsRepository implements IInstallationsRepository {
   // Listando as instalações em andamento
   public async listInProgress(): Promise<Installation[]> {
     const inProgressInstallations = await this.repository.find({
-      where: { end_date: IsNull() }, relations: ['order'],
+      where: { end_date: IsNull() },
+      relations: [
+        'order',
+        'assessment',
+        'assemblers_installation',
+        'assemblers_installation.assembler',
+      ],
     });
 
     return inProgressInstallations;
