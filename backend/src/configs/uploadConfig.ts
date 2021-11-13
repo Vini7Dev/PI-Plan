@@ -16,7 +16,7 @@ export default {
     filename: (req, file, callback) => {
       const currentTime = (new Date()).getTime();
 
-      const fileName = `${currentTime}-${file.originalname}`;
+      const fileName = `${currentTime}-${file.originalname.replace(/ /g, '')}`;
 
       return callback(null, fileName);
     },
