@@ -1,11 +1,25 @@
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
+import Modal from 'react-modal';
 
-function App() {
+import GlobalStyles from './styles/global';
+
+import { AuthProvider } from './contexts/Authentication';
+import Routes from './routes';
+
+Modal.setAppElement("#root");
+
+const App: React.FC = () => {
   return (
     <div className="App">
-      <h1>Hello World!</h1>
+      <BrowserRouter>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+        <GlobalStyles />
+      </BrowserRouter>
     </div>
   );
-}
+};
 
 export default App;
