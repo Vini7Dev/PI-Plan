@@ -479,7 +479,9 @@ const InstallationData: React.FC = () => {
         </main>
       </div>
       {
-        showPopup && <ModalView isOpen={showPopup} title="Adicionar Montador" >
+        showPopup && <ModalView isOpen={showPopup} title={
+          modalContentType === 'add_assembler' ? 'Adicionar Montador' : 'Avaliação'
+        }>
           <ModalContent>
             <Form
               onSubmit={modalContentType === 'add_assembler'
