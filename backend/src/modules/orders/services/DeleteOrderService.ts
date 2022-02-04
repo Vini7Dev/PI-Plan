@@ -2,6 +2,7 @@ import { inject, injectable } from 'tsyringe';
 
 import AppError from '../../../shared/errors/AppError';
 import IOrdersRepository from '../repositories/IOrdersRepository';
+import IInstallationsRepository from '../../installations/repositories/IInstallationsRepository';
 
 @injectable()
 class DeleteOrderService {
@@ -10,7 +11,7 @@ class DeleteOrderService {
     @inject('OrdersRepository')
     private ordersRepository: IOrdersRepository,
     @inject('InstallationsRepository')
-    private installationsRepository: IOrdersRepository,
+    private installationsRepository: IInstallationsRepository,
   ) { }
 
   // Serviço para apagar um pedido
