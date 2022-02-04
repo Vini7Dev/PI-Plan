@@ -9,7 +9,9 @@ class DeleteOrderService {
     // Repositório dos pedidos
     @inject('OrdersRepository')
     private ordersRepository: IOrdersRepository,
-  ) {}
+    @inject('InstallationsRepository')
+    private installationsRepository: IOrdersRepository,
+  ) { }
 
   // Serviço para apagar um pedido
   public async execute(id: string): Promise<string> {
@@ -18,6 +20,11 @@ class DeleteOrderService {
 
     if (!orderToDelete) {
       throw new AppError('Order not found.', 404);
+    }
+
+    // Verificando se o pedido tem alguma instalação associada
+    if (orderToDelete.installation && orderToDelete.installation.id) {
+      await this.installationsRepository.delete(orderToDelete.installation.id);
     }
 
     // Apagando o pedido

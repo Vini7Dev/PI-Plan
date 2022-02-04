@@ -1,4 +1,4 @@
-import React, { useState , useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import Carousel from 'react-elastic-carousel';
 import { FiTrash2 } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -43,7 +43,7 @@ interface ITaskProps {
 }
 
 // Página inicial do site
-const DashBoard: React.FC = () =>{
+const DashBoard: React.FC = () => {
   const { user } = useAuth();
   const formRef = useRef<FormHandles>(null);
   const [showPopup, setShowPopup] = useState(false);
@@ -68,7 +68,7 @@ const DashBoard: React.FC = () =>{
     setShowPopup(!showPopup);
 
     // Caso tenha informado o id da tarefa, buscar os seus respectivos dados do back-end
-    if(id) {
+    if (id) {
       // Recuprando os dados da tarefa no back-end
       const { data: taskData } = await api.get<ITaskProps>(`/todos/${id}`);
 
@@ -114,9 +114,9 @@ const DashBoard: React.FC = () =>{
       await shape.validate(taskData, { abortEarly: false });
 
       // Verificando se o id da tarefa está presente, caso sim, atualizar os seus dados
-      if(taskId) {
-          // Atualizando os dados da tarefa
-          await api.put(`/todos/${taskId}`, taskData);
+      if (taskId) {
+        // Atualizando os dados da tarefa
+        await api.put(`/todos/${taskId}`, taskData);
       } else {
         // Adicionando o atributo admin_id nos dados da tarefa
         Object.assign(taskData, { admin_id: user.id });
@@ -130,24 +130,24 @@ const DashBoard: React.FC = () =>{
 
       // Fechando o popup
       toggleShowPopup();
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
-  },[user, taskId, taskDone, handleLoadTasks, toggleShowPopup]);
+  }, [user, taskId, taskDone, handleLoadTasks, toggleShowPopup]);
 
   // Função para apagar uma tarefa
   const handleDeleteTask = useCallback(async (id: string) => {
     // Verificando se o usuário realmente deseja apagar a tarefa
     const response = confirm('Você realmente deseja apagar a terefa?');
 
-    if(response) {
+    if (response) {
       // Enviando uma requisição para apagar a tarefa
       await api.delete(`/todos/${id}`);
 
@@ -192,7 +192,7 @@ const DashBoard: React.FC = () =>{
     handleLoadTasks();
   }, [handleLoadTasks]);
 
-  return(
+  return (
     <Container onLoad={handleLoadReminders}>
       <div id="navigation-area">
         <NavigationBar optionSelected={0} />
@@ -226,7 +226,7 @@ const DashBoard: React.FC = () =>{
         </div>
 
         <main>
-          <div className= "space-division">
+          <div className="space-division">
             <div className="size2">
               <AddTaskButton>
                 <button>Tarefas</button>
@@ -240,29 +240,29 @@ const DashBoard: React.FC = () =>{
           </div>
           <TasksList>
             {
-              tasks.length ?  tasks.map(task => (
-                  <div className="task-item" key={task.id}>
-                    <button className="item-data" onClick={() => toggleShowPopup(task.id)}>
-                      <input
-                        type="checkbox"
-                        name={task.id}
-                        checked={task.done}
-                        readOnly
-                      />
-                      <div>
-                        <label htmlFor={task.id}>
-                          {task.title}
-                        </label>
-                        <p className="task-description">
-                          {task.description}
-                        </p>
-                      </div>
-                    </button>
-                    <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
-                      <FiTrash2 />
-                    </button>
-                  </div>
-                )) : (
+              tasks.length ? tasks.map(task => (
+                <div className="task-item" key={task.id}>
+                  <button className="item-data" onClick={() => toggleShowPopup(task.id)}>
+                    <input
+                      type="checkbox"
+                      name={task.id}
+                      checked={task.done}
+                      readOnly
+                    />
+                    <div>
+                      <label htmlFor={task.id}>
+                        {task.title}
+                      </label>
+                      <p className="task-description">
+                        {task.description}
+                      </p>
+                    </div>
+                  </button>
+                  <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
+                    <FiTrash2 />
+                  </button>
+                </div>
+              )) : (
                 <div id="empty-list">
                   <h4>Lista vazia...</h4>
                 </div>
@@ -289,17 +289,17 @@ const DashBoard: React.FC = () =>{
               />
 
               <Input
-              label="Título"
-              name="title"
-              placeholder="Digíte o Título"
-              defaultValue={taskTitle}
+                label="Título"
+                name="title"
+                placeholder="Digíte o Título"
+                defaultValue={taskTitle}
               />
 
               <Input
-              label="Descrição"
-              name="description"
-              placeholder="Digíte a Descrição"
-              defaultValue={taskDescription}
+                label="Descrição"
+                name="description"
+                placeholder="Digíte a Descrição"
+                defaultValue={taskDescription}
               />
 
               <Button

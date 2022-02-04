@@ -30,7 +30,7 @@ class ListAdminRemindersByDateService {
 
     @inject('InstallationsRepository')
     private installationsRepository: IInstallationsRepository,
-  ) {}
+  ) { }
 
   public async execute(date: string): Promise<IResponse> {
     const [stringDay, stringMonth, stringYear] = date.split('-');
