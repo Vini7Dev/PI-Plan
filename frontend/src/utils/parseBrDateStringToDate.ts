@@ -1,6 +1,6 @@
 // Transformando a data dd/mm/yyy para uma data
 const parseBrDateStringToDate = (dateString: string): Date => {
-  const [day, month, year] = dateString.split('-');
+  const [year, month, day] = dateString.split('-');
 
   const dayNumber = Number(day);
   const monthNumber = Number(month);
