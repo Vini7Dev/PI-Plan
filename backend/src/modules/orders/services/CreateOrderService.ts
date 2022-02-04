@@ -46,7 +46,7 @@ class CreateOrderService {
     // Provetor para trabalhar com datas
     @inject('DateProvider')
     private dateProvider: IDateProvider,
-  ) {}
+  ) { }
 
   // Serviço para cadastrar um pedido
   public async execute({

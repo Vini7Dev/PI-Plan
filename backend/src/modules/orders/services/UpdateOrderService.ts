@@ -42,7 +42,7 @@ class UpdateOrderService {
     // Provetor para trabalhar com datas
     @inject('DateProvider')
     private dateProvider: IDateProvider,
-  ) {}
+  ) { }
 
   // Serviço para atualizar os dados de um pedido
   public async execute({
@@ -99,8 +99,11 @@ class UpdateOrderService {
     orderToUpdate.description = description;
     orderToUpdate.installation_environments = installation_environments;
     orderToUpdate.start_date = start_date;
-    orderToUpdate.end_date = end_date || '';
-    orderToUpdate.furniture_delivery_forecast = furniture_delivery_forecast || '';
+
+    if (end_date) orderToUpdate.end_date = end_date;
+
+    if (furniture_delivery_forecast) { orderToUpdate.furniture_delivery_forecast = furniture_delivery_forecast; }
+
     orderToUpdate.payment_method = payment_method;
     orderToUpdate.gross_value = gross_value;
     orderToUpdate.expenses_value = expenses_value;

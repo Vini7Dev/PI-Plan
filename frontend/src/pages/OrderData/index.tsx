@@ -72,7 +72,7 @@ const OrderData: React.FC = () => {
     const orderIdFromPath = location.pathname.split('/order-data/')[1];
     const customerIdFromPath = location.search.split('=')[1];
 
-    if(orderIdFromPath) {
+    if (orderIdFromPath) {
       const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
 
       setOrderData(orderDataResponse);
@@ -148,7 +148,7 @@ const OrderData: React.FC = () => {
         installation_environments: installationEnvironments,
         start_date: data.start_date,
         end_date: data.end_date || undefined,
-        furniture_delivery_forecast: data.furniture_delivery_forecast,
+        furniture_delivery_forecast: data.furniture_delivery_forecast || undefined,
         payment_method: data.payment_method,
         gross_value: Number(data.gross_value),
         expenses_value: Number(data.expenses_value),
@@ -157,7 +157,7 @@ const OrderData: React.FC = () => {
       // Validando o formulário
       await shape.validate(orderDataToRequest, { abortEarly: false });
 
-      if(orderId) {
+      if (orderId) {
         // Enviando os dados ao backend para atualizar o pedido
         await api.put(`/orders/${orderId}`, orderDataToRequest);
       } else {
@@ -170,12 +170,12 @@ const OrderData: React.FC = () => {
 
       // Enviando o usuário para a tela de listagem
       history.push('/orders-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
@@ -185,7 +185,7 @@ const OrderData: React.FC = () => {
   // Função para voltar um passo do processo do pedido
   const handleToGoBackOnCurrentProcess = useCallback(() => {
     // Verificando se não está no primeiro passo
-    if(currentProccess > 0) {
+    if (currentProccess > 0) {
       setCurrentProccess(currentProccess - 1);
     }
   }, [currentProccess]);
@@ -193,7 +193,7 @@ const OrderData: React.FC = () => {
   // Função para avançar um processo do pedido
   const handleToGoForewardOnCurrentProcess = useCallback(() => {
     // Verificando se não está no último passo
-    if(currentProccess < getOrderProcessArray().length - 1) {
+    if (currentProccess < getOrderProcessArray().length - 1) {
       setCurrentProccess(currentProccess + 1);
     }
   }, [currentProccess]);
@@ -208,7 +208,7 @@ const OrderData: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar a instalação
     const response = confirm('Você realmente deseja apagar a instalação?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -436,9 +436,8 @@ const OrderData: React.FC = () => {
                         <td className="text-center td-id td-x1">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             <span
-                              className={`ic ${
-                                orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
-                              }`}
+                              className={`ic ${orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
+                                }`}
                             >IC</span>
                           </Link>
                         </td>
@@ -446,7 +445,7 @@ const OrderData: React.FC = () => {
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             {parseDateStringToBrFormat(orderData.installation.start_date)}
                           </Link>
-                          </td>
+                        </td>
                         <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             {parseDateStringToBrFormat(orderData.installation.end_date || orderData.installation.completion_forecast)}
@@ -461,16 +460,16 @@ const OrderData: React.FC = () => {
                       </tr>
                     )
                     : <tr><td colSpan={3} id="empty-installation-data">
-                        <Button
-                          name="Cadastrar Instalação"
-                          size="small"
-                          onClick={
-                            orderId
+                      <Button
+                        name="Cadastrar Instalação"
+                        size="small"
+                        onClick={
+                          orderId
                             ? handleGoToRegisterInstallation
                             : () => alert('Pedido não cadastrado!')
-                          }
-                        />
-                      </td></tr>
+                        }
+                      />
+                    </td></tr>
                 }
               </tbody>
             </Table>
