@@ -60,9 +60,22 @@ const AssessmentsList: React.FC = () => {
     setShowPopup(!showPopup);
   }, [showPopup]);
 
+  // Função para limpar a seleção das avaliações
+  const handleDesableAllMarkupAssessments = useCallback(() => {
+    const updatedAssessments = assessments.map(({ assessment }) => ({
+      assessment,
+      selected: false,
+    }));
+
+    setAssessments(updatedAssessments);
+  }, [assessments]);
+
   // Função para carregar as avaliações
   const handleLoadAssesments = useCallback(async () => {
     setLoadingAssessments(true);
+
+    // Limpando a seleção das avaliações
+    handleDesableAllMarkupAssessments();
 
     try {
       const { data: assessmentsList } = await api.get<IAssessmentProps[]>(`/assessments${searchString ? `?search_string=${searchString}` : ''
@@ -165,6 +178,7 @@ const AssessmentsList: React.FC = () => {
           <Button
             name="Calcular Média das Notas Selecionadas"
             onClick={handleCalculeAvgFromSelectedAssessments}
+            size="small"
           />
         </div>
 
