@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  FocusEvent
+} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -9,6 +15,7 @@ import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import getOrderProcessArray from '../../utils/getOrderProcessArray';
+import { getAddressByCep, getCitiesListByUF, getUFsList } from '../../utils/getAddressData';
 import { Container, Table } from './styles';
 
 import NavigationBar from '../../components/NavigationBar';
@@ -61,11 +68,15 @@ const OrderData: React.FC = () => {
   const [orderId, setOrderId] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [currentProccess, setCurrentProccess] = useState(0);
+  const [selectedStreet, setSelectedStreet] = useState('');
+  const [selectedComplement, setSelectedComplement] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedUF, setSelectedUF] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [description, setDescription] = useState('');
   const [installationEnvironments, setInstallationEnvironments] = useState('');
+  const [citiesList, setCitiesList] = useState<{ description: string }[]>([]);
 
   // Caso exista o id do pedido na rota, buscar os seus dados no banco de dados
   const loadOrderData = useCallback(async () => {
@@ -78,6 +89,9 @@ const OrderData: React.FC = () => {
       setOrderData(orderDataResponse);
       setOrderId(orderIdFromPath);
       setCurrentProccess(orderDataResponse.current_proccess);
+      setSelectedStreet(orderDataResponse.address.street);
+      setSelectedComplement(orderDataResponse.address.complement);
+      setSelectedDistrict(orderDataResponse.address.district);
       setSelectedUF(orderDataResponse.address.uf);
       setSelectedCity(orderDataResponse.address.city);
       setSelectedCountry(orderDataResponse.address.country);
@@ -87,6 +101,9 @@ const OrderData: React.FC = () => {
       setOrderData({ address: {} } as IOrderProps);
       setOrderId('');
       setCurrentProccess(0);
+      setSelectedStreet('');
+      setSelectedComplement('');
+      setSelectedDistrict('');
       setSelectedUF('');
       setSelectedCity('');
       setSelectedCountry('');
@@ -101,6 +118,42 @@ const OrderData: React.FC = () => {
     loadOrderData();
   }, [loadOrderData]);
 
+  // Buscando a lista de cidades por UF
+  useEffect(() => {
+    const handleGetCitiesListByUF = async () => {
+      const citiesListResponse = await getCitiesListByUF(selectedUF);
+
+      setCitiesList(citiesListResponse);
+    }
+
+    handleGetCitiesListByUF();
+  }, [selectedUF])
+
+  // Buscando o endereço com base no cep
+  const handleGetAddressByCep = useCallback(async (e: FocusEvent<HTMLInputElement>) => {
+    // Recuperando os CEP informado (removendo o -)
+    const cepValue = e.target.value.replace(/-/g, '');
+
+    try {
+      // Buscando o endereço
+      const addressData = await getAddressByCep(cepValue);
+
+      setSelectedStreet(addressData.logradouro);
+      setSelectedComplement(addressData.complemento);
+      setSelectedDistrict(addressData.bairro);
+      setSelectedUF(addressData.uf);
+      setSelectedCity(addressData.localidade);
+      setSelectedCountry('Brasil');
+    } catch {
+      setSelectedStreet('');
+      setSelectedComplement('');
+      setSelectedDistrict('');
+      setSelectedUF('--');
+      setSelectedCity('Outro');
+      setSelectedCountry('Outro');
+    }
+  }, []);
+
   // Função para criar um pedido ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
     try {
@@ -113,7 +166,7 @@ const OrderData: React.FC = () => {
           complement: Yup.string(),
           district: Yup.string().required('O bairro é obrigatório!'),
           city: Yup.string().required('A cidade é obrigatória!'),
-          uf: Yup.string().length(2, 'Informe as iniciais da UF').required('A UF é obrigatória!'),
+          uf: Yup.string().length(2, 'Informe a UF').required('A UF é obrigatória!'),
           country: Yup.string().required('O país é obrigatório!'),
         }),
         current_status: Yup.number().required('O status do pedido é obrigatório!'),
@@ -304,6 +357,7 @@ const OrderData: React.FC = () => {
               name="address.cep"
               placeholder="Informe o CEP"
               defaultValue={orderData.address.cep}
+              onBlur={handleGetAddressByCep}
             />
 
             <div className="space-division">
@@ -313,6 +367,8 @@ const OrderData: React.FC = () => {
                   name="address.street"
                   placeholder="Informe a rua"
                   defaultValue={orderData.address.street}
+                  value={selectedStreet}
+                  onChange={(e) => setSelectedStreet(e.target.value)}
                 />
               </div>
               <div className="x-divisor" />
@@ -331,6 +387,8 @@ const OrderData: React.FC = () => {
               name="address.complement"
               placeholder="Informe o complemento"
               defaultValue={orderData.address.complement}
+              value={selectedComplement}
+              onChange={(e) => setSelectedComplement(e.target.value)}
             />
 
             <Input
@@ -338,6 +396,8 @@ const OrderData: React.FC = () => {
               name="address.district"
               placeholder="Informe o bairro"
               defaultValue={orderData.address.district}
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
             />
 
             <div className="space-division">
@@ -345,11 +405,7 @@ const OrderData: React.FC = () => {
                 <Select
                   label="UF"
                   name="address.uf"
-                  options={[
-                    { description: 'SP' },
-                    { description: 'MG' },
-                    { description: 'RS' },
-                  ]}
+                  options={getUFsList()}
                   value={selectedUF}
                   onChange={(e) => setSelectedUF(e.target.value)}
                 />
@@ -359,10 +415,7 @@ const OrderData: React.FC = () => {
                 <Select
                   label="Cidade"
                   name="address.city"
-                  options={[
-                    { description: 'Franca' },
-                    { description: 'Integrar com a API dos correios...' },
-                  ]}
+                  options={citiesList}
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                 />

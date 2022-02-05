@@ -40,7 +40,7 @@ const Select: React.FC<IInputProps> = ({
         {options.map(option => (
           <option
             value={option.value || option.description}
-            key={option.value || option.description}
+            key={option.value || (option.description + Math.random())}
           >
             {option.description}
           </option>
