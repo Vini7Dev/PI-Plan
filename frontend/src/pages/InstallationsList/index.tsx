@@ -6,6 +6,7 @@ import api from '../../services/api';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
@@ -22,16 +23,24 @@ interface IInstallationProps {
 
 // Página para listagem das intalações
 const InstallationsList: React.FC = () => {
+  const [loadingInstallations, setLoadingInstallations] = useState(false);
   const [installations, setInstallations] = useState<IInstallationProps[]>([]);
   const [searchString, setSearchString] = useState('');
 
   // Função para carregar as instalações cadastradas
   const handleLoadInstallations = useCallback(async () => {
-    const { data: installationsList } = await api.get<IInstallationProps[]>(`/installations${
-      searchString ? `?search_string=${searchString}` : ''
-    }`);
+    setLoadingInstallations(true);
 
-    setInstallations(installationsList);
+    try {
+      const { data: installationsList } = await api.get<IInstallationProps[]>(`/installations${searchString ? `?search_string=${searchString}` : ''
+        }`);
+
+      setInstallations(installationsList);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingInstallations(false);
   }, [searchString]);
 
   // Função para apagar uma instalação
@@ -39,7 +48,7 @@ const InstallationsList: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar a instalação
     const response = confirm('Você realmente deseja apagar a instalação?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -58,7 +67,7 @@ const InstallationsList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Instalações">
-        <SearchBarButton
+          <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por uma instalação"
@@ -79,37 +88,38 @@ const InstallationsList: React.FC = () => {
             </thead>
             <tbody>
               {
-                installations.length > 0
-                  ? installations.map(installation => (
-                    <tr key={installation.id}>
-                      <td className="text-center td-id td-x1">
-                        <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
-                          <span
-                            className={`ic ${
-                              installation.end_date ? 'ic-completed' : 'ic-inprogress'
-                            }`}
-                          >IC</span>
-                        </Link>
-                      </td>
-                      <td className="text-left td-x3">
-                        <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
-                          {installation.order.title}
-                        </Link>
+                loadingInstallations
+                  ? <tr><td colSpan={3}><p id="empty-assessments-list"><Loading /></p></td></tr>
+                  : installations.length > 0
+                    ? installations.map(installation => (
+                      <tr key={installation.id}>
+                        <td className="text-center td-id td-x1">
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                            <span
+                              className={`ic ${installation.end_date ? 'ic-completed' : 'ic-inprogress'
+                                }`}
+                            >IC</span>
+                          </Link>
                         </td>
-                      <td className="text-center td-x2">
-                      <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
-                      { parseDateStringToBrFormat(installation.end_date || installation.completion_forecast) }
-                        </Link>
-                        <button
-                          className="ic-remove"
-                          onClick={() => handleDeleteInstallation(installation.id)}
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                  : <tr><td colSpan={3}><p id="empty-installations-list">Sem instalações...</p></td></tr>
+                        <td className="text-left td-x3">
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                            {installation.order.title}
+                          </Link>
+                        </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                            {parseDateStringToBrFormat(installation.end_date || installation.completion_forecast)}
+                          </Link>
+                          <button
+                            className="ic-remove"
+                            onClick={() => handleDeleteInstallation(installation.id)}
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                    : <tr><td colSpan={3}><p id="empty-installations-list">Sem instalações...</p></td></tr>
               }
             </tbody>
           </Table>

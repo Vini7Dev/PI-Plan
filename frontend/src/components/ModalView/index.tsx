@@ -6,12 +6,14 @@ import { Container } from './styles';
 interface IModalViewProps {
   isOpen: boolean;
   title: string;
+  zIndex?: number;
 }
 
 // Componente de modal customizado
 const ModalView: React.FC<IModalViewProps> = ({
   isOpen,
   title,
+  zIndex = 1,
   children
 }) => {
   return (
@@ -19,7 +21,7 @@ const ModalView: React.FC<IModalViewProps> = ({
       isOpen={isOpen}
       style={{
         overlay: {
-          zIndex: 1,
+          zIndex,
         },
         content: {
           borderRadius: 30,
@@ -31,10 +33,10 @@ const ModalView: React.FC<IModalViewProps> = ({
       }}
     >
       <Container>
-        <h3>{ title }</h3>
+        <h3>{title}</h3>
 
         <div id="modal-content-area">
-          { children }
+          {children}
         </div>
       </Container>
     </Modal>

@@ -15,6 +15,7 @@ import {
 
 import Logo from '../../assets/images/PI_Plan.png';
 
+import Loading from '../../components/Loading';
 import ModalView from '../../components/ModalView';
 import Input from '../../components/Input';
 import AddImageInput from '../../components/AddImageInput';
@@ -33,6 +34,8 @@ const Portfolio: React.FC = () => {
   const { user } = useAuth();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingItem, setLoadingItem] = useState(false);
+  const [loadingPortfolioItems, setLoadingPortfolioItems] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [editItemId, setEditItemId] = useState('');
   const [editTitle, setEditTitle] = useState('');
@@ -55,15 +58,23 @@ const Portfolio: React.FC = () => {
 
   // Carregando os itens cadastrados no portfólio
   const handleLoadPortfolioItems = useCallback(async () => {
-    const { data: portfolioItemsList } = await api.get<IPortfolioItemData[]>('/portfolio-items');
+    setLoadingPortfolioItems(true);
 
-    setPortfolioItems(portfolioItemsList);
+    try {
+      const { data: portfolioItemsList } = await api.get<IPortfolioItemData[]>('/portfolio-items');
+
+      setPortfolioItems(portfolioItemsList);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingPortfolioItems(false);
   }, []);
 
   // Mostrar ou esconder o item do portfólio
   const toggleShowModal = useCallback(() => {
     // Verificando se está fechando o modal
-    if(modalIsOpen) {
+    if (modalIsOpen) {
       // Limpando os dados padrão
       setEditItemId('');
       setEditTitle('');
@@ -79,11 +90,12 @@ const Portfolio: React.FC = () => {
   const handleSubmitPortfolioItem = useCallback(async (data) => {
     try {
       // Verificando se a imagem foi adicionada
-      if(!selectedImage && !editFileURL) {
+      if (!selectedImage && !editFileURL) {
         alert('Adicione uma imagem!');
 
         return;
       }
+      setLoadingItem(true);
 
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -98,11 +110,11 @@ const Portfolio: React.FC = () => {
       const formData = new FormData();
       formData.append('title', data.title);
       formData.append('description', data.description);
-      if(selectedImage) {
+      if (selectedImage) {
         formData.append('image', selectedImage);
       }
 
-      if(editItemId) {
+      if (editItemId) {
         // Atualizando o item no portfólio
         await api.put(`/portfolio-items/${editItemId}`, formData);
       } else {
@@ -121,24 +133,28 @@ const Portfolio: React.FC = () => {
 
       // Fechando o popup
       toggleShowModal();
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
+
+    setLoadingItem(false);
   }, [editItemId, selectedImage, editFileURL, toggleShowModal, handleLoadPortfolioItems]);
 
   // Quando selecionar um item para editar
   const handleGetItemDataToEdit = useCallback(async (id: string) => {
+    setLoadingItem(true);
+
     // Buscando o item cadastrado
     const { data: portfolioItemData } = await api.get<IPortfolioItemData>(`/portfolio-items/${id}`);
 
-    if(portfolioItemData) {
+    if (portfolioItemData) {
       // Caso tenha encontrado o item, salvando os seus dados
       setEditItemId(portfolioItemData.id);
       setEditTitle(portfolioItemData.title);
@@ -148,6 +164,8 @@ const Portfolio: React.FC = () => {
       // Abrindo o popup para atualizar o item
       toggleShowModal();
     }
+
+    setLoadingItem(false);
   }, [toggleShowModal]);
 
   // Apagar um item do portfólio
@@ -155,7 +173,7 @@ const Portfolio: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar o item
     const response = confirm('Você realmente deseja apagar o item?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -219,20 +237,22 @@ const Portfolio: React.FC = () => {
 
       <main id="items-list-area">
         {
-          portfolioItems.length > 0
-            ? portfolioItems.map(portfolioItem => (
-              <PortfolioItem
-                id={portfolioItem.id}
-                key={portfolioItem.id}
-                title={portfolioItem.title}
-                description={portfolioItem.description}
-                imageUrl={`http://localhost:3333/files/${portfolioItem.image_reference}`}
-                onClickToEdit={user && user.user_type === 'admin' ? handleGetItemDataToEdit : () => {/**/}}
-                onClickToDelete={user && user.user_type === 'admin' ? handleDeleteItem : () => {/**/}}
-                adminAuthenticated={user && user.user_type === 'admin'}
-              />
-            ))
-          : null
+          loadingPortfolioItems
+            ? <Loading />
+            : portfolioItems.length > 0
+              ? portfolioItems.map(portfolioItem => (
+                <PortfolioItem
+                  id={portfolioItem.id}
+                  key={portfolioItem.id}
+                  title={portfolioItem.title}
+                  description={portfolioItem.description}
+                  imageUrl={`http://localhost:3333/files/${portfolioItem.image_reference}`}
+                  onClickToEdit={user && user.user_type === 'admin' ? handleGetItemDataToEdit : () => {/**/ }}
+                  onClickToDelete={user && user.user_type === 'admin' ? handleDeleteItem : () => {/**/ }}
+                  adminAuthenticated={user && user.user_type === 'admin'}
+                />
+              ))
+              : null
         }
       </main>
 
@@ -274,6 +294,10 @@ const Portfolio: React.FC = () => {
             size="small"
           />
         </Form>
+      </ModalView>
+
+      <ModalView title="" isOpen={loadingItem} zIndex={2}>
+        <Loading />
       </ModalView>
     </Container>
   );

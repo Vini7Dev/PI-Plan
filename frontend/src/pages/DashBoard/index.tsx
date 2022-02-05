@@ -12,6 +12,7 @@ import {
   Container, TasksList, AddTaskButton
 } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 import CheckBox from '../../components/CheckBox';
@@ -46,6 +47,9 @@ interface ITaskProps {
 const DashBoard: React.FC = () => {
   const { user } = useAuth();
   const formRef = useRef<FormHandles>(null);
+  const [loadingModal, setLoadingModal] = useState(false);
+  const [loadingTasks, setLoadingTasks] = useState(false);
+  const [loadingReminders, setLoadingReminders] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [reminders, setReminders] = useState<IReminderProps[]>([]);
   const [tasks, setTasks] = useState<ITaskProps[]>([]);
@@ -88,13 +92,23 @@ const DashBoard: React.FC = () => {
 
   // Função para buscar as tarefas cadastradas
   const handleLoadTasks = useCallback(async () => {
-    const tasksLoaded = await api.get<ITaskProps[]>('/admin-todos');
+    setLoadingTasks(true);
 
-    setTasks(tasksLoaded.data);
+    try {
+      const tasksLoaded = await api.get<ITaskProps[]>('/admin-todos');
+
+      setTasks(tasksLoaded.data);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingTasks(false);
   }, []);
 
   // Função para cadastrar uma nova tarefa
   const handleSubmitTaskData = useCallback(async (data) => {
+    setLoadingModal(true);
+
     try {
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -140,6 +154,8 @@ const DashBoard: React.FC = () => {
         }
       }
     }
+
+    setLoadingModal(false);
   }, [user, taskId, taskDone, handleLoadTasks, toggleShowPopup]);
 
   // Função para apagar uma tarefa
@@ -158,35 +174,43 @@ const DashBoard: React.FC = () => {
 
   // Função para buscar os lembretes do dia
   const handleLoadReminders = useCallback(async () => {
-    // Recuperando a data de hoje
-    const currentDate = new Date();
-    const day = (currentDate.getDate()).toString().padStart(2, '0');
-    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-    const year = currentDate.getFullYear();
+    setLoadingReminders(true);
 
-    // Buscando os lembretes da api
-    const { data: remindersList } = await api.get<IRemindersResponse>(`/reminders/${day}-${month}-${year}`);
+    try {
+      // Recuperando a data de hoje
+      const currentDate = new Date();
+      const day = (currentDate.getDate()).toString().padStart(2, '0');
+      const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+      const year = currentDate.getFullYear();
 
-    // Formatando o retorno da api para uma lista única
-    const remindersFormatedList: IReminderProps[] = [];
+      // Buscando os lembretes da api
+      const { data: remindersList } = await api.get<IRemindersResponse>(`/reminders/${day}-${month}-${year}`);
 
-    remindersList.contact_alerts.forEach(contact_alert => {
-      const reminderWithCardType = Object.assign(contact_alert, { reminder_type: 'contact_alert' });
-      remindersFormatedList.push(reminderWithCardType);
-    });
+      // Formatando o retorno da api para uma lista única
+      const remindersFormatedList: IReminderProps[] = [];
 
-    remindersList.orders.forEach(order => {
-      const reminderWithCardType = Object.assign(order, { reminder_type: 'order' });
-      remindersFormatedList.push(reminderWithCardType)
-    });
+      remindersList.contact_alerts.forEach(contact_alert => {
+        const reminderWithCardType = Object.assign(contact_alert, { reminder_type: 'contact_alert' });
+        remindersFormatedList.push(reminderWithCardType);
+      });
 
-    remindersList.installations.forEach(installation => {
-      const reminderWithCardType = Object.assign(installation, { reminder_type: 'installation' });
-      remindersFormatedList.push(reminderWithCardType)
-    });
+      remindersList.orders.forEach(order => {
+        const reminderWithCardType = Object.assign(order, { reminder_type: 'order' });
+        remindersFormatedList.push(reminderWithCardType)
+      });
 
-    // Salvando a lista de lembretes no estado
-    setReminders(remindersFormatedList);
+      remindersList.installations.forEach(installation => {
+        const reminderWithCardType = Object.assign(installation, { reminder_type: 'installation' });
+        remindersFormatedList.push(reminderWithCardType)
+      });
+
+      // Salvando a lista de lembretes no estado
+      setReminders(remindersFormatedList);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingReminders(false);
 
     // Buscando as tarefas
     handleLoadTasks();
@@ -210,17 +234,19 @@ const DashBoard: React.FC = () => {
             disableArrowsOnEnd={false}
           >
             {
-              reminders.length > 0
-                ? reminders.map((reminder) => (
-                  <ReminderItem
-                    key={reminder.id}
-                    id={reminder.id}
-                    title={reminder.title}
-                    subtitle={reminder.subtitle}
-                    description={reminder.description}
-                    reminder_type={reminder.reminder_type}
-                  />))
-                : <p id="empty-reminders-list">Sem lembretes...</p>
+              loadingReminders
+                ? <Loading />
+                : reminders.length > 0
+                  ? reminders.map((reminder) => (
+                    <ReminderItem
+                      key={reminder.id}
+                      id={reminder.id}
+                      title={reminder.title}
+                      subtitle={reminder.subtitle}
+                      description={reminder.description}
+                      reminder_type={reminder.reminder_type}
+                    />))
+                  : <p id="empty-reminders-list">Sem lembretes...</p>
             }
           </Carousel>
         </div>
@@ -240,33 +266,35 @@ const DashBoard: React.FC = () => {
           </div>
           <TasksList>
             {
-              tasks.length ? tasks.map(task => (
-                <div className="task-item" key={task.id}>
-                  <button className="item-data" onClick={() => toggleShowPopup(task.id)}>
-                    <input
-                      type="checkbox"
-                      name={task.id}
-                      checked={task.done}
-                      readOnly
-                    />
-                    <div>
-                      <label htmlFor={task.id}>
-                        {task.title}
-                      </label>
-                      <p className="task-description">
-                        {task.description}
-                      </p>
-                    </div>
-                  </button>
-                  <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
-                    <FiTrash2 />
-                  </button>
-                </div>
-              )) : (
-                <div id="empty-list">
-                  <h4>Lista vazia...</h4>
-                </div>
-              )
+              loadingTasks
+                ? <Loading />
+                : tasks.length ? tasks.map(task => (
+                  <div className="task-item" key={task.id}>
+                    <button className="item-data" onClick={() => toggleShowPopup(task.id)}>
+                      <input
+                        type="checkbox"
+                        name={task.id}
+                        checked={task.done}
+                        readOnly
+                      />
+                      <div>
+                        <label htmlFor={task.id}>
+                          {task.title}
+                        </label>
+                        <p className="task-description">
+                          {task.description}
+                        </p>
+                      </div>
+                    </button>
+                    <button className="ic-remove" onClick={() => handleDeleteTask(task.id)}>
+                      <FiTrash2 />
+                    </button>
+                  </div>
+                )) : (
+                  <div id="empty-list">
+                    <p id="empty-reminders-list">Sem tarefas...</p>
+                  </div>
+                )
             }
           </TasksList>
         </main>
@@ -320,6 +348,10 @@ const DashBoard: React.FC = () => {
           </ModalView>
         )
       }
+
+      <ModalView title="" isOpen={loadingModal}>
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

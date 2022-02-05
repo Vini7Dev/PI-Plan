@@ -18,6 +18,8 @@ import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { getAddressByCep, getCitiesListByUF, getUFsList } from '../../utils/getAddressData';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
+import ModalView from '../../components/ModalView';
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
@@ -64,6 +66,7 @@ const OrderData: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingData, setLoadingData] = useState(false);
   const [orderData, setOrderData] = useState<IOrderProps>({ address: {} } as IOrderProps);
   const [orderId, setOrderId] = useState('');
   const [customerId, setCustomerId] = useState('');
@@ -80,38 +83,46 @@ const OrderData: React.FC = () => {
 
   // Caso exista o id do pedido na rota, buscar os seus dados no banco de dados
   const loadOrderData = useCallback(async () => {
-    const orderIdFromPath = location.pathname.split('/order-data/')[1];
-    const customerIdFromPath = location.search.split('=')[1];
+    setLoadingData(true);
 
-    if (orderIdFromPath) {
-      const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
+    try {
+      const orderIdFromPath = location.pathname.split('/order-data/')[1];
+      const customerIdFromPath = location.search.split('=')[1];
 
-      setOrderData(orderDataResponse);
-      setOrderId(orderIdFromPath);
-      setCurrentProccess(orderDataResponse.current_proccess);
-      setSelectedStreet(orderDataResponse.address.street);
-      setSelectedComplement(orderDataResponse.address.complement);
-      setSelectedDistrict(orderDataResponse.address.district);
-      setSelectedUF(orderDataResponse.address.uf);
-      setSelectedCity(orderDataResponse.address.city);
-      setSelectedCountry(orderDataResponse.address.country);
-      setDescription(orderDataResponse.description);
-      setInstallationEnvironments(orderDataResponse.installation_environments);
-    } else {
-      setOrderData({ address: {} } as IOrderProps);
-      setOrderId('');
-      setCurrentProccess(0);
-      setSelectedStreet('');
-      setSelectedComplement('');
-      setSelectedDistrict('');
-      setSelectedUF('');
-      setSelectedCity('');
-      setSelectedCountry('');
-      setDescription('');
-      setInstallationEnvironments('');
+      if (orderIdFromPath) {
+        const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
+
+        setOrderData(orderDataResponse);
+        setOrderId(orderIdFromPath);
+        setCurrentProccess(orderDataResponse.current_proccess);
+        setSelectedStreet(orderDataResponse.address.street);
+        setSelectedComplement(orderDataResponse.address.complement);
+        setSelectedDistrict(orderDataResponse.address.district);
+        setSelectedUF(orderDataResponse.address.uf);
+        setSelectedCity(orderDataResponse.address.city);
+        setSelectedCountry(orderDataResponse.address.country);
+        setDescription(orderDataResponse.description);
+        setInstallationEnvironments(orderDataResponse.installation_environments);
+      } else {
+        setOrderData({ address: {} } as IOrderProps);
+        setOrderId('');
+        setCurrentProccess(0);
+        setSelectedStreet('');
+        setSelectedComplement('');
+        setSelectedDistrict('');
+        setSelectedUF('');
+        setSelectedCity('');
+        setSelectedCountry('');
+        setDescription('');
+        setInstallationEnvironments('');
+      }
+
+      setCustomerId(customerIdFromPath);
+    } catch (err) {
+      console.log(err);
     }
 
-    setCustomerId(customerIdFromPath);
+    setLoadingData(false);
   }, [location]);
 
   useEffect(() => {
@@ -131,6 +142,8 @@ const OrderData: React.FC = () => {
 
   // Buscando o endereço com base no cep
   const handleGetAddressByCep = useCallback(async (e: FocusEvent<HTMLInputElement>) => {
+    setLoadingData(true);
+
     // Recuperando os CEP informado (removendo o -)
     const cepValue = e.target.value.replace(/-/g, '');
 
@@ -152,10 +165,14 @@ const OrderData: React.FC = () => {
       setSelectedCity('Outro');
       setSelectedCountry('Outro');
     }
+
+    setLoadingData(false);
   }, []);
 
   // Função para criar um pedido ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
+    setLoadingData(true);
+
     try {
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -233,6 +250,8 @@ const OrderData: React.FC = () => {
         }
       }
     }
+
+    setLoadingData(false);
   }, [customerId, orderId, currentProccess, description, installationEnvironments, history]);
 
   // Função para voltar um passo do processo do pedido
@@ -529,6 +548,10 @@ const OrderData: React.FC = () => {
           </div>
         </section>
       </div>
+
+      <ModalView title="" isOpen={loadingData}>
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

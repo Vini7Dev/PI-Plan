@@ -1,10 +1,11 @@
-import React, { useState , useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 
 import api from '../../services/api';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
@@ -18,16 +19,24 @@ interface IClientProps {
 
 // Página de listagem dos clientes
 const CustomersList: React.FC = () => {
+  const [loadingCustomers, setLoadingCustomers] = useState(false);
   const [customers, setCustomers] = useState<IClientProps[]>([]);
   const [searchString, setSearchString] = useState('');
 
   // Função para carregar os clientes cadastrados
   const handleLoadCustomers = useCallback(async () => {
-    const { data: customersList } = await api.get<IClientProps[]>(`/customers${
-      searchString ? `?search_string=${searchString}` : ''
-    }`);
+    setLoadingCustomers(true);
 
-    setCustomers(customersList);
+    try {
+      const { data: customersList } = await api.get<IClientProps[]>(`/customers${searchString ? `?search_string=${searchString}` : ''
+        }`);
+
+      setCustomers(customersList);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingCustomers(false);
   }, [searchString]);
 
   // Função para apagar um cliente
@@ -35,7 +44,7 @@ const CustomersList: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar o cliente
     const response = confirm('Você realmente deseja apagar o cliente?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -53,7 +62,7 @@ const CustomersList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Clientes">
-        <SearchBarButton
+          <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por um cliente"
@@ -80,32 +89,34 @@ const CustomersList: React.FC = () => {
             </thead>
             <tbody>
               {
-                customers.length > 0
-                  ? customers.map(customer => (
-                    <tr key={customer.id}>
-                      <td className="text-left td-id td-x2">
-                        <Link to={`/customer-data/${customer.id}`}>
-                          { customer.name }
-                        </Link>
-                      </td>
+                loadingCustomers
+                  ? <tr><td colSpan={3}><p id="empty-assessments-list"><Loading /></p></td></tr>
+                  : customers.length > 0
+                    ? customers.map(customer => (
+                      <tr key={customer.id}>
+                        <td className="text-left td-id td-x2">
+                          <Link to={`/customer-data/${customer.id}`}>
+                            {customer.name}
+                          </Link>
+                        </td>
 
-                      <td className="td-x1 text-center">
-                        <Link to={`/customer-data/${customer.id}`}>
-                          { customer.document || 'Vazio...' }
-                        </Link>
-                      </td>
+                        <td className="td-x1 text-center">
+                          <Link to={`/customer-data/${customer.id}`}>
+                            {customer.document || 'Vazio...'}
+                          </Link>
+                        </td>
 
-                      <td className="text-right td-x1">
-                        <Link to={`/customer-data/${customer.id}`}>
-                          { customer.phone }
-                        </Link>
-                        <button className="ic-remove" onClick={() => handleDeleteCustomer(customer.id)}>
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                  : <tr><td colSpan={3}><p id="empty-users-list">Sem clientes...</p></td></tr>
+                        <td className="text-right td-x1">
+                          <Link to={`/customer-data/${customer.id}`}>
+                            {customer.phone}
+                          </Link>
+                          <button className="ic-remove" onClick={() => handleDeleteCustomer(customer.id)}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                    : <tr><td colSpan={3}><p id="empty-users-list">Sem clientes...</p></td></tr>
               }
             </tbody>
           </Table>

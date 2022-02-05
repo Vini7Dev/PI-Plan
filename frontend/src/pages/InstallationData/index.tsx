@@ -12,6 +12,7 @@ import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
@@ -56,6 +57,7 @@ const InstallationData: React.FC = () => {
   const popupFormRef = useRef<FormHandles>(null);
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
+  const [loadingData, setLoadingData] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [modalContentType, setModalContentType] = useState('add_assembler');
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
@@ -66,22 +68,30 @@ const InstallationData: React.FC = () => {
 
   // Caso exista o id da instalação na rota, buscar os seus dados no banco de dados
   const loadInstallationData = useCallback(async () => {
-    const installationIdFromPath = location.pathname.split('/installation-data/')[1];
-    const orderIdFromPath = location.search.split('=')[1];
+    setLoadingData(true);
 
-    if (installationIdFromPath) {
-      const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
+    try {
+      const installationIdFromPath = location.pathname.split('/installation-data/')[1];
+      const orderIdFromPath = location.search.split('=')[1];
 
-      setInstallationData(installationDataResponse as IInstallationProps);
-      setAssemblersInstallation(installationDataResponse.assemblers_installation);
-      setInstallationId(installationIdFromPath);
-    } else {
-      setInstallationData({} as IInstallationProps);
-      setAssemblersInstallation([]);
-      setInstallationId('');
+      if (installationIdFromPath) {
+        const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
+
+        setInstallationData(installationDataResponse as IInstallationProps);
+        setAssemblersInstallation(installationDataResponse.assemblers_installation);
+        setInstallationId(installationIdFromPath);
+      } else {
+        setInstallationData({} as IInstallationProps);
+        setAssemblersInstallation([]);
+        setInstallationId('');
+      }
+
+      setOrderId(orderIdFromPath);
+    } catch (err) {
+      console.log(err);
     }
 
-    setOrderId(orderIdFromPath);
+    setLoadingData(false)
   }, []);
 
   useEffect(() => {
@@ -97,6 +107,7 @@ const InstallationData: React.FC = () => {
 
         return;
       }
+      setLoadingData(true);
 
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -151,17 +162,27 @@ const InstallationData: React.FC = () => {
         }
       }
     }
+
+    setLoadingData(false);
   }, [assemblersInstallation, installationId, orderId, history]);
 
   // Função para carregar os montadores cadastrados na aplicação
   const handleLoadAssemblers = useCallback(async () => {
-    const { data: assemblersListResponse } = await api.get<IAssembler[]>('/assemblers');
+    setLoadingData(true);
 
-    const assemblersListWithoutAssemblersInUse = assemblersListResponse.filter(assembler => {
-      return assemblersInstallation.findIndex(asmb => asmb.assembler_id === assembler.id) === -1;
-    });
+    try {
+      const { data: assemblersListResponse } = await api.get<IAssembler[]>('/assemblers');
 
-    setAssemblersList(assemblersListWithoutAssemblersInUse);
+      const assemblersListWithoutAssemblersInUse = assemblersListResponse.filter(assembler => {
+        return assemblersInstallation.findIndex(asmb => asmb.assembler_id === assembler.id) === -1;
+      });
+
+      setAssemblersList(assemblersListWithoutAssemblersInUse);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingData(false);
   }, [assemblersInstallation]);
 
   // Função para mostrar ou esconder o modal para adicionar montador
@@ -606,6 +627,10 @@ const InstallationData: React.FC = () => {
           </ModalContent>
         </ModalView>
       }
+
+      <ModalView title="" isOpen={loadingData} zIndex={2}>
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

@@ -1,10 +1,11 @@
-import React, { useState , useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 
 import api from '../../services/api';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
 import SearchBarButton from '../../components/SearchBarButton';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
@@ -20,24 +21,32 @@ interface IUserProps {
 
 // Página para listagem dos usuários cadastrados
 const UsersList: React.FC = () => {
+  const [loadingUsers, setLoadingUsers] = useState(false);
   const [users, setUsers] = useState<IUserProps[]>([]);
   const [searchString, setSearchString] = useState('');
 
   // Função para carregar os usuários cadastrados
   const handleLoadUsers = useCallback(async () => {
-    if(searchString) {
-      const { data: userList } = await api.get<IUserProps[]>(`/users?search_string=${searchString}`);
+    setLoadingUsers(true);
 
-      setUsers(userList);
+    try {
+      if (searchString) {
+        const { data: userList } = await api.get<IUserProps[]>(`/users?search_string=${searchString}`);
 
-      setSearchString('');
-    } else {
-      const { data: adminsList } = await api.get<IUserProps[]>('/admins');
+        setUsers(userList);
+        setSearchString('');
+      } else {
+        const { data: adminsList } = await api.get<IUserProps[]>('/admins');
 
-      const { data: assemblersList } = await api.get<IUserProps[]>('/assemblers');
+        const { data: assemblersList } = await api.get<IUserProps[]>('/assemblers');
 
-      setUsers([...adminsList, ...assemblersList]);
+        setUsers([...adminsList, ...assemblersList]);
+      }
+    } catch (err) {
+      console.log(err);
     }
+
+    setLoadingUsers(false);
   }, [searchString]);
 
   // Função para apagar um usuário
@@ -45,12 +54,12 @@ const UsersList: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar o usuário
     const response = confirm('Você realmente deseja apagar o usuário?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
     // Verificando qual o tipo do usuário para apaga-lo
-    if(user_type === 'admin') {
+    if (user_type === 'admin') {
       await api.delete(`/admins/${id}`);
     } else {
       await api.delete(`/assemblers/${id}`);
@@ -95,9 +104,11 @@ const UsersList: React.FC = () => {
             </thead>
             <tbody>
               {
-                users.length > 0
-                  ? users.map(user => (
-                    <tr key={user.id}>
+                loadingUsers
+                  ? <tr><td colSpan={3}><p id="empty-assessments-list"><Loading /></p></td></tr>
+                  : users.length > 0
+                    ? users.map(user => (
+                      <tr key={user.id}>
                         <td className="td-id td-x2">
                           <Link to={
                             `/${user.user_type === 'admin' ? 'adm-data' : 'assembler-data'}/${user.id}`}
@@ -129,9 +140,9 @@ const UsersList: React.FC = () => {
                             <FiTrash2 />
                           </button>
                         </td>
-                    </tr>
-                  ))
-                  : <tr><td colSpan={3}><p id="empty-users-list">Sem usuários...</p></td></tr>
+                      </tr>
+                    ))
+                    : <tr><td colSpan={3}><p id="empty-users-list">Sem usuários...</p></td></tr>
               }
             </tbody>
           </Table>
