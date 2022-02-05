@@ -494,6 +494,7 @@ const InstallationData: React.FC = () => {
                       ? toggleShowPopup('add_assessment')
                       : alert('Instalação não cadastrada!')
                   }
+                  active={!!installationId}
                 />
             }
           </AssessmentArea>

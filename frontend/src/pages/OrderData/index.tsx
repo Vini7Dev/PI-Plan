@@ -540,6 +540,7 @@ const OrderData: React.FC = () => {
                             ? handleGoToRegisterInstallation
                             : () => alert('Pedido não cadastrado!')
                         }
+                        active={!!orderId}
                       />
                     </td></tr>
                 }

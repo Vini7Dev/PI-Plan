@@ -206,6 +206,7 @@ const CustomerData: React.FC = () => {
                     ? history.push(`/order-data?customer_id=${customerId}`)
                     : alert('Cliente não cadastrado!')
                 }
+                active={!!customerId}
               />
             </div>
 
