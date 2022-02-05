@@ -629,7 +629,7 @@ const InstallationData: React.FC = () => {
         </ModalView>
       }
 
-      <ModalView title="" isOpen={loadingData} zIndex={2}>
+      <ModalView title="" isOpen={loadingData} zIndex={2} size="small">
         <Loading />
       </ModalView>
     </Container>

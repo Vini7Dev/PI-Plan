@@ -550,7 +550,7 @@ const OrderData: React.FC = () => {
         </section>
       </div>
 
-      <ModalView title="" isOpen={loadingData}>
+      <ModalView title="" isOpen={loadingData} size="small">
         <Loading />
       </ModalView>
     </Container>

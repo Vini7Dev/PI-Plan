@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-export const Container = styled.div`
+interface IContainerProps {
+  size: 'normal' | 'small';
+}
+
+export const Container = styled.div<IContainerProps>`
   width: 100%;
   height: 100%;
 
@@ -15,8 +19,19 @@ export const Container = styled.div`
   }
 
   div#modal-content-area {
-    margin: 20px 0;
-    padding: 0 0 20px 0;
+    ${props => (
+    props.size === 'normal'
+      ? css`
+          margin: 20px 0;
+          padding: 0 0 20px 0;
+        `
+      : css`
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `
+  )}
   }
 
   @media (max-width: 768px) {

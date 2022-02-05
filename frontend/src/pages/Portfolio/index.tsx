@@ -296,7 +296,7 @@ const Portfolio: React.FC = () => {
         </Form>
       </ModalView>
 
-      <ModalView title="" isOpen={loadingItem} zIndex={2}>
+      <ModalView title="" isOpen={loadingItem} zIndex={2} size="small">
         <Loading />
       </ModalView>
     </Container>

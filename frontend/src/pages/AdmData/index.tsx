@@ -217,7 +217,7 @@ const AdmData: React.FC = () => {
         </Form>
       </main>
 
-      <ModalView title="" isOpen={loadingData}>
+      <ModalView title="" isOpen={loadingData} size="small">
         <Loading />
       </ModalView>
     </Container>

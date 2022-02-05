@@ -263,7 +263,7 @@ const CustomerData: React.FC = () => {
         </section>
       </main>
 
-      <ModalView title="" isOpen={loadingData}>
+      <ModalView title="" isOpen={loadingData} size="small">
         <Loading />
       </ModalView>
     </Container>

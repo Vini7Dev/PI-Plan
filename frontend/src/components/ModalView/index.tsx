@@ -7,6 +7,7 @@ interface IModalViewProps {
   isOpen: boolean;
   title: string;
   zIndex?: number;
+  size?: 'normal' | 'small';
 }
 
 // Componente de modal customizado
@@ -14,6 +15,7 @@ const ModalView: React.FC<IModalViewProps> = ({
   isOpen,
   title,
   zIndex = 1,
+  size = 'normal',
   children
 }) => {
   return (
@@ -22,17 +24,19 @@ const ModalView: React.FC<IModalViewProps> = ({
       style={{
         overlay: {
           zIndex,
+          backgroundColor: 'rgba(0, 0, 0, 0.75)',
         },
         content: {
           borderRadius: 30,
           padding: 20,
-          width: '65%',
+          width: size === 'normal' ? '65vw' : '40vw',
+          height: size === 'normal' ? '87vh' : '40vh',
           marginRight: 'auto',
           marginLeft: 'auto',
-        }
+        },
       }}
     >
-      <Container>
+      <Container size={size}>
         <h3>{title}</h3>
 
         <div id="modal-content-area">

@@ -91,7 +91,7 @@ const Login: React.FC = () => {
         </main>
       </div>
 
-      <ModalView title="" isOpen={loading}>
+      <ModalView title="" isOpen={loading} size="small">
         <Loading />
       </ModalView>
     </Container>
