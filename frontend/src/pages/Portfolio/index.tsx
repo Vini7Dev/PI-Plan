@@ -1,8 +1,8 @@
 import React, { useCallback, useRef, useState } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useHistory } from 'react-router-dom';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import Carousel from 'react-elastic-carousel';
 import * as Yup from 'yup';
 
 import { useAuth } from '../../contexts/Authentication';
@@ -11,9 +11,15 @@ import api from '../../services/api';
 import {
   Container,
   BannerImageArea,
+  BannerImage,
 } from './styles';
 
 import Logo from '../../assets/images/PI_Plan.png';
+import Banner1 from '../../assets/images/Portfolio_Banner/Portfolio_Banner.png';
+import Banner2 from '../../assets/images/Portfolio_Banner/Portfolio_Banner2.jpg';
+import Banner3 from '../../assets/images/Portfolio_Banner/Portfolio_Banner3.jpg';
+import Banner4 from '../../assets/images/Portfolio_Banner/Portfolio_Banner4.jpg';
+import Banner5 from '../../assets/images/Portfolio_Banner/Portfolio_Banner5.jpg';
 
 import Loading from '../../components/Loading';
 import ModalView from '../../components/ModalView';
@@ -43,6 +49,10 @@ const Portfolio: React.FC = () => {
   const [editFileURL, setEditFileURL] = useState('');
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [portfolioItems, setPortfolioItems] = useState<IPortfolioItemData[]>([]);
+
+  const [bannersList, setBannersList] = useState<string[]>([
+    Banner1, Banner2, Banner3, Banner4, Banner5,
+  ]);
 
   // Enviando o usuário para a tela de login
   const handleNavigateToLogin = useCallback(() => {
@@ -225,13 +235,22 @@ const Portfolio: React.FC = () => {
 
       <section id="banner-area">
         <BannerImageArea>
-          <div id="banner-left-arrow">
-            <FiChevronLeft className="arrow-icon" />
-          </div>
-
-          <div id="banner-right-arrow">
-            <FiChevronRight className="arrow-icon" />
-          </div>
+          <Carousel
+            isRTL={false}
+            itemsToShow={1}
+            showArrows={false}
+            enableAutoPlay
+          >
+            {
+              !bannersList
+                ? <Loading />
+                : bannersList.length > 0
+                  ? bannersList.map((banner) => (
+                    <BannerImage file={banner} />
+                  ))
+                  : null
+            }
+          </Carousel>
         </BannerImageArea>
       </section>
 

@@ -2,6 +2,10 @@ import styled from 'styled-components';
 
 import Banner from '../../assets/images/Portfolio_Banner.png';
 
+interface IBannerImageProps {
+  file: string;
+}
+
 export const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -65,6 +69,7 @@ export const Container = styled.div`
     justify-content: center;
     width: 100%;
     padding: 20px;
+    margin-top: 10px;
   }
 
   @media (max-width: 768px) {
@@ -98,14 +103,34 @@ export const Container = styled.div`
 `;
 
 export const BannerImageArea = styled.div`
+  position: relative;
   width: 100%;
-  height: 480px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-radius: 30px;
-  border: 3px solid #ceaa7b;
-  background: url(${Banner}) no-repeat center center;
+
+  div.rec-pagination {
+    position: absolute;
+    bottom: -40px;
+
+    button.rec-dot  {
+      border: 2px solid #B8976B;
+      box-shadow: 0 0 1px #B8976B;
+
+      width: 16px;
+      height: 16px;
+
+      &:hover {
+        border: 2px solid #8F6B3C;
+        box-shadow: 0 0 1px #8F6B3C;
+      }
+
+      &.rec-dot_active {
+        background-color: #8F6B3C;
+        border: 2px solid #8F6B3C;
+      }
+    }
+  }
 
   svg.arrow-icon {
     font-size: 80px;
@@ -158,4 +183,16 @@ export const BannerImageArea = styled.div`
       background-image: linear-gradient(to left, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
     }
   }
+`;
+
+export const BannerImage = styled.div<IBannerImageProps>`
+  width: 100%;
+  height: 480px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 30px;
+  border: 3px solid #ceaa7b;
+  background: url(${props => props.file}) no-repeat center;
+  background-size: cover;
 `;
