@@ -301,9 +301,18 @@ const OrderData: React.FC = () => {
 
           <Form onSubmit={handleSubmitForm} ref={formRef}>
             <StatusButton
-              buttonText="Cancelar Pedido"
-              buttonColor="red"
-              status="Em Andamento"
+              buttonText="Ver cliente"
+              buttonLink={`/customer-data/${location.search.split('=')[1]}`}
+              statusMessage={
+                orderData.current_status === 1
+                  ? 'Finalizado'
+                  : 'Em andamento'
+              }
+              statusColor={
+                orderData.current_status === 1
+                  ? 'green'
+                  : 'yellow'
+              }
             />
 
             <Select
@@ -506,7 +515,7 @@ const OrderData: React.FC = () => {
                     ? (
                       <tr>
                         <td className="text-center td-id td-x1">
-                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
+                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}&customer_id=${location.search.split('=')[1]}`}>
                             <span
                               className={`ic ${orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
                                 }`}

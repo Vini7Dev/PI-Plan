@@ -21,6 +21,13 @@ import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ModalView from '../../components/ModalView';
 
+interface IOrderProps {
+  id: string;
+  customer: {
+    id: string;
+  }
+}
+
 interface IAssembler {
   id: string;
   name: string;
@@ -48,6 +55,7 @@ interface IInstallationProps {
   completion_forecast: string;
   end_date?: string;
   price: string;
+  order: IOrderProps;
   assessment: IAssessmentProps;
   assemblers_installation: IAssemblerInstallation[];
 }
@@ -86,6 +94,7 @@ const InstallationData: React.FC = () => {
         setInstallationId('');
       }
 
+      // Salvando o id do pedido
       setOrderId(orderIdFromPath);
     } catch (err) {
       console.log(err);
@@ -329,9 +338,18 @@ const InstallationData: React.FC = () => {
 
           <Form ref={formRef} onSubmit={handleSubmitForm}>
             <StatusButton
-              buttonText="Finalizar Instalação"
-              buttonColor="green"
-              status="Em Andamento"
+              buttonText="Ver pedido"
+              buttonLink={`/order-data/${location.search.replace(/&/g, '=').split(/=/g)[1]}?customer_id=${location.search.replace(/&/g, '=').split(/=/g)[3]}`}
+              statusMessage={
+                installationData.end_date
+                  ? 'Finalizado'
+                  : 'Em andmento'
+              }
+              statusColor={
+                installationData.end_date
+                  ? 'green'
+                  : 'yellow'
+              }
             />
 
             <Input

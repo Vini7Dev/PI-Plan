@@ -28,6 +28,9 @@ interface IReminderProps {
   subtitle: string;
   description: string;
   reminder_type: 'order' | 'installation' | 'contact_alert';
+  customer_id?: string;
+  order_id?: string;
+  installation_id?: string;
 }
 
 interface IRemindersResponse {
@@ -245,6 +248,9 @@ const DashBoard: React.FC = () => {
                       subtitle={reminder.subtitle}
                       description={reminder.description}
                       reminder_type={reminder.reminder_type}
+                      customer_id={reminder.customer_id}
+                      order_id={reminder.order_id}
+                      installation_id={reminder.installation_id}
                     />))
                   : <p id="empty-reminders-list">Sem lembretes...</p>
             }

@@ -224,7 +224,7 @@ const CustomerData: React.FC = () => {
                     ? customerData.orders.map(order => (
                       <tr key={order.id}>
                         <td className="text-center td-id td-x1">
-                          <Link to={`/order-data/${order.id}`}>
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
                             <span
                               className={`ic ${(function () {
                                 switch (order.current_status) {
@@ -239,12 +239,12 @@ const CustomerData: React.FC = () => {
                           </Link>
                         </td>
                         <td className="text-left td-x3">
-                          <Link to={`/order-data/${order.id}`}>
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
                             {order.title}
                           </Link>
                         </td>
                         <td className="text-center td-x2">
-                          <Link to={`/order-data/${order.id}`}>
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
                             {
                               getOrderProcessArray()[order.current_proccess]
                             }

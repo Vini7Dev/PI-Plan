@@ -11,14 +11,19 @@ import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
 
+interface IOrderProps {
+  title: string;
+  customer: {
+    id: string;
+  }
+}
+
 interface IInstallationProps {
   id: string;
   order_id: string;
   completion_forecast: string;
   end_date?: string;
-  order: {
-    title: string;
-  }
+  order: IOrderProps;
 }
 
 // Página para listagem das intalações
@@ -94,7 +99,7 @@ const InstallationsList: React.FC = () => {
                     ? installations.map(installation => (
                       <tr key={installation.id}>
                         <td className="text-center td-id td-x1">
-                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}&customer_id=${installation.order.customer.id}`}>
                             <span
                               className={`ic ${installation.end_date ? 'ic-completed' : 'ic-inprogress'
                                 }`}
@@ -102,12 +107,12 @@ const InstallationsList: React.FC = () => {
                           </Link>
                         </td>
                         <td className="text-left td-x3">
-                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}&customer_id=${installation.order.customer.id}`}>
                             {installation.order.title}
                           </Link>
                         </td>
                         <td className="text-center td-x2">
-                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}`}>
+                          <Link to={`/installation-data/${installation.id}?order_id=${installation.order_id}&customer_id=${installation.order.customer.id}`}>
                             {parseDateStringToBrFormat(installation.end_date || installation.completion_forecast)}
                           </Link>
                           <button
