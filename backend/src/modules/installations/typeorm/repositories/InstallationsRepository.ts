@@ -19,6 +19,7 @@ class InstallationsRepository implements IInstallationsRepository {
     const findedInstallation = await this.repository.findOne(id, {
       relations: [
         'order',
+        'order.customer',
         'assessment',
         'assemblers_installation',
         'assemblers_installation.assembler',
@@ -35,6 +36,7 @@ class InstallationsRepository implements IInstallationsRepository {
     }, {
       relations: [
         'order',
+        'order.customer',
         'assessment',
         'assemblers_installation',
         'assemblers_installation.assembler',
@@ -50,6 +52,7 @@ class InstallationsRepository implements IInstallationsRepository {
       where: { end_date: IsNull() },
       relations: [
         'order',
+        'order.customer',
         'assessment',
         'assemblers_installation',
         'assemblers_installation.assembler',
@@ -63,6 +66,7 @@ class InstallationsRepository implements IInstallationsRepository {
   public async findByAssemblerId(assembler_id: string): Promise<Installation[]> {
     const findedInstallations = await this.repository.createQueryBuilder('installation')
       .leftJoinAndSelect('installation.order', 'order')
+      .leftJoinAndSelect('order.customer', 'customer')
       .leftJoinAndSelect('installation.assemblers_installation', 'assembler')
       .leftJoinAndSelect('assembler.assembler', 'assembler_data')
       .leftJoinAndSelect('installation.assessment', 'assessment')
@@ -77,6 +81,7 @@ class InstallationsRepository implements IInstallationsRepository {
     const installationList = await this.repository.createQueryBuilder('installation')
       .innerJoinAndSelect('installation.order', 'order')
       .innerJoinAndSelect('order.address', 'address')
+      .innerJoinAndSelect('order.customer', 'customer')
       .innerJoinAndSelect('installation.assemblers_installation', 'assemblers_installation')
       .innerJoinAndSelect('assemblers_installation.assembler', 'assembler')
       .leftJoinAndSelect('installation.assessment', 'assessment')

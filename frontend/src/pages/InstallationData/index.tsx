@@ -12,6 +12,7 @@ import {
   Container, AddAssemblersArea, ModalContent, AssessmentArea
 } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
@@ -19,6 +20,13 @@ import Select from '../../components/Select';
 import Button from '../../components/Button';
 import Header from '../../components/Header';
 import ModalView from '../../components/ModalView';
+
+interface IOrderProps {
+  id: string;
+  customer: {
+    id: string;
+  }
+}
 
 interface IAssembler {
   id: string;
@@ -47,6 +55,7 @@ interface IInstallationProps {
   completion_forecast: string;
   end_date?: string;
   price: string;
+  order: IOrderProps;
   assessment: IAssessmentProps;
   assemblers_installation: IAssemblerInstallation[];
 }
@@ -56,6 +65,7 @@ const InstallationData: React.FC = () => {
   const popupFormRef = useRef<FormHandles>(null);
   const formRef = useRef<FormHandles>(null);
   const history = useHistory();
+  const [loadingData, setLoadingData] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [modalContentType, setModalContentType] = useState('add_assembler');
   const [installationData, setInstallationData] = useState<IInstallationProps>({} as IInstallationProps);
@@ -66,22 +76,31 @@ const InstallationData: React.FC = () => {
 
   // Caso exista o id da instalação na rota, buscar os seus dados no banco de dados
   const loadInstallationData = useCallback(async () => {
-    const installationIdFromPath = location.pathname.split('/installation-data/')[1];
-    const orderIdFromPath = location.search.split('=')[1];
+    setLoadingData(true);
 
-    if(installationIdFromPath) {
-      const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
+    try {
+      const installationIdFromPath = location.pathname.split('/installation-data/')[1];
+      const orderIdFromPath = location.search.split('=')[1];
 
-      setInstallationData(installationDataResponse as IInstallationProps);
-      setAssemblersInstallation(installationDataResponse.assemblers_installation);
-      setInstallationId(installationIdFromPath);
-    } else {
-      setInstallationData({} as IInstallationProps);
-      setAssemblersInstallation([]);
-      setInstallationId('');
+      if (installationIdFromPath) {
+        const { data: installationDataResponse } = await api.get<IInstallationProps>(`/installations/${installationIdFromPath}`);
+
+        setInstallationData(installationDataResponse as IInstallationProps);
+        setAssemblersInstallation(installationDataResponse.assemblers_installation);
+        setInstallationId(installationIdFromPath);
+      } else {
+        setInstallationData({} as IInstallationProps);
+        setAssemblersInstallation([]);
+        setInstallationId('');
+      }
+
+      // Salvando o id do pedido
+      setOrderId(orderIdFromPath);
+    } catch (err) {
+      console.log(err);
     }
 
-    setOrderId(orderIdFromPath);
+    setLoadingData(false)
   }, []);
 
   useEffect(() => {
@@ -92,11 +111,12 @@ const InstallationData: React.FC = () => {
   const handleSubmitForm = useCallback(async (data) => {
     try {
       // Confirmando se foram adicionados montadores
-      if(assemblersInstallation.length === 0) {
+      if (assemblersInstallation.length === 0) {
         alert('Adicione pelo menos um montador!');
 
         return;
       }
+      setLoadingData(true);
 
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -128,7 +148,7 @@ const InstallationData: React.FC = () => {
       await shape.validate(installationDataToRequest, { abortEarly: false });
 
       // Cadastrando ou atualizando os dados
-      if(installationId) {
+      if (installationId) {
         // Atualizando os dados da instalação
         await api.put(`/installations/${installationId}`, installationDataToRequest);
       } else {
@@ -141,27 +161,37 @@ const InstallationData: React.FC = () => {
 
       // Navegando para a tela de listagem das instalações
       history.push('/installations-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
+
+    setLoadingData(false);
   }, [assemblersInstallation, installationId, orderId, history]);
 
   // Função para carregar os montadores cadastrados na aplicação
   const handleLoadAssemblers = useCallback(async () => {
-    const { data: assemblersListResponse } = await api.get<IAssembler[]>('/assemblers');
+    setLoadingData(true);
 
-    const assemblersListWithoutAssemblersInUse = assemblersListResponse.filter(assembler => {
-      return assemblersInstallation.findIndex(asmb => asmb.assembler_id === assembler.id) === -1;
-    });
+    try {
+      const { data: assemblersListResponse } = await api.get<IAssembler[]>('/assemblers');
 
-    setAssemblersList(assemblersListWithoutAssemblersInUse);
+      const assemblersListWithoutAssemblersInUse = assemblersListResponse.filter(assembler => {
+        return assemblersInstallation.findIndex(asmb => asmb.assembler_id === assembler.id) === -1;
+      });
+
+      setAssemblersList(assemblersListWithoutAssemblersInUse);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingData(false);
   }, [assemblersInstallation]);
 
   // Função para mostrar ou esconder o modal para adicionar montador
@@ -170,7 +200,7 @@ const InstallationData: React.FC = () => {
     setModalContentType(modalContentTypeShow);
 
     // Caso tenha aberto o popup, carregar os montadores cadastrados
-    if(!showPopup) {
+    if (!showPopup) {
       handleLoadAssemblers();
     }
 
@@ -210,12 +240,12 @@ const InstallationData: React.FC = () => {
 
       // Fechando o popup
       toggleShowPopup('');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(popupFormRef.current) {
+        if (popupFormRef.current) {
           popupFormRef.current.setErrors(errors);
         }
       }
@@ -225,7 +255,7 @@ const InstallationData: React.FC = () => {
   // Função para remover um montador da instalação
   const handleRemoveAssembler = useCallback((index: number) => {
     // Verificando se existe o index do montador na lista
-    if(!assemblersInstallation[index]) {
+    if (!assemblersInstallation[index]) {
       return;
     }
 
@@ -254,7 +284,7 @@ const InstallationData: React.FC = () => {
       await shape.validate(data, { abortEarly: false });
 
       // Enviando os dados ao backend para criar / atualizar a avaliação
-      if(installationData.assessment) {
+      if (installationData.assessment) {
         await api.put(`/assessments/${installationData.assessment.id}`, data);
       } else {
         Object.assign(data, {
@@ -271,10 +301,10 @@ const InstallationData: React.FC = () => {
       toggleShowPopup('');
     } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(popupFormRef.current) {
+        if (popupFormRef.current) {
           popupFormRef.current.setErrors(errors);
         }
       }
@@ -286,7 +316,7 @@ const InstallationData: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar a avaliação
     const response = confirm('Você realmente deseja apagar a avaliação?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -308,9 +338,18 @@ const InstallationData: React.FC = () => {
 
           <Form ref={formRef} onSubmit={handleSubmitForm}>
             <StatusButton
-              buttonText="Finalizar Instalação"
-              buttonColor="green"
-              status="Em Andamento"
+              buttonText="Ver pedido"
+              buttonLink={`/order-data/${location.search.replace(/&/g, '=').split(/=/g)[1]}?customer_id=${location.search.replace(/&/g, '=').split(/=/g)[3]}`}
+              statusMessage={
+                installationData.end_date
+                  ? 'Finalizado'
+                  : 'Em andmento'
+              }
+              statusColor={
+                installationData.end_date
+                  ? 'green'
+                  : 'yellow'
+              }
             />
 
             <Input
@@ -371,8 +410,8 @@ const InstallationData: React.FC = () => {
                         <div className="x-divisor" />
                         <div className="x1">
                           <div className="assembler-info-div">
-                          <span>Comissão</span>
-                          <p className="text-center">{assemblerInstallation.commission_percentage}%</p>
+                            <span>Comissão</span>
+                            <p className="text-center">{assemblerInstallation.commission_percentage}%</p>
                           </div>
                         </div>
                       </div>
@@ -395,7 +434,7 @@ const InstallationData: React.FC = () => {
             <div id="assessment-title-area">
               <h3>Avaliação</h3>
 
-              { installationData.assessment &&
+              {installationData.assessment &&
                 <div id="assessment-actions-buttons">
                   <button
                     className="action-button edit-button"
@@ -421,32 +460,32 @@ const InstallationData: React.FC = () => {
                       <span className="tltr-border-radius">Houve atrazo?</span>
                       <p className="tr-border-radius">{
                         installationData.end_date
-                        && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
+                          && parseBrDateStringToDate(installationData.end_date) > parseBrDateStringToDate(installationData.completion_forecast)
                           ? 'Sim' : 'Não'
                       }</p>
                     </div>
                     <div className="assessment-row">
                       <span>Nota de Limpeza e Finalização</span>
                       <p>
-                        {installationData.assessment &&installationData.assessment.cleaning_note}
+                        {installationData.assessment && installationData.assessment.cleaning_note}
                       </p>
                     </div>
                     <div className="assessment-row">
                       <span>Nota de Acabamento</span>
                       <p>
-                        {installationData.assessment &&installationData.assessment.finish_note}
+                        {installationData.assessment && installationData.assessment.finish_note}
                       </p>
                     </div>
                     <div className="assessment-row">
                       <span>Nota do Cliente</span>
                       <p>
-                        {installationData.assessment &&installationData.assessment.customer_note}
+                        {installationData.assessment && installationData.assessment.customer_note}
                       </p>
                     </div>
                     <div className="assessment-row">
                       <span className="bltr-border-radius">Nota da Gerência</span>
                       <p className="br-border-radius">
-                        {installationData.assessment &&installationData.assessment.manager_note}
+                        {installationData.assessment && installationData.assessment.manager_note}
                       </p>
                     </div>
                   </div>
@@ -454,13 +493,13 @@ const InstallationData: React.FC = () => {
                     <div>
                       <span>Valor em Prejuízo</span>
                       <p className="text-right">
-                        {installationData.assessment &&installationData.assessment.loss_amount}
+                        {installationData.assessment && installationData.assessment.loss_amount}
                       </p>
                     </div>
                     <div>
                       <span>Comentários</span>
                       <p>
-                        {installationData.assessment &&installationData.assessment.comment}
+                        {installationData.assessment && installationData.assessment.comment}
                       </p>
                     </div>
                   </div>
@@ -473,6 +512,7 @@ const InstallationData: React.FC = () => {
                       ? toggleShowPopup('add_assessment')
                       : alert('Instalação não cadastrada!')
                   }
+                  active={!!installationId}
                 />
             }
           </AssessmentArea>
@@ -492,103 +532,103 @@ const InstallationData: React.FC = () => {
             >
               {
                 modalContentType === 'add_assembler'
-                ? <div className="space-division">
-                  <div className="x2">
-                    <Select
-                      label="Montador"
-                      name="assembler"
-                      options={
-                        assemblersList.length > 0
-                        ? assemblersList.map(assembler => (
-                          { value: `${assembler.id} ${assembler.name}`, description: assembler.name }
-                        ))
-                        : [{ value: 'invalid' , description: 'Nenhum montador encontrado...' }]
-                      }
-                    />
-                  </div>
-                  <div className="x-divisor" />
-                  <div className="x1">
-                    <Input
-                      label="Comissão"
-                      name="commission_percentage"
-                      placeholder="--%"
-                      type="number"
-                      min={0}
-                      style={{ textAlign: 'center' }}
-                    />
-                  </div>
-                </div>
-                : <div>
-                  <h4>Notas</h4>
-                  <div className="space-division">
+                  ? <div className="space-division">
                     <div className="x2">
-                      <Input
-                        label="Limpeza/Finalização"
-                        name="cleaning_note"
-                        placeholder="0-10"
-                        type="number"
-                        min={0}
-                        max={10}
-                        defaultValue={
-                          installationData.assessment ? installationData.assessment.cleaning_note : 0
+                      <Select
+                        label="Montador"
+                        name="assembler"
+                        options={
+                          assemblersList.length > 0
+                            ? assemblersList.map(assembler => (
+                              { value: `${assembler.id} ${assembler.name}`, description: assembler.name }
+                            ))
+                            : [{ value: 'invalid', description: 'Nenhum montador encontrado...' }]
                         }
-                        style={{ textAlign: 'center' }}
-                      />
-                      <Input
-                        label="Cliente"
-                        name="customer_note"
-                        placeholder="0-10"
-                        type="number"
-                        min={0}
-                        max={10}
-                        defaultValue={
-                          installationData.assessment ? installationData.assessment.customer_note : 0
-                        }
-                        style={{ textAlign: 'center' }}
                       />
                     </div>
                     <div className="x-divisor" />
-                    <div className="x2">
+                    <div className="x1">
                       <Input
-                        label="Acabamento"
-                        name="finish_note"
-                        placeholder="0-10"
+                        label="Comissão"
+                        name="commission_percentage"
+                        placeholder="--%"
                         type="number"
-                        defaultValue={
-                          installationData.assessment ? installationData.assessment.finish_note : 0
-                        }
-                        style={{ textAlign: 'center' }}
-                      />
-                      <Input
-                        label="Gerência"
-                        name="manager_note"
-                        placeholder="0-10"
-                        type="number"
-                        defaultValue={
-                          installationData.assessment ? installationData.assessment.manager_note : 0
-                        }
+                        min={0}
                         style={{ textAlign: 'center' }}
                       />
                     </div>
                   </div>
-                  <Input
-                    label="Prejuízo na Obra"
-                    name="loss_amount"
-                    placeholder="R$0,00"
-                    defaultValue={
-                      installationData.assessment ? installationData.assessment.loss_amount : 0
-                    }
-                  />
+                  : <div>
+                    <h4>Notas</h4>
+                    <div className="space-division">
+                      <div className="x2">
+                        <Input
+                          label="Limpeza/Finalização"
+                          name="cleaning_note"
+                          placeholder="0-10"
+                          type="number"
+                          min={0}
+                          max={10}
+                          defaultValue={
+                            installationData.assessment ? installationData.assessment.cleaning_note : 0
+                          }
+                          style={{ textAlign: 'center' }}
+                        />
+                        <Input
+                          label="Cliente"
+                          name="customer_note"
+                          placeholder="0-10"
+                          type="number"
+                          min={0}
+                          max={10}
+                          defaultValue={
+                            installationData.assessment ? installationData.assessment.customer_note : 0
+                          }
+                          style={{ textAlign: 'center' }}
+                        />
+                      </div>
+                      <div className="x-divisor" />
+                      <div className="x2">
+                        <Input
+                          label="Acabamento"
+                          name="finish_note"
+                          placeholder="0-10"
+                          type="number"
+                          defaultValue={
+                            installationData.assessment ? installationData.assessment.finish_note : 0
+                          }
+                          style={{ textAlign: 'center' }}
+                        />
+                        <Input
+                          label="Gerência"
+                          name="manager_note"
+                          placeholder="0-10"
+                          type="number"
+                          defaultValue={
+                            installationData.assessment ? installationData.assessment.manager_note : 0
+                          }
+                          style={{ textAlign: 'center' }}
+                        />
+                      </div>
+                    </div>
+                    <Input
+                      label="Prejuízo na Obra"
+                      name="loss_amount"
+                      placeholder="R$0,00"
+                      defaultValue={
+                        installationData.assessment ? installationData.assessment.loss_amount : 0
+                      }
+                    />
 
-                  <Input
-                    label="Comentários"
-                    name="comment"
-                    placeholder="Deixe algum comentário sobre a instalação..."
-                    defaultValue={
-                      installationData.assessment ? installationData.assessment.comment : ''
-                    }
-                  />
-                </div>
+                    <Input
+                      label="Comentários"
+                      name="comment"
+                      placeholder="Deixe algum comentário sobre a instalação..."
+                      defaultValue={
+                        installationData.assessment ? installationData.assessment.comment : ''
+                      }
+                    />
+                  </div>
               }
 
               <Button name={modalContentType === 'add_assembler' ? 'Adicionar' : 'Salvar'} type="submit" />
@@ -606,6 +646,10 @@ const InstallationData: React.FC = () => {
           </ModalContent>
         </ModalView>
       }
+
+      <ModalView title="" isOpen={loadingData} zIndex={2} size="small">
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

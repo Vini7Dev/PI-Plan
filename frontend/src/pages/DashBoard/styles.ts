@@ -132,9 +132,11 @@ export const TasksList = styled.div`
     justify-content: center;
     padding: 25px;
 
-    h4 {
-      font-size: 35px;
-      font-weight: 400;
+    p {
+      font-size: 30px;
+      text-align: center;
+      color: #797D8A;
+      margin: 30px 0;
     }
   }
 

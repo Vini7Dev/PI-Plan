@@ -1,4 +1,4 @@
-import React, { useState , useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi'
 
@@ -6,6 +6,7 @@ import api from '../../services/api';
 import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
 import NavigationBar from '../../components/NavigationBar';
 import Header from '../../components/Header';
 import SearchBarButton from '../../components/SearchBarButton';
@@ -20,16 +21,24 @@ interface IOrderProps {
 
 // Página de listagem dos pedidos
 const OrdersList: React.FC = () => {
+  const [loadingOrders, setLoadingOrders] = useState(false);
   const [orders, setOrders] = useState<IOrderProps[]>([]);
   const [searchString, setSearchString] = useState('');
 
   // Buscando os pedidos cadastrados
   const handleLoadOrders = useCallback(async () => {
-    const { data: ordersList } = await api.get<IOrderProps[]>(`/orders${
-      searchString ? `?search_string=${searchString}` : ''
-    }`);
+    setLoadingOrders(true);
 
-    setOrders(ordersList);
+    try {
+      const { data: ordersList } = await api.get<IOrderProps[]>(`/orders${searchString ? `?search_string=${searchString}` : ''
+        }`);
+
+      setOrders(ordersList);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingOrders(false);
   }, [searchString]);
 
   // Apagando um pedido
@@ -37,7 +46,7 @@ const OrdersList: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar o pedido
     const response = confirm('Você realmente deseja apagar o pedido?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -77,43 +86,44 @@ const OrdersList: React.FC = () => {
             </thead>
             <tbody>
               {
-                orders.length > 0
-                  ? orders.map(order => (
-                    <tr key={order.id}>
-                      <td className="text-center td-id td-x1">
-                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
-                          <span
-                            className={`ic ${
-                              (function() {
-                                switch(order.current_status) {
+                loadingOrders
+                  ? <tr><td colSpan={3}><p id="empty-assessments-list"><Loading /></p></td></tr>
+                  : orders.length > 0
+                    ? orders.map(order => (
+                      <tr key={order.id}>
+                        <td className="text-center td-id td-x1">
+                          <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                            <span
+                              className={`ic ${(function () {
+                                switch (order.current_status) {
                                   case 0: return 'ic-inprogress';
                                   case 1: return 'ic-completed';
                                   case 2: return 'ic-canceled';
                                   default: return 'ic-canceled';
                                 }
                               })()
-                            }`}
-                          >IC</span>
-                        </Link>
-                      </td>
-                      <td className="text-left td-x3">
-                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
-                          {order.title}
-                        </Link>
+                                }`}
+                            >IC</span>
+                          </Link>
                         </td>
-                      <td className="text-center td-x2">
-                        <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
-                          {
-                            getOrderProcessArray()[order.current_proccess]
-                          }
-                        </Link>
-                        <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                  : <tr><td colSpan={3}><p id="empty-orders-list">Sem pedidos...</p></td></tr>
+                        <td className="text-left td-x3">
+                          <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                            {order.title}
+                          </Link>
+                        </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/order-data/${order.id}?customer_id=${order.customer_id}`}>
+                            {
+                              getOrderProcessArray()[order.current_proccess]
+                            }
+                          </Link>
+                          <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                    : <tr><td colSpan={3}><p id="empty-orders-list">Sem pedidos...</p></td></tr>
               }
             </tbody>
           </Table>

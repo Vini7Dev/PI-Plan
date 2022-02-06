@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import api from '../../services/api';
 import { Container } from './styles';
 
+import Loading from '../../components/Loading';
+import ModalView from '../../components/ModalView';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -23,10 +25,11 @@ interface IAdminProps {
 }
 
 // Página para criar um administrador ou apresentar os seus dados
-const AdmData: React.FC = () =>{
+const AdmData: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingData, setLoadingData] = useState(false);
   const [userId, setUserId] = useState('');
   const [userData, setUserData] = useState<IAdminProps>({} as IAdminProps);
   const [permissionCreateAdmin, setPermissionCreateAdmin] = useState(false);
@@ -34,20 +37,28 @@ const AdmData: React.FC = () =>{
   // Caso exista o id do administrador na rota, buscar os seus dados no banco de dados
   useEffect(() => {
     const loadUserData = async () => {
+      setLoadingData(true);
+
       const userIdFromPath = location.pathname.split('/adm-data/')[1];
 
-      // Caso exista o id, buscando os dados do usuário
-      if(userIdFromPath) {
-        // Buscando os dados
-        const { data: userDataResponse } = await api.get<IAdminProps>(`/admins/${userIdFromPath}`);
+      try {
+        // Caso exista o id, buscando os dados do usuário
+        if (userIdFromPath) {
+          // Buscando os dados
+          const { data: userDataResponse } = await api.get<IAdminProps>(`/admins/${userIdFromPath}`);
 
-        // Salvando os dados do usuário
-        setUserData(userDataResponse);
-        setUserId(userIdFromPath);
-        setPermissionCreateAdmin(userDataResponse.permission_create_admin);
-      } else {
-        setUserData({} as IAdminProps);
+          // Salvando os dados do usuário
+          setUserData(userDataResponse);
+          setUserId(userIdFromPath);
+          setPermissionCreateAdmin(userDataResponse.permission_create_admin);
+        } else {
+          setUserData({} as IAdminProps);
+        }
+      } catch (err) {
+        console.log(err);
       }
+
+      setLoadingData(false);
     }
 
     loadUserData();
@@ -57,13 +68,14 @@ const AdmData: React.FC = () =>{
   const handleSubmitAdmData = useCallback(async (data) => {
     try {
       // Verificando se está atualizando os dados ou criando um novo usuário
-      if(userId) {
+      if (userId) {
         // Verificando se vai atualizar a senha
-        if(data.new_password && data.new_password !== data.confirm_password) {
+        if (data.new_password && data.new_password !== data.confirm_password) {
           alert('A senha não foi confirmada corretamente!');
 
           return;
         }
+        setLoadingData(true);
 
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
@@ -88,11 +100,12 @@ const AdmData: React.FC = () =>{
         await api.put(`/admins/${userId}`, userDataUpdated);
       } else {
         // Verificando se a confirmação de senha está correta
-        if(data.password !== data.confirm_password) {
+        if (data.password !== data.confirm_password) {
           alert('A senha não foi confirmada corretamente!');
 
           return;
         }
+        setLoadingData(true);
 
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
@@ -119,19 +132,21 @@ const AdmData: React.FC = () =>{
 
       // Enviando o usuário para a tela de listagem
       history.push('/users-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
-  },[userId, permissionCreateAdmin, history]);
 
-  return(
+    setLoadingData(false);
+  }, [userId, permissionCreateAdmin, history]);
+
+  return (
     <Container>
       <div id="navigation-area">
         <NavigationBar optionSelected={1} />
@@ -153,40 +168,40 @@ const AdmData: React.FC = () =>{
           </div>
 
           <Input
-          autoFocus
-          label="Nome"
-          name="name"
-          placeholder="Digíte o Nome"
-          defaultValue={userData.name}
+            autoFocus
+            label="Nome"
+            name="name"
+            placeholder="Digíte o Nome"
+            defaultValue={userData.name}
           />
 
           <Input
-          label="Usuário"
-          name="username"
-          placeholder="Digíte o Usuário"
-          defaultValue={userData.username}
+            label="Usuário"
+            name="username"
+            placeholder="Digíte o Usuário"
+            defaultValue={userData.username}
           />
 
           <Input
-          label="Senha Atual"
-          name="current_password"
-          placeholder="Informe a Senha Atual"
-          type="password"
-          hidden={!userId}
+            label="Senha Atual"
+            name="current_password"
+            placeholder="Informe a Senha Atual"
+            type="password"
+            hidden={!userId}
           />
 
           <Input
-          label={userId ? 'Nova Senha' : 'Senha'}
-          name={userId ? 'new_password': 'password'}
-          placeholder={userId ? 'Digíte a Nova Senha' : 'Digíte a Senha'}
-          type="password"
+            label={userId ? 'Nova Senha' : 'Senha'}
+            name={userId ? 'new_password' : 'password'}
+            placeholder={userId ? 'Digíte a Nova Senha' : 'Digíte a Senha'}
+            type="password"
           />
 
           <Input
-          label="Confirme a Senha"
-          name="confirm_password"
-          placeholder="Digíte a Senha Novamente"
-          type="password"
+            label="Confirme a Senha"
+            name="confirm_password"
+            placeholder="Digíte a Senha Novamente"
+            type="password"
           />
 
           {
@@ -201,6 +216,10 @@ const AdmData: React.FC = () =>{
           <Button name="Cadastrar" type="submit" />
         </Form>
       </main>
+
+      <ModalView title="" isOpen={loadingData} size="small">
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

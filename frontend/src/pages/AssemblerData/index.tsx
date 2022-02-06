@@ -8,6 +8,8 @@ import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import { Container } from './styles';
 
+import Loading from '../../components/Loading';
+import ModalView from '../../components/ModalView';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -22,45 +24,55 @@ interface IAssemblerProps {
 }
 
 // Página para criar um montador ou apresentar os seus dados
-const AssemblerData: React.FC = () =>{
+const AssemblerData: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingData, setLoadingData] = useState(false);
   const [userData, setUserData] = useState<IAssemblerProps>({} as IAssemblerProps);
   const [userId, setUserId] = useState('');
 
   // Caso exista o id do montador na rota, buscar os seus dados no banco de dados
   useEffect(() => {
     const loadUserData = async () => {
+      setLoadingData(true);
+
       const userIdFromPath = location.pathname.split('/assembler-data/')[1];
 
-      // Caso exista o id, buscando os dados do usuário
-      if(userIdFromPath) {
-        // Buscando os dados
-        const { data: userDataResponse } = await api.get<IAssemblerProps>(`/assemblers/${userIdFromPath}`);
+      try {
+        // Caso exista o id, buscando os dados do usuário
+        if (userIdFromPath) {
+          // Buscando os dados
+          const { data: userDataResponse } = await api.get<IAssemblerProps>(`/assemblers/${userIdFromPath}`);
 
-        // Salvando os dados do usuário
-        setUserData(userDataResponse);
-        setUserId(userIdFromPath);
-      } else {
-        setUserData({} as IAssemblerProps);
+          // Salvando os dados do usuário
+          setUserData(userDataResponse);
+          setUserId(userIdFromPath);
+        } else {
+          setUserData({} as IAssemblerProps);
+        }
+      } catch (err) {
+        console.log(err)
       }
+
+      setLoadingData(false);
     }
 
     loadUserData();
   }, [location]);
 
   // Função para criar um montador ou atualizar os seus dados
-  const handleSubmitAdmData = useCallback(async (data) =>{
+  const handleSubmitAdmData = useCallback(async (data) => {
     try {
       // Verificando se está atualizando os dados ou criando um novo usuário
-      if(userId) {
+      if (userId) {
         // Verificando se vai atualizar a senha
-        if(data.new_password && data.new_password !== data.confirm_password) {
+        if (data.new_password && data.new_password !== data.confirm_password) {
           alert('A senha não foi confirmada corretamente!');
 
           return;
         }
+        setLoadingData(true);
 
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
@@ -87,11 +99,12 @@ const AssemblerData: React.FC = () =>{
         await api.put(`/assemblers/${userId}`, userDataToUpdate);
       } else {
         // Verificando se a confirmação de senha está correta
-        if(data.password !== data.confirm_password) {
+        if (data.password !== data.confirm_password) {
           alert('A senha não foi confirmada corretamente!');
 
           return;
         }
+        setLoadingData(true);
 
         // Criando o modelo para validação do formulário
         const shape = Yup.object().shape({
@@ -118,19 +131,21 @@ const AssemblerData: React.FC = () =>{
 
       // Enviando o usuário para a tela de listagem
       history.push('/users-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
-  },[history, userId]);
 
-  return(
+    setLoadingData(false);
+  }, [history, userId]);
+
+  return (
     <Container>
       <div id="navigation-area">
         <NavigationBar optionSelected={1} />
@@ -167,37 +182,41 @@ const AssemblerData: React.FC = () =>{
           />
 
           <Input
-              label="Telefone"
-              name="cellphone"
-              placeholder="(99) XXXXX-XXXX"
-              defaultValue={userData.cellphone}
+            label="Telefone"
+            name="cellphone"
+            placeholder="(99) XXXXX-XXXX"
+            defaultValue={userData.cellphone}
           />
 
           <Input
-          label="Senha Atual"
-          name="current_password"
-          placeholder="Informe a Senha Atual"
-          type="password"
-          hidden={!userId}
+            label="Senha Atual"
+            name="current_password"
+            placeholder="Informe a Senha Atual"
+            type="password"
+            hidden={!userId}
           />
 
           <Input
-          label={userId ? 'Nova Senha' : 'Senha'}
-          name={userId ? 'new_password': 'password'}
-          placeholder={userId ? 'Digíte a Nova Senha' : 'Digíte a Senha'}
-          type="password"
+            label={userId ? 'Nova Senha' : 'Senha'}
+            name={userId ? 'new_password' : 'password'}
+            placeholder={userId ? 'Digíte a Nova Senha' : 'Digíte a Senha'}
+            type="password"
           />
 
           <Input
-          label="Confirme a Senha"
-          name="confirm_password"
-          placeholder="Digíte a Senha Novamente"
-          type="password"
+            label="Confirme a Senha"
+            name="confirm_password"
+            placeholder="Digíte a Senha Novamente"
+            type="password"
           />
 
           <Button name="Cadastrar" type="submit" />
         </Form>
       </main>
+
+      <ModalView title="" isOpen={loadingData} size="small">
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

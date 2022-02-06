@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface IContainerProps {
-  buttonColor: 'red' | 'green';
+  statusColor: 'yellow' | 'green' | 'red';
 }
 
 export const Container = styled.div<IContainerProps>`
@@ -20,38 +20,38 @@ export const Container = styled.div<IContainerProps>`
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #C2C600;
-    color: #C2C600;
+    border: 2px solid ${props => {
+    switch (props.statusColor) {
+      case 'yellow':
+        return '#C2C600';
+      case 'green':
+        return '#7DB88C';
+      default:
+        return '#C2C600';
+    }
+  }};
+    color: ${props => {
+    switch (props.statusColor) {
+      case 'yellow':
+        return '#C2C600';
+      case 'green':
+        return '#7DB88C';
+      default:
+        return '#C2C600';
+    }
+  }};
     font-weight: 600;
   }
 
   button {
     background: #FFFFFF;
-    border: 2px solid ${(props) => {
-      switch(props.buttonColor) {
-        case 'red': return '#FF5555';
-        case 'green': return '#91D2A1';
-        default: return '#FF5555';
-      }
-    }};
-    color: ${(props) => {
-      switch(props.buttonColor) {
-        case 'red': return '#FF5555';
-        case 'green': return '#91D2A1';
-        default: return '#FF5555';
-      }
-    }};
+    border: 2px solid #895EC1;
+    color: #895EC1;
     font-weight: 600;
     transition: 500ms;
 
     &:hover {
-      background-color: ${(props) => {
-      switch(props.buttonColor) {
-        case 'red': return '#FF5555';
-        case 'green': return '#91D2A1';
-        default: return '#FF5555';
-      }
-    }};
+      background-color: #895EC1;
       color: #FFFFFF;
       border: 2px solid #FFFFFF;
     }

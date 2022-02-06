@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  FocusEvent
+} from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -9,8 +15,11 @@ import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import parseDateStringToBrFormat from '../../utils/parseDateStringToBrFormat';
 import getOrderProcessArray from '../../utils/getOrderProcessArray';
+import { getAddressByCep, getCitiesListByUF, getUFsList } from '../../utils/getAddressData';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
+import ModalView from '../../components/ModalView';
 import NavigationBar from '../../components/NavigationBar';
 import StatusButton from '../../components/StatusButton';
 import Input from '../../components/Input';
@@ -57,52 +66,113 @@ const OrderData: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingData, setLoadingData] = useState(false);
   const [orderData, setOrderData] = useState<IOrderProps>({ address: {} } as IOrderProps);
   const [orderId, setOrderId] = useState('');
   const [customerId, setCustomerId] = useState('');
   const [currentProccess, setCurrentProccess] = useState(0);
+  const [selectedStreet, setSelectedStreet] = useState('');
+  const [selectedComplement, setSelectedComplement] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState('');
   const [selectedUF, setSelectedUF] = useState('');
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedCountry, setSelectedCountry] = useState('');
   const [description, setDescription] = useState('');
   const [installationEnvironments, setInstallationEnvironments] = useState('');
+  const [citiesList, setCitiesList] = useState<{ description: string }[]>([]);
 
   // Caso exista o id do pedido na rota, buscar os seus dados no banco de dados
   const loadOrderData = useCallback(async () => {
-    const orderIdFromPath = location.pathname.split('/order-data/')[1];
-    const customerIdFromPath = location.search.split('=')[1];
+    setLoadingData(true);
 
-    if(orderIdFromPath) {
-      const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
+    try {
+      const orderIdFromPath = location.pathname.split('/order-data/')[1];
+      const customerIdFromPath = location.search.split('=')[1];
 
-      setOrderData(orderDataResponse);
-      setOrderId(orderIdFromPath);
-      setCurrentProccess(orderDataResponse.current_proccess);
-      setSelectedUF(orderDataResponse.address.uf);
-      setSelectedCity(orderDataResponse.address.city);
-      setSelectedCountry(orderDataResponse.address.country);
-      setDescription(orderDataResponse.description);
-      setInstallationEnvironments(orderDataResponse.installation_environments);
-    } else {
-      setOrderData({ address: {} } as IOrderProps);
-      setOrderId('');
-      setCurrentProccess(0);
-      setSelectedUF('');
-      setSelectedCity('');
-      setSelectedCountry('');
-      setDescription('');
-      setInstallationEnvironments('');
+      if (orderIdFromPath) {
+        const { data: orderDataResponse } = await api.get<IOrderProps>(`/orders/${orderIdFromPath}`);
+
+        setOrderData(orderDataResponse);
+        setOrderId(orderIdFromPath);
+        setCurrentProccess(orderDataResponse.current_proccess);
+        setSelectedStreet(orderDataResponse.address.street);
+        setSelectedComplement(orderDataResponse.address.complement);
+        setSelectedDistrict(orderDataResponse.address.district);
+        setSelectedUF(orderDataResponse.address.uf);
+        setSelectedCity(orderDataResponse.address.city);
+        setSelectedCountry(orderDataResponse.address.country);
+        setDescription(orderDataResponse.description);
+        setInstallationEnvironments(orderDataResponse.installation_environments);
+      } else {
+        setOrderData({ address: {} } as IOrderProps);
+        setOrderId('');
+        setCurrentProccess(0);
+        setSelectedStreet('');
+        setSelectedComplement('');
+        setSelectedDistrict('');
+        setSelectedUF('');
+        setSelectedCity('');
+        setSelectedCountry('');
+        setDescription('');
+        setInstallationEnvironments('');
+      }
+
+      setCustomerId(customerIdFromPath);
+    } catch (err) {
+      console.log(err);
     }
 
-    setCustomerId(customerIdFromPath);
+    setLoadingData(false);
   }, [location]);
 
   useEffect(() => {
     loadOrderData();
   }, [loadOrderData]);
 
+  // Buscando a lista de cidades por UF
+  useEffect(() => {
+    const handleGetCitiesListByUF = async () => {
+      const citiesListResponse = await getCitiesListByUF(selectedUF);
+
+      setCitiesList(citiesListResponse);
+    }
+
+    handleGetCitiesListByUF();
+  }, [selectedUF])
+
+  // Buscando o endereço com base no cep
+  const handleGetAddressByCep = useCallback(async (e: FocusEvent<HTMLInputElement>) => {
+    setLoadingData(true);
+
+    // Recuperando os CEP informado (removendo o -)
+    const cepValue = e.target.value.replace(/-/g, '');
+
+    try {
+      // Buscando o endereço
+      const addressData = await getAddressByCep(cepValue);
+
+      setSelectedStreet(addressData.logradouro);
+      setSelectedComplement(addressData.complemento);
+      setSelectedDistrict(addressData.bairro);
+      setSelectedUF(addressData.uf);
+      setSelectedCity(addressData.localidade);
+      setSelectedCountry('Brasil');
+    } catch {
+      setSelectedStreet('');
+      setSelectedComplement('');
+      setSelectedDistrict('');
+      setSelectedUF('--');
+      setSelectedCity('Outro');
+      setSelectedCountry('Outro');
+    }
+
+    setLoadingData(false);
+  }, []);
+
   // Função para criar um pedido ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
+    setLoadingData(true);
+
     try {
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -113,7 +183,7 @@ const OrderData: React.FC = () => {
           complement: Yup.string(),
           district: Yup.string().required('O bairro é obrigatório!'),
           city: Yup.string().required('A cidade é obrigatória!'),
-          uf: Yup.string().length(2, 'Informe as iniciais da UF').required('A UF é obrigatória!'),
+          uf: Yup.string().length(2, 'Informe a UF').required('A UF é obrigatória!'),
           country: Yup.string().required('O país é obrigatório!'),
         }),
         current_status: Yup.number().required('O status do pedido é obrigatório!'),
@@ -148,7 +218,7 @@ const OrderData: React.FC = () => {
         installation_environments: installationEnvironments,
         start_date: data.start_date,
         end_date: data.end_date || undefined,
-        furniture_delivery_forecast: data.furniture_delivery_forecast,
+        furniture_delivery_forecast: data.furniture_delivery_forecast || undefined,
         payment_method: data.payment_method,
         gross_value: Number(data.gross_value),
         expenses_value: Number(data.expenses_value),
@@ -157,7 +227,7 @@ const OrderData: React.FC = () => {
       // Validando o formulário
       await shape.validate(orderDataToRequest, { abortEarly: false });
 
-      if(orderId) {
+      if (orderId) {
         // Enviando os dados ao backend para atualizar o pedido
         await api.put(`/orders/${orderId}`, orderDataToRequest);
       } else {
@@ -170,22 +240,24 @@ const OrderData: React.FC = () => {
 
       // Enviando o usuário para a tela de listagem
       history.push('/orders-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
+
+    setLoadingData(false);
   }, [customerId, orderId, currentProccess, description, installationEnvironments, history]);
 
   // Função para voltar um passo do processo do pedido
   const handleToGoBackOnCurrentProcess = useCallback(() => {
     // Verificando se não está no primeiro passo
-    if(currentProccess > 0) {
+    if (currentProccess > 0) {
       setCurrentProccess(currentProccess - 1);
     }
   }, [currentProccess]);
@@ -193,7 +265,7 @@ const OrderData: React.FC = () => {
   // Função para avançar um processo do pedido
   const handleToGoForewardOnCurrentProcess = useCallback(() => {
     // Verificando se não está no último passo
-    if(currentProccess < getOrderProcessArray().length - 1) {
+    if (currentProccess < getOrderProcessArray().length - 1) {
       setCurrentProccess(currentProccess + 1);
     }
   }, [currentProccess]);
@@ -208,7 +280,7 @@ const OrderData: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar a instalação
     const response = confirm('Você realmente deseja apagar a instalação?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -229,9 +301,18 @@ const OrderData: React.FC = () => {
 
           <Form onSubmit={handleSubmitForm} ref={formRef}>
             <StatusButton
-              buttonText="Cancelar Pedido"
-              buttonColor="red"
-              status="Em Andamento"
+              buttonText="Ver cliente"
+              buttonLink={`/customer-data/${location.search.split('=')[1]}`}
+              statusMessage={
+                orderData.current_status === 1
+                  ? 'Finalizado'
+                  : 'Em andamento'
+              }
+              statusColor={
+                orderData.current_status === 1
+                  ? 'green'
+                  : 'yellow'
+              }
             />
 
             <Select
@@ -304,6 +385,7 @@ const OrderData: React.FC = () => {
               name="address.cep"
               placeholder="Informe o CEP"
               defaultValue={orderData.address.cep}
+              onBlur={handleGetAddressByCep}
             />
 
             <div className="space-division">
@@ -313,6 +395,8 @@ const OrderData: React.FC = () => {
                   name="address.street"
                   placeholder="Informe a rua"
                   defaultValue={orderData.address.street}
+                  value={selectedStreet}
+                  onChange={(e) => setSelectedStreet(e.target.value)}
                 />
               </div>
               <div className="x-divisor" />
@@ -331,6 +415,8 @@ const OrderData: React.FC = () => {
               name="address.complement"
               placeholder="Informe o complemento"
               defaultValue={orderData.address.complement}
+              value={selectedComplement}
+              onChange={(e) => setSelectedComplement(e.target.value)}
             />
 
             <Input
@@ -338,6 +424,8 @@ const OrderData: React.FC = () => {
               name="address.district"
               placeholder="Informe o bairro"
               defaultValue={orderData.address.district}
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
             />
 
             <div className="space-division">
@@ -345,11 +433,7 @@ const OrderData: React.FC = () => {
                 <Select
                   label="UF"
                   name="address.uf"
-                  options={[
-                    { description: 'SP' },
-                    { description: 'MG' },
-                    { description: 'RS' },
-                  ]}
+                  options={getUFsList()}
                   value={selectedUF}
                   onChange={(e) => setSelectedUF(e.target.value)}
                 />
@@ -359,10 +443,7 @@ const OrderData: React.FC = () => {
                 <Select
                   label="Cidade"
                   name="address.city"
-                  options={[
-                    { description: 'Franca' },
-                    { description: 'Integrar com a API dos correios...' },
-                  ]}
+                  options={citiesList}
                   value={selectedCity}
                   onChange={(e) => setSelectedCity(e.target.value)}
                 />
@@ -434,11 +515,10 @@ const OrderData: React.FC = () => {
                     ? (
                       <tr>
                         <td className="text-center td-id td-x1">
-                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
+                          <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}&customer_id=${location.search.split('=')[1]}`}>
                             <span
-                              className={`ic ${
-                                orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
-                              }`}
+                              className={`ic ${orderData.installation.end_date ? 'ic-completed' : 'ic-inprogress'
+                                }`}
                             >IC</span>
                           </Link>
                         </td>
@@ -446,7 +526,7 @@ const OrderData: React.FC = () => {
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             {parseDateStringToBrFormat(orderData.installation.start_date)}
                           </Link>
-                          </td>
+                        </td>
                         <td className="text-center td-x2">
                           <Link to={`/installation-data/${orderData.installation.id}?order_id=${orderId}`}>
                             {parseDateStringToBrFormat(orderData.installation.end_date || orderData.installation.completion_forecast)}
@@ -461,22 +541,27 @@ const OrderData: React.FC = () => {
                       </tr>
                     )
                     : <tr><td colSpan={3} id="empty-installation-data">
-                        <Button
-                          name="Cadastrar Instalação"
-                          size="small"
-                          onClick={
-                            orderId
+                      <Button
+                        name="Cadastrar Instalação"
+                        size="small"
+                        onClick={
+                          orderId
                             ? handleGoToRegisterInstallation
                             : () => alert('Pedido não cadastrado!')
-                          }
-                        />
-                      </td></tr>
+                        }
+                        active={!!orderId}
+                      />
+                    </td></tr>
                 }
               </tbody>
             </Table>
           </div>
         </section>
       </div>
+
+      <ModalView title="" isOpen={loadingData} size="small">
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

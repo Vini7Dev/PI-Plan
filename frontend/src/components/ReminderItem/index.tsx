@@ -12,22 +12,25 @@ interface IReminderItemProps {
   subtitle: string;
   description: string;
   reminder_type: 'contact_alert' | 'order' | 'installation';
+  customer_id?: string;
+  order_id?: string;
+  installation_id?: string;
 }
 
 // Componente para apresentar os lembretes do administrador
 const ReminderItem: React.FC<IReminderItemProps> = ({
-  id, title, subtitle, description, reminder_type,
+  id, title, subtitle, description, reminder_type, customer_id, order_id, installation_id
 }) => {
   const history = useHistory();
 
   // Navegando para a página do lembrete
   const handleNavigateToReminderPage = useCallback(() => {
-    switch(reminder_type) {
+    switch (reminder_type) {
       case 'order':
-        history.push(`/order-data/${id}`);
+        history.push(`/order-data/${id}?customer_id=${customer_id}`);
         break;
       case 'installation':
-        history.push(`/installation-data/${id}`);
+        history.push(`/installation-data/${id}?order_id=${order_id}&customer_id=${customer_id}`);
         break;
       case 'contact_alert':
         history.push(`/customer-data/${id}`);
@@ -43,7 +46,7 @@ const ReminderItem: React.FC<IReminderItemProps> = ({
       onClick={handleNavigateToReminderPage}
     >
       {
-        (function() {
+        (function () {
           switch (reminder_type) {
             case 'order':
               return <FiLayers color="#A48760" size={35} />

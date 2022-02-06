@@ -6,6 +6,7 @@ import { Form } from '@unform/web';
 import api from '../../services/api';
 import { Container, Table, ModalContent } from './styles';
 
+import Loading from '../../components/Loading';
 import ModalView from '../../components/ModalView';
 import Header from '../../components/Header';
 import Button from '../../components/Button';
@@ -48,6 +49,7 @@ interface ITotOfNotesForAVG {
 
 // Página de listagem das avaliações
 const AssessmentsList: React.FC = () => {
+  const [loadingAssessments, setLoadingAssessments] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [searchString, setSearchString] = useState('');
   const [assessments, setAssessments] = useState<IAssessmentSelect[]>([]);
@@ -58,18 +60,38 @@ const AssessmentsList: React.FC = () => {
     setShowPopup(!showPopup);
   }, [showPopup]);
 
-  // Função para carregar as avaliações
-  const handleLoadAssesments = useCallback(async () => {
-    const { data: assessmentsList } = await api.get<IAssessmentProps[]>(`/assessments${
-      searchString ? `?search_string=${searchString}` : ''
-    }`);
-
-    const assessmentsListWithSelectBox = assessmentsList.map(assessment => ({
+  // Função para limpar a seleção das avaliações
+  const handleDesableAllMarkupAssessments = useCallback(() => {
+    const updatedAssessments = assessments.map(({ assessment }) => ({
       assessment,
       selected: false,
     }));
 
-    setAssessments(assessmentsListWithSelectBox);
+    setAssessments(updatedAssessments);
+  }, [assessments]);
+
+  // Função para carregar as avaliações
+  const handleLoadAssesments = useCallback(async () => {
+    setLoadingAssessments(true);
+
+    // Limpando a seleção das avaliações
+    handleDesableAllMarkupAssessments();
+
+    try {
+      const { data: assessmentsList } = await api.get<IAssessmentProps[]>(`/assessments${searchString ? `?search_string=${searchString}` : ''
+        }`);
+
+      const assessmentsListWithSelectBox = assessmentsList.map(assessment => ({
+        assessment,
+        selected: false,
+      }));
+
+      setAssessments(assessmentsListWithSelectBox);
+    } catch (err) {
+      console.log(err);
+    }
+
+    setLoadingAssessments(false);
   }, [searchString]);
 
   // Função para apagar uma avaliação
@@ -77,7 +99,7 @@ const AssessmentsList: React.FC = () => {
     // Verificando se o usuário realmente deseja apagar a avaliação
     const response = confirm('Você realmente deseja apagar a avaliação?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -112,8 +134,8 @@ const AssessmentsList: React.FC = () => {
 
     // Para cada avaliação selecionada, somar as notas
     assessments.forEach(({ selected, assessment }) => {
-      if(selected) {
-        sumOfNotes.totOfSelectedAssessments +=1;
+      if (selected) {
+        sumOfNotes.totOfSelectedAssessments += 1;
         sumOfNotes.cleaningNote += assessment.cleaning_note;
         sumOfNotes.finishNote += assessment.finish_note;
         sumOfNotes.customerNote += assessment.customer_note;
@@ -123,7 +145,7 @@ const AssessmentsList: React.FC = () => {
     });
 
     // Caso nenhuma avaliação tenha sido selecionada, cancelar a operação
-    if(sumOfNotes.totOfSelectedAssessments === 0) {
+    if (sumOfNotes.totOfSelectedAssessments === 0) {
       return;
     }
 
@@ -142,7 +164,7 @@ const AssessmentsList: React.FC = () => {
 
       <main id="table-area">
         <Header title="Avaliações">
-        <SearchBarButton
+          <SearchBarButton
             label="Buscar"
             name="search_string"
             placeholder="Procure por uma avaliação"
@@ -156,6 +178,7 @@ const AssessmentsList: React.FC = () => {
           <Button
             name="Calcular Média das Notas Selecionadas"
             onClick={handleCalculeAvgFromSelectedAssessments}
+            size="small"
           />
         </div>
 
@@ -172,38 +195,40 @@ const AssessmentsList: React.FC = () => {
             </thead>
             <tbody>
               {
-                assessments.length > 0
-                  ? assessments.map(({ selected, assessment }) => (
-                    <tr key={assessment.id}>
-                      <td className="text-center td-id td-x1">
-                        <CheckBox
-                          name="markup"
-                          className="checkbox"
-                          defaultChecked={selected}
-                          onClick={() => toggleAssessmentSelect(assessment.id)}
-                        />
-                      </td>
-                      <td className="text-left td-x3">
-                        <Link to={`/installation-data/${assessment.installation.id}`}>
-                          {assessment.installation.order.title}
-                        </Link>
-                      </td>
-                      <td className="text-center td-x2">
-                        <Link to={`/installation-data/${assessment.installation.id}`}>
-                          <span>
-                            { (assessment.cleaning_note + assessment.finish_note + assessment.customer_note + assessment.manager_note) / 4 }
-                          </span>
-                        </Link>
-                        <button
-                          className="ic-remove"
-                          onClick={() => handleDeleteAssessment(assessment.id)}
-                        >
-                          <FiTrash2 />
-                        </button>
-                      </td>
-                    </tr>
-                  ))
-                  : <tr><td colSpan={3}><p id="empty-assessments-list">Sem avaliações...</p></td></tr>
+                loadingAssessments
+                  ? <tr><td colSpan={3}><p id="empty-assessments-list"><Loading /></p></td></tr>
+                  : assessments.length > 0
+                    ? assessments.map(({ selected, assessment }) => (
+                      <tr key={assessment.id}>
+                        <td className="text-center td-id td-x1">
+                          <CheckBox
+                            name="markup"
+                            className="checkbox"
+                            defaultChecked={selected}
+                            onClick={() => toggleAssessmentSelect(assessment.id)}
+                          />
+                        </td>
+                        <td className="text-left td-x3">
+                          <Link to={`/installation-data/${assessment.installation.id}`}>
+                            {assessment.installation.order.title}
+                          </Link>
+                        </td>
+                        <td className="text-center td-x2">
+                          <Link to={`/installation-data/${assessment.installation.id}`}>
+                            <span>
+                              {(assessment.cleaning_note + assessment.finish_note + assessment.customer_note + assessment.manager_note) / 4}
+                            </span>
+                          </Link>
+                          <button
+                            className="ic-remove"
+                            onClick={() => handleDeleteAssessment(assessment.id)}
+                          >
+                            <FiTrash2 />
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                    : <tr><td colSpan={3}><p id="empty-assessments-list">Sem avaliações...</p></td></tr>
               }
             </tbody>
           </Table>
@@ -220,7 +245,7 @@ const AssessmentsList: React.FC = () => {
                     name="cleaning_note"
                     placeholder="0-10"
                     value={
-                    (totOfNotesForAVG.cleaningNote/totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
+                      (totOfNotesForAVG.cleaningNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
                     }
                     style={{ textAlign: 'center' }}
                   />
@@ -229,7 +254,7 @@ const AssessmentsList: React.FC = () => {
                     name="customer_note"
                     placeholder="0-10"
                     value={
-                    (totOfNotesForAVG.customerNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
+                      (totOfNotesForAVG.customerNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
                     }
                     style={{ textAlign: 'center' }}
                   />
@@ -241,7 +266,7 @@ const AssessmentsList: React.FC = () => {
                     name="finish_note"
                     placeholder="0-10"
                     value={
-                    (totOfNotesForAVG.finishNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
+                      (totOfNotesForAVG.finishNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
                     }
                     style={{ textAlign: 'center' }}
                   />
@@ -250,7 +275,7 @@ const AssessmentsList: React.FC = () => {
                     name="manager_note"
                     placeholder="0-10"
                     value={
-                    (totOfNotesForAVG.managerNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
+                      (totOfNotesForAVG.managerNote / totOfNotesForAVG.totOfSelectedAssessments).toFixed(2)
                     }
                     style={{ textAlign: 'center' }}
                   />

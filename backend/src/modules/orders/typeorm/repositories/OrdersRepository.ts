@@ -16,6 +16,7 @@ class OrdersRepository implements IOrdersRepository {
       relations: [
         'address',
         'installation',
+        'installation.assessment',
       ],
     });
 

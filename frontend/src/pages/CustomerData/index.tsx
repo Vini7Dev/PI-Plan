@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect, useRef} from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { FiTrash2 } from 'react-icons/fi';
 import { FormHandles } from '@unform/core';
@@ -10,13 +10,15 @@ import getValidationErrors from '../../utils/getValidationErrors';
 import getOrderProcessArray from '../../utils/getOrderProcessArray';
 import { Container, Table } from './styles';
 
+import Loading from '../../components/Loading';
+import ModalView from '../../components/ModalView';
 import NavigationBar from '../../components/NavigationBar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import ChechBox from '../../components/CheckBox';
 import Header from '../../components/Header';
 
-interface ICustomerProps{
+interface ICustomerProps {
   id?: string;
   send_contact_alert: boolean;
   name: string;
@@ -34,30 +36,39 @@ interface ICustomerOrderProps {
 }
 
 // Página para criar um cliente ou apresentar os seus dados
-const CustomerData: React.FC = () =>{
+const CustomerData: React.FC = () => {
   const location = useLocation();
   const history = useHistory();
   const formRef = useRef<FormHandles>(null);
+  const [loadingData, setLoadingData] = useState(false);
   const [customerData, setCustomerData] = useState<ICustomerProps>({} as ICustomerProps);
   const [customerId, setCustomerId] = useState('');
   const [sendContactAlert, setSendContactAlert] = useState(false);
 
   // Caso exista o id do cliente na rota, buscar os seus dados no banco de dados
   const loadUserData = useCallback(async () => {
-    const customerIdFromPath = location.pathname.split('/customer-data/')[1];
+    setLoadingData(true);
 
-    // Caso exista o id, buscando os dados do usuário
-    if(customerIdFromPath) {
-      // Buscando os dados
-      const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+    try {
+      const customerIdFromPath = location.pathname.split('/customer-data/')[1];
 
-      // Salvando os dados do usuário
-      setCustomerData(customerDataResponse);
-      setCustomerId(customerIdFromPath);
-      setSendContactAlert(customerDataResponse.send_contact_alert);
-    } else {
-      setCustomerData({} as ICustomerProps);
+      // Caso exista o id, buscando os dados do usuário
+      if (customerIdFromPath) {
+        // Buscando os dados
+        const { data: customerDataResponse } = await api.get<ICustomerProps>(`/customers/${customerIdFromPath}`);
+
+        // Salvando os dados do usuário
+        setCustomerData(customerDataResponse);
+        setCustomerId(customerIdFromPath);
+        setSendContactAlert(customerDataResponse.send_contact_alert);
+      } else {
+        setCustomerData({} as ICustomerProps);
+      }
+    } catch (err) {
+      console.log(err);
     }
+
+    setLoadingData(false);
   }, [location]);
 
   useEffect(() => {
@@ -69,7 +80,7 @@ const CustomerData: React.FC = () =>{
     // Verificando se o usuário realmente deseja apagar o pedido
     const response = confirm('Você realmente deseja apagar o pedido?');
 
-    if(!response) {
+    if (!response) {
       return;
     }
 
@@ -81,6 +92,8 @@ const CustomerData: React.FC = () =>{
 
   // Função para criar um cliente ou atualizar os seus dados
   const handleSubmitForm = useCallback(async (data) => {
+    setLoadingData(true);
+
     try {
       // Criando o modelo para validação do formulário
       const shape = Yup.object().shape({
@@ -113,19 +126,21 @@ const CustomerData: React.FC = () =>{
 
       // Enviando o usuário para a tela de listagem
       history.push('/customers-list');
-    } catch(error) {
+    } catch (error) {
       // Caso o erro for relacionado com a validação, montar uma lista com os erros e aplicar no formulário
-      if(error instanceof Yup.ValidationError){
+      if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
 
-        if(formRef.current) {
+        if (formRef.current) {
           formRef.current.setErrors(errors);
         }
       }
     }
-  },[customerId, sendContactAlert, history]);
 
-  return(
+    setLoadingData(false);
+  }, [customerId, sendContactAlert, history]);
+
+  return (
     <Container>
       <div id="navigation-area">
         <NavigationBar optionSelected={2} />
@@ -137,24 +152,24 @@ const CustomerData: React.FC = () =>{
 
           <Form onSubmit={handleSubmitForm} ref={formRef}>
             <Input
-            label="Nome"
-            name="name"
-            placeholder="Digíte o Nome"
-            defaultValue={customerData.name}
+              label="Nome"
+              name="name"
+              placeholder="Digíte o Nome"
+              defaultValue={customerData.name}
             />
 
             <Input
-            label="Telefone"
-            name="phone"
-            placeholder="Digíte o Telefone"
-            defaultValue={customerData.phone}
+              label="Telefone"
+              name="phone"
+              placeholder="Digíte o Telefone"
+              defaultValue={customerData.phone}
             />
 
             <Input
-            label="CPF/CNPJ"
-            name="document"
-            placeholder="Digíte o CPF ou o CNPJ"
-            defaultValue={customerData.document}
+              label="CPF/CNPJ"
+              name="document"
+              placeholder="Digíte o CPF ou o CNPJ"
+              defaultValue={customerData.document}
             />
 
             <h2>Alerta de Contato</h2>
@@ -167,11 +182,11 @@ const CustomerData: React.FC = () =>{
             />
 
             <Input
-            label="Próximo Contato"
-            name="next_contact_date"
-            placeholder="Informe a data do Próximo Contato"
-            type="date"
-            defaultValue={customerData.next_contact_date}
+              label="Próximo Contato"
+              name="next_contact_date"
+              placeholder="Informe a data do Próximo Contato"
+              type="date"
+              defaultValue={customerData.next_contact_date}
             />
 
             <Button name="Cadastrar" type="submit" />
@@ -191,6 +206,7 @@ const CustomerData: React.FC = () =>{
                     ? history.push(`/order-data?customer_id=${customerId}`)
                     : alert('Cliente não cadastrado!')
                 }
+                active={!!customerId}
               />
             </div>
 
@@ -208,31 +224,30 @@ const CustomerData: React.FC = () =>{
                     ? customerData.orders.map(order => (
                       <tr key={order.id}>
                         <td className="text-center td-id td-x1">
-                          <Link to={`/order-data/${order.id}`}>
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
                             <span
-                              className={`ic ${
-                                (function() {
-                                  switch(order.current_status) {
-                                    case 0: return 'ic-inprogress';
-                                    case 1: return 'ic-completed';
-                                    case 2: return 'ic-canceled';
-                                    default: return 'ic-canceled';
-                                  }
-                                })()
-                              }`}
+                              className={`ic ${(function () {
+                                switch (order.current_status) {
+                                  case 0: return 'ic-inprogress';
+                                  case 1: return 'ic-completed';
+                                  case 2: return 'ic-canceled';
+                                  default: return 'ic-canceled';
+                                }
+                              })()
+                                }`}
                             >IC</span>
                           </Link>
                         </td>
                         <td className="text-left td-x3">
-                          <Link to={`/order-data/${order.id}`}>
-                            { order.title }
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
+                            {order.title}
                           </Link>
-                          </td>
+                        </td>
                         <td className="text-center td-x2">
-                        <Link to={`/order-data/${order.id}`}>
-                          {
-                            getOrderProcessArray()[order.current_proccess]
-                          }
+                          <Link to={`/order-data/${order.id}?customer_id=${customerData.id}`}>
+                            {
+                              getOrderProcessArray()[order.current_proccess]
+                            }
                           </Link>
                           <button className="ic-remove" onClick={() => handleDeleteOrder(order.id)}>
                             <FiTrash2 />
@@ -241,12 +256,16 @@ const CustomerData: React.FC = () =>{
                       </tr>
                     ))
                     : <tr><td colSpan={3}><p id="empty-orders-list">Sem pedidos...</p></td></tr>
-                  }
+                }
               </tbody>
             </Table>
           </div>
         </section>
       </main>
+
+      <ModalView title="" isOpen={loadingData} size="small">
+        <Loading />
+      </ModalView>
     </Container>
   );
 };

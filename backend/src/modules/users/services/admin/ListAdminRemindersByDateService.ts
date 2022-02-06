@@ -10,6 +10,9 @@ interface IReminderItem {
   title: string;
   subtitle: string;
   description: string;
+  customer_id?: string;
+  order_id?: string;
+  installation_id?: string;
 }
 
 interface IResponse {
@@ -30,7 +33,7 @@ class ListAdminRemindersByDateService {
 
     @inject('InstallationsRepository')
     private installationsRepository: IInstallationsRepository,
-  ) {}
+  ) { }
 
   public async execute(date: string): Promise<IResponse> {
     const [stringDay, stringMonth, stringYear] = date.split('-');
@@ -64,6 +67,7 @@ class ListAdminRemindersByDateService {
       title: customer.name,
       subtitle: customer.next_contact_date,
       description: customer.phone,
+      customer_id: customer.id,
     }));
 
     const orders = ordersWithoutInstallation.map((order) => ({
@@ -71,6 +75,8 @@ class ListAdminRemindersByDateService {
       title: order.title.toString(),
       subtitle: order.current_proccess.toString(),
       description: order.description.toString(),
+      customer_id: order.customer_id,
+      order_id: order.id,
     }));
 
     const installations = installationsInProgress.map((installation) => ({
@@ -78,6 +84,9 @@ class ListAdminRemindersByDateService {
       title: installation.order.title,
       subtitle: installation.completion_forecast,
       description: installation.order.description,
+      customer_id: installation.order.customer.id,
+      order_id: installation.order.id,
+      installation_id: installation.id,
     }));
 
     return {

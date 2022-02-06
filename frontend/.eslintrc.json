@@ -1,71 +1,72 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "plugin:react/recommended",
-        "airbnb",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react",
-        "@typescript-eslint",
-        "react-hooks",
-        "prettier"
-    ],
-    "rules": {
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn",
-      "no-restricted-globals": "off",
-      "react/jsx-filename-extension": [
-        1,
-        {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "react-hooks",
+    "prettier"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-restricted-globals": "off",
+    "react/jsx-filename-extension": [
+      1,
+      {
         "extensions": [
           ".tsx"
         ]
-        }
-      ],
-      "no-use-before-define": "off",
-      "prettier/prettier": "off",
-      "@typescript-eslint/no-use-before-define": [
-        "error"
-      ],
-      "react/react-in-jsx-scope": "off",
-      "import/extensions": [
-        "error",
-        "ignorePackages",
-        {
-          "ts": "never",
-          "tsx": "never"
-        }
-     ],
-     "no-nested-ternary": "off",
-     "no-console": "off",
-     "react/jsx-props-no-spreading": "off",
-     "react/prop-types": "off",
-     "import/prefer-default-export": "off",
-     "react/button-has-type": "off",
-     "react/no-this-in-sfc": "off",
-     "func-names": "off",
-     "no-alert": "off",
-     "camelcase": "off",
-     "jsx-a11y/click-events-have-key-events": "off",
-     "jsx-a11y/no-noninteractive-element-interactions": "off",
-     "no-unused-expressions": "off"
-    },
-    "settings": {
-      "import/resolver": {
-        "typescript": {}
       }
+    ],
+    "no-use-before-define": "off",
+    "prettier/prettier": "off",
+    "@typescript-eslint/no-use-before-define": [
+      "error"
+    ],
+    "react/react-in-jsx-scope": "off",
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "no-nested-ternary": "off",
+    "no-console": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/prop-types": "off",
+    "import/prefer-default-export": "off",
+    "react/button-has-type": "off",
+    "react/no-this-in-sfc": "off",
+    "func-names": "off",
+    "no-alert": "off",
+    "camelcase": "off",
+    "jsx-a11y/click-events-have-key-events": "off",
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
+    "no-unused-expressions": "off",
+    "no-lonely-if": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
     }
+  }
 }
