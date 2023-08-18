@@ -45,3 +45,36 @@ Software para a empresa de móveis planejados P.I. Planejados Inteligentes
 <br />
 **Listagem das Avaliações**
 <img src="./screenshots/assessments_list.png" />
+
+# 🤝 Colaboradores
+
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/Vini7Dev">
+        <img src="https://avatars3.githubusercontent.com/u/94920663" width="100px;" alt="Foto do Vinícius Gabriel no GitHub"/><br>
+        <sub>
+          <b>Vinícius Gabriel</b>
+        </sub>
+      </a>
+    </td>
+
+  <td align="center">
+    <a href="https://github.com/PedroSMarcal">
+      <img src="https://avatars.githubusercontent.com/u/62404639" width="100px;" alt="Foto do Pedro Marçal no GitHub"/><br>
+      <sub>
+        <b>Pedro Marçal</b>
+      </sub>
+    </a>
+  </td>
+
+  <td align="center">
+    <a href="https://github.com/preduouh">
+      <img src="https://avatars.githubusercontent.com/u/58116134" width="100px;" alt="Foto do Pedro Zuviollo no GitHub"/><br>
+      <sub>
+        <b>Pedro Zuviollo</b>
+      </sub>
+    </a>
+  </td>
+  </tr>
+</table>
