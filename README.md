@@ -1,6 +1,6 @@
 <img src="./screenshots/banner.png" />
 
-# PI-Plan - Gestão de Pedidos
+# PI-Plan - Gestão de Pedidos de Móveis Planejados
 ## Controle de Ponta a Ponta dos pedidos de móveis planejados
 
 Software para a empresa de móveis planejados P.I. Planejados Inteligentes
